@@ -21,10 +21,10 @@ $prize = prize_lines($draw);
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,400&family=Manrope:wght@500;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
-  :root { --o:#ff9a00; --o2:#ffb74a; --ink:#05080c; --paper:#f6f1e8; --muted:rgba(246,241,232,.6); }
+  :root { --o:#f7801a; --o2:#ff9d4a; --ink:#02262f; --paper:#f6f1e8; --muted:rgba(246,241,232,.6); }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; }
-  body { background: radial-gradient(ellipse 70% 60% at 50% 110%, rgba(255,154,0,.28), transparent 70%), radial-gradient(ellipse 60% 50% at 90% 0%, rgba(26,142,166,.3), transparent 70%), linear-gradient(160deg,#0b1d2a,#05080c); color: var(--paper); font-family: Manrope, sans-serif; display: flex; flex-direction: column; overflow: hidden; }
+  body { background: radial-gradient(ellipse 70% 60% at 50% 110%, rgba(247,128,26,.28), transparent 70%), radial-gradient(ellipse 60% 50% at 90% 0%, rgba(42,163,187,.3), transparent 70%), linear-gradient(160deg,#006780,#02262f); color: var(--paper); font-family: Manrope, sans-serif; display: flex; flex-direction: column; overflow: hidden; }
   header { display: flex; justify-content: space-between; align-items: center; padding: 28px 44px; }
   header img { height: 64px; width: auto; }
   header .x { font-family: Oswald; font-size: 2rem; color: var(--muted); }
@@ -35,7 +35,7 @@ $prize = prize_lines($draw);
   .prize { color: var(--muted); font-size: clamp(1rem, 1.6vw, 1.5rem); margin: 0 0 30px; }
   .slot { min-height: 1.1em; font-family: Oswald; font-weight: 700; text-transform: uppercase; font-size: clamp(3.4rem, 11vw, 11rem); line-height: 1; letter-spacing: -.01em; margin: 10px 0; }
   .slot.spin { color: rgba(246,241,232,.55); filter: blur(.5px); }
-  .slot.win { color: var(--o); animation: pop .7s cubic-bezier(.2,.8,.2,1.2); text-shadow: 0 0 60px rgba(255,154,0,.45); }
+  .slot.win { color: var(--o); animation: pop .7s cubic-bezier(.2,.8,.2,1.2); text-shadow: 0 0 60px rgba(247,128,26,.45); }
   @keyframes pop { from { transform: scale(.6); opacity: 0; } }
   .meta { font-size: clamp(1rem, 1.8vw, 1.7rem); color: var(--muted); min-height: 1.6em; }
   .stats { display: flex; gap: 50px; justify-content: center; margin-top: 36px; }

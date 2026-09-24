@@ -3,16 +3,16 @@
    Boarding-pass cards on the magazine system (site.css).
    ============================================================ */
 :root {
-  --card:      #fbf6ec;
-  --card-2:    #f1e9d8;
-  --card-line: #e3d9c2;
-  --card-ink:  #1d1a16;
-  --card-grey: #6b6355;
+  --card:      #f8fcfd;
+  --card-2:    #e6f1f4;
+  --card-line: #cfe1e6;
+  --card-ink:  #0e2a31;
+  --card-grey: #55707a;
 }
 
 /* ── Hero layout ───────────────────────────────────────────── */
 .ff-hero { position: relative; overflow: hidden; isolation: isolate; padding: clamp(36px, 6vw, 90px) 0 clamp(60px, 8vw, 110px);
-  background: radial-gradient(ellipse 900px 520px at 15% -10%, rgba(255,154,0,.22), transparent 60%), linear-gradient(160deg, #0b1d2a 0%, #0f2a3f 55%, #10384f 100%); }
+  background: radial-gradient(ellipse 900px 520px at 15% -10%, rgba(247,128,26,.22), transparent 60%), linear-gradient(160deg, #02303b 0%, #004354 55%, #006780 100%); }
 .ff-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .2; z-index: -1; mix-blend-mode: luminosity; }
 .ff-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(340px, 460px); grid-template-areas: "intro card" "details card"; gap: 28px clamp(30px, 6vw, 90px); align-items: start; }
 .ff-intro { grid-area: intro; padding-top: clamp(0px, 3vw, 40px); }
@@ -22,7 +22,7 @@
 .ff-intro .lede { margin: 22px 0 0; max-width: 560px; color: var(--text-light); }
 .ff-badge { display: inline-block; background: rgba(255,255,255,.08); border: 1px solid var(--line-dark); color: var(--text-light); font-size: .72rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; padding: 8px 16px; border-radius: 999px; margin-bottom: 22px; }
 .ff-badge b { color: var(--orange); }
-.ff-invited { display: inline-flex; gap: 10px; align-items: center; margin-top: 20px; padding: 10px 16px; border-radius: 12px; background: rgba(255,154,0,.14); color: var(--orange-2); font-weight: 700; font-size: .9rem; }
+.ff-invited { display: inline-flex; gap: 10px; align-items: center; margin-top: 20px; padding: 10px 16px; border-radius: 12px; background: rgba(247,128,26,.14); color: var(--orange-2); font-weight: 700; font-size: .9rem; }
 @media (max-width: 960px) {
   .ff-layout { grid-template-columns: 1fr; grid-template-areas: "intro" "card" "details"; }
   .ff-card-col { position: static; max-width: 520px; width: 100%; margin: 0 auto; }
@@ -60,7 +60,7 @@
 .ff-section-label { font-size: .68rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--card-grey); margin: 6px 0 12px; }
 .ff-card .field label { color: var(--card-ink); font-size: .8rem; }
 .ff-card .field input, .ff-card .field select { background: #fff; border-color: var(--card-line); color: var(--card-ink); padding: 13px 14px; font-size: 1rem; }
-.ff-card .field input:focus, .ff-card .field select:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255,154,0,.18); }
+.ff-card .field input:focus, .ff-card .field select:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(247,128,26,.18); }
 .ff-card .field-error { color: var(--danger); }
 .ff-hint { display: block; font-size: .74rem; color: var(--card-grey); margin-top: 5px; }
 
@@ -71,13 +71,13 @@
 .ff-consent.is-required { background: #fff; border: 1.5px solid var(--card-line); }
 .ff-consent.is-optional { background: var(--card-2); border: 1.5px dashed transparent; }
 .ff-consent.has-error { border-color: var(--danger); }
-.ff-tag { display: inline-block; font-size: .62rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; background: var(--orange); color: #1d1204; padding: 2px 8px; border-radius: 6px; margin-right: 4px; }
+.ff-tag { display: inline-block; font-size: .62rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; background: var(--orange); color: #2a1402; padding: 2px 8px; border-radius: 6px; margin-right: 4px; }
 .ff-tag-soft { background: transparent; color: var(--card-grey); border: 1px solid var(--card-line); }
 
 .ff-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; border: 0; cursor: pointer; font-family: var(--f-body); font-weight: 800; font-size: 1rem; padding: 16px 18px; border-radius: 14px; transition: transform .15s, box-shadow .2s, background .2s; margin-top: 10px; text-decoration: none; }
 .ff-btn:active { transform: scale(.98); }
-.ff-btn-primary { background: var(--orange); color: #1d1204; }
-.ff-btn-primary:hover { box-shadow: 0 10px 24px -8px rgba(255,154,0,.7); }
+.ff-btn-primary { background: var(--orange); color: #2a1402; }
+.ff-btn-primary:hover { box-shadow: 0 10px 24px -8px rgba(247,128,26,.7); }
 .ff-btn-outline { background: transparent; border: 1.5px solid var(--card-line); color: var(--card-ink); }
 .ff-btn-outline:hover { border-color: var(--card-ink); }
 .ff-btn-ghost { background: transparent; color: var(--card-grey); font-weight: 700; font-size: .88rem; padding: 10px; margin-top: 4px; }
@@ -102,7 +102,7 @@
 
 .ff-otp { display: flex; gap: 8px; justify-content: center; margin: 10px 0 8px; }
 .ff-otp input { width: 46px; height: 58px; text-align: center; font-size: 1.5rem; font-weight: 800; border-radius: 12px; border: 1.5px solid var(--card-line); background: #fff; color: var(--card-ink); font-family: var(--f-body); }
-.ff-otp input:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(255,154,0,.2); }
+.ff-otp input:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(247,128,26,.2); }
 .ff-otp.has-error input { border-color: var(--danger); animation: shake .35s; }
 @keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 @media (max-width: 380px) { .ff-otp { gap: 5px; } .ff-otp input { width: 40px; height: 52px; } }
@@ -187,7 +187,7 @@
 .ff-faq a { color: var(--orange-deep); text-decoration: underline; }
 
 /* ── Dashboard ─────────────────────────────────────────────── */
-.dash-hero { padding: clamp(40px, 6vw, 80px) 0 clamp(30px, 4vw, 50px); background: linear-gradient(160deg, #0b1d2a 0%, #10384f 100%); position: relative; overflow: hidden; }
+.dash-hero { padding: clamp(40px, 6vw, 80px) 0 clamp(30px, 4vw, 50px); background: linear-gradient(160deg, #02303b 0%, #006780 100%); position: relative; overflow: hidden; }
 .dash-hero .display .serif-i { color: var(--orange); }
 .dash-hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: end; }
 @media (max-width: 760px) { .dash-hero-grid { grid-template-columns: 1fr; } }
@@ -235,10 +235,10 @@
 .ref-list li:last-child { border-bottom: 0; }
 .badge { display: inline-block; font-size: .64rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: 4px 9px; border-radius: 6px; }
 .badge-ok { background: #e3f1e9; color: #1f5c3c; }
-.badge-wait { background: #fff1d6; color: #7a5200; }
+.badge-wait { background: #ffeedd; color: #7a5200; }
 .dash-main .ff-leaders li { border-color: var(--line-light); }
 .dash-main .ff-leaders .rank, .dash-main .ff-leaders .who small, .dash-main .ff-leaders .score small { color: var(--text-muted); }
-.dash-main .ff-leaders li.is-me { background: #fff6e6; border-radius: 12px; padding-left: 10px; padding-right: 10px; }
+.dash-main .ff-leaders li.is-me { background: #fff1e3; border-radius: 12px; padding-left: 10px; padding-right: 10px; }
 .dash-main .ff-leaders .who { font-size: 1.1rem; }
 .dash-main .ff-leaders .score { font-size: 1.4rem; }
 .dash-main .pass { margin: 0; }
@@ -250,9 +250,9 @@
 .auth-wrap { min-height: calc(100svh - 76px); display: grid; grid-template-columns: 1fr 1fr; }
 .auth-media { position: relative; overflow: hidden; }
 .auth-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.auth-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(10,10,11,.85)); }
+.auth-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(2,38,47,.85)); }
 .auth-media .cap { position: absolute; left: clamp(20px, 4vw, 50px); bottom: clamp(20px, 4vw, 50px); right: 20px; z-index: 2; }
-.auth-form { display: flex; align-items: center; justify-content: center; padding: clamp(30px, 5vw, 60px) var(--gutter); background: linear-gradient(160deg, #0b1d2a, #10384f); }
+.auth-form { display: flex; align-items: center; justify-content: center; padding: clamp(30px, 5vw, 60px) var(--gutter); background: linear-gradient(160deg, #02303b, #006780); }
 .auth-form .ff-card { width: 100%; max-width: 440px; }
 @media (max-width: 860px) { .auth-wrap { grid-template-columns: 1fr; } .auth-media { min-height: 220px; } }
 
@@ -262,3 +262,18 @@ body.embed .ff-card { box-shadow: none; border: 1px solid var(--card-line); max-
 .ff-intro-photo { margin: 26px 0 0; max-width: 620px; }
 .ff-intro-photo img { width: 100%; height: auto; border-radius: 22px; box-shadow: 0 30px 60px -28px rgba(0,0,0,.7); }
 @media (max-width: 960px) { .ff-intro-photo { display: none; } }
+
+/* Muted text on light panels (dashboard, sign-in): use the dark-on-light grey, not the light one */
+.dash-main .muted, .panel .muted, .panel .panel-sub { color: var(--text-muted); }
+.panel-dark .muted, .panel-dark .panel-sub { color: var(--text-light-muted); }
+
+/* Dashboard hero: plane photo with both logos */
+.dash-hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); align-items: center; }
+.dash-plane { position: relative; margin: 0; border-radius: 24px; overflow: hidden; box-shadow: 0 30px 60px -28px rgba(0,0,0,.7); }
+.dash-plane img { width: 100%; height: auto; display: block; }
+.dash-plane figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 20px 16px; background: linear-gradient(transparent, rgba(2,38,47,.9)); display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.dash-logos { display: inline-flex; align-items: center; gap: 10px; background: rgba(2,38,47,.55); padding: 8px 12px; border-radius: 12px; backdrop-filter: blur(6px); }
+.dash-logos img { height: 30px; width: auto; }
+.dash-logos span { color: var(--text-light-muted); font-family: var(--f-display); }
+.dash-plane strong { font-family: var(--f-serif); font-style: italic; font-weight: 400; font-size: 1.3rem; color: var(--text-light); }
+@media (max-width: 760px) { .dash-hero-grid { grid-template-columns: 1fr; } }

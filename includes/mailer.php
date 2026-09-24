@@ -141,14 +141,17 @@ function smtp_send(string $to, string $subject, string $html, string $text): boo
 function mail_template(string $heading, string $bodyHtml): string
 {
     $logo = url('assets/img/brand/gmf-logo-orange.png');
+    $acsa = url('assets/img/brand/acsa-white.png');
     $year = date('Y');
     return <<<HTML
-<!doctype html><html><body style="margin:0;background:#f4efe6;font-family:Arial,Helvetica,sans-serif;color:#1d1a16;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4efe6;padding:28px 12px;"><tr><td align="center">
+<!doctype html><html><body style="margin:0;background:#eef5f7;font-family:Arial,Helvetica,sans-serif;color:#0e2a31;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#eef5f7;padding:28px 12px;"><tr><td align="center">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:14px;overflow:hidden;">
-<tr><td style="background:#0b1d2a;padding:22px 28px;"><img src="{$logo}" alt="George Music Festival" height="44" style="display:block;height:44px;"></td></tr>
-<tr><td style="padding:30px 28px 10px;"><h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#0b1d2a;">{$heading}</h1>{$bodyHtml}</td></tr>
-<tr><td style="padding:18px 28px 26px;font-size:12px;color:#7a7266;border-top:1px solid #eee4d3;">FLY FOR TWO · George Music Festival × Airports Company South Africa<br>&copy; {$year} George Music Festival</td></tr>
+<tr><td style="background:#006780;padding:20px 28px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+<td align="left"><img src="{$logo}" alt="George Music Festival" height="44" style="display:block;height:44px;"></td>
+<td align="right"><img src="{$acsa}" alt="Airports Company South Africa" height="40" style="display:inline-block;height:40px;"></td></tr></table></td></tr>
+<tr><td style="padding:30px 28px 10px;"><h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#00485a;">{$heading}</h1>{$bodyHtml}</td></tr>
+<tr><td style="padding:18px 28px 26px;font-size:12px;color:#55707a;border-top:1px solid #dcebef;">FLY FOR TWO · George Music Festival × Airports Company South Africa<br>&copy; {$year} George Music Festival</td></tr>
 </table></td></tr></table></body></html>
 HTML;
 }

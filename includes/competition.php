@@ -329,10 +329,10 @@ function otp_issue(array $entrant, string $purpose): array
     $button = $purpose === 'login' ? 'Sign in to my dashboard' : 'Confirm my entry';
     $html = mail_template("Your code: {$code}", "<p style=\"margin:0 0 14px;font-size:15px;line-height:1.6;\">Hi {$first},</p>"
         . "<p style=\"margin:0 0 20px;font-size:15px;line-height:1.6;\">{$intro}</p>"
-        . "<p style=\"margin:0 0 22px;\"><a href=\"{$link}\" style=\"display:inline-block;background:#ff9a00;color:#1d1204;text-decoration:none;font-weight:bold;font-size:16px;padding:14px 26px;border-radius:10px;\">{$button}</a></p>"
-        . "<p style=\"margin:0 0 6px;font-size:13px;color:#7a7266;\">Or enter this code:</p>"
-        . "<p style=\"margin:0 0 18px;font-size:32px;letter-spacing:10px;font-weight:bold;color:#0b1d2a;\">{$code}</p>"
-        . "<p style=\"margin:0 0 8px;font-size:13px;color:#7a7266;\">The code and button expire in {$ttl} minutes. If you didn't request this, you can ignore this email.</p>");
+        . "<p style=\"margin:0 0 22px;\"><a href=\"{$link}\" style=\"display:inline-block;background:#f7801a;color:#2a1402;text-decoration:none;font-weight:bold;font-size:16px;padding:14px 26px;border-radius:10px;\">{$button}</a></p>"
+        . "<p style=\"margin:0 0 6px;font-size:13px;color:#55707a;\">Or enter this code:</p>"
+        . "<p style=\"margin:0 0 18px;font-size:32px;letter-spacing:10px;font-weight:bold;color:#00485a;\">{$code}</p>"
+        . "<p style=\"margin:0 0 8px;font-size:13px;color:#55707a;\">The code and button expire in {$ttl} minutes. If you didn't request this, you can ignore this email.</p>");
     $sent = send_mail($entrant['email'], "{$code} is your FLY FOR TWO code", $html);
     if (!$sent) {
         return ['ok' => false, 'error' => "We couldn't send the email right now. Please check the address and try again.", 'cooldown' => 0];
@@ -427,9 +427,9 @@ function send_welcome_email(array $entrant): void
     $dash = e(url('flyfortwo/dashboard'));
     $html = mail_template("You're in the draw, {$first}.", '<p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Your FLY FOR TWO entry is confirmed. You could win <strong>' . e((string) setting('prize_headline')) . '</strong>.</p>'
         . '<p style="margin:0 0 10px;font-size:15px;line-height:1.6;">Share your personal link — when a friend opens it, you earn a bonus entry, and every friend who enters is tracked on your dashboard:</p>'
-        . "<p style=\"margin:0 0 18px;\"><a href=\"{$link}\" style=\"font-size:16px;font-weight:bold;color:#e07b00;\">{$link}</a></p>"
-        . "<p style=\"margin:0 0 18px;\"><a href=\"{$dash}\" style=\"display:inline-block;background:#ff9a00;color:#1d1204;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:10px;\">Open my dashboard</a></p>"
-        . '<p style="margin:0;font-size:13px;color:#7a7266;">' . e((string) setting('draw_reassurance')) . '</p>');
+        . "<p style=\"margin:0 0 18px;\"><a href=\"{$link}\" style=\"font-size:16px;font-weight:bold;color:#c9620a;\">{$link}</a></p>"
+        . "<p style=\"margin:0 0 18px;\"><a href=\"{$dash}\" style=\"display:inline-block;background:#f7801a;color:#2a1402;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:10px;\">Open my dashboard</a></p>"
+        . '<p style="margin:0;font-size:13px;color:#55707a;">' . e((string) setting('draw_reassurance')) . '</p>');
     send_mail($entrant['email'], "You're entered — FLY FOR TWO", $html);
 }
 

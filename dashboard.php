@@ -51,12 +51,19 @@ require __DIR__ . '/includes/header.php';
     <div>
       <span class="dash-status"><i class="fa-solid fa-circle-check"></i> Verified entrant · <?= e($me['ref_code']) ?></span>
       <h1 class="display huge" style="margin-top:18px;">Hey <?= e($first) ?>, <span class="serif-i">you're in.</span></h1>
-      <p class="lede muted" style="margin:16px 0 0;max-width:620px;">You have <strong style="color:var(--text-light)"><?= $count ?> entr<?= $count === 1 ? 'y' : 'ies' ?></strong> in the draw for <?= e($prize) ?>. Now spread the word — every friend you bring counts on the leaderboard.</p>
+      <p class="lede" style="margin:16px 0 0;max-width:620px;color:var(--text-light-muted);">You have <strong style="color:var(--text-light)"><?= $count ?> entr<?= $count === 1 ? 'y' : 'ies' ?></strong> in the draw for <?= e($prize) ?>. Now spread the word — every friend you bring counts on the leaderboard.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;">
+        <a class="btn btn-orange" href="https://wa.me/?text=<?= rawurlencode($scripts['WhatsApp status']) ?>" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Share now</a>
+        <a class="btn btn-ghost" href="<?= e(url('flyfortwo/logout')) ?>">Sign out</a>
+      </div>
     </div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;">
-      <a class="btn btn-orange" href="https://wa.me/?text=<?= rawurlencode($scripts['WhatsApp status']) ?>" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Share now</a>
-      <a class="btn btn-ghost" href="<?= e(url('flyfortwo/logout')) ?>">Sign out</a>
-    </div>
+    <figure class="dash-plane">
+      <img src="<?= e(url('assets/img/acsa/plane-at-the-gate.jpg')) ?>" width="1800" height="1201" alt="A South African Airways plane at the gate, ready to board">
+      <figcaption>
+        <span class="dash-logos"><img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival"><span>×</span><img src="<?= e(url('assets/img/brand/acsa-white.png')) ?>" alt="Airports Company South Africa"></span>
+        <strong>Your seat is waiting.</strong>
+      </figcaption>
+    </figure>
   </div>
 </section>
 
@@ -222,7 +229,7 @@ require __DIR__ . '/includes/header.php';
   });
   var box = document.getElementById('qr');
   if (box && window.QRCode) {
-    new QRCode(box, { text: box.dataset.url, width: 240, height: 240, colorDark: '#0b1d2a', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+    new QRCode(box, { text: box.dataset.url, width: 240, height: 240, colorDark: '#00485a', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
     document.getElementById('qrDownload').addEventListener('click', function () {
       var c = box.querySelector('canvas'); if (!c) return;
       var a = document.createElement('a'); a.download = 'fly-for-two-qr.png'; a.href = c.toDataURL('image/png'); a.click();

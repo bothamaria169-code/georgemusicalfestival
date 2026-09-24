@@ -31,7 +31,7 @@ $enterHref = $nav_active === 'home' ? '#enter' : url('flyfortwo/');
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title><?= e($page_title) ?></title>
 <meta name="description" content="<?= e($meta_description) ?>">
-<meta name="theme-color" content="#0a0a0b">
+<meta name="theme-color" content="#00485a">
 <meta property="og:title" content="<?= e($page_title) ?>">
 <meta property="og:description" content="<?= e($meta_description) ?>">
 <meta property="og:image" content="<?= e($og_image ?? url('assets/img/gallery/crowd-night.jpg')) ?>">
@@ -60,8 +60,10 @@ $enterHref = $nav_active === 'home' ? '#enter' : url('flyfortwo/');
 
 <header class="site-header" id="siteHeader">
   <div class="wrap header-inner">
-    <a class="brand" href="<?= e(url('index.php')) ?>" aria-label="George Music Festival home">
+    <a class="brand" href="<?= e(url('index.php')) ?>" aria-label="George Music Festival × Airports Company South Africa — home">
       <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival" width="120" height="82">
+      <span class="brand-x" aria-hidden="true">×</span>
+      <img class="brand-acsa" src="<?= e(url('assets/img/brand/acsa-white.png')) ?>" alt="Airports Company South Africa" width="160" height="78">
     </a>
     <nav class="main-nav" id="mainNav" aria-label="Main">
       <a href="<?= e(url('flyfortwo/')) ?>" class="nav-fly <?= $nav_active === 'fly' ? 'is-active' : '' ?>"><i class="fa-solid fa-plane-departure"></i> Win a trip</a>
