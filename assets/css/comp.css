@@ -195,6 +195,11 @@
 .dash-main { padding: clamp(30px, 5vw, 60px) 0 clamp(60px, 8vw, 110px); background: var(--paper); color: var(--text-dark); }
 .dash-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 22px; align-items: start; }
 @media (max-width: 960px) { .dash-grid { grid-template-columns: 1fr; } }
+/* Grid children may shrink below their content, and long links/messages wrap on phones */
+.dash-grid > *, .dash-stack > *, .panel, .stat { min-width: 0; }
+.panel { overflow-wrap: anywhere; }
+.qr-wrap { flex-wrap: wrap; }
+.ref-list li { flex-wrap: wrap; }
 .dash-stack { display: grid; gap: 22px; }
 .panel { background: #fff; border-radius: 20px; padding: clamp(20px, 3vw, 30px); border: 1px solid var(--line-light); box-shadow: 0 10px 30px -22px rgba(0,0,0,.4); }
 .panel-dark { background: var(--ink); color: var(--text-light); border-color: transparent; }
