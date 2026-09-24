@@ -1,0 +1,40 @@
+# GMF × ACSA — FLY FOR TWO
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Uncomment to force HTTPS once the SSL certificate is active on the subdomain
+  # RewriteCond %{HTTPS} !=on
+  # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Short share links: /r/ABC1234 → r.php?c=ABC1234
+  RewriteRule ^r/([A-Za-z0-9]{4,12})/?$ r.php?c=$1 [L,QSA]
+
+  # Competition folder: /flyfortwo/…  (the festival website stays at the root)
+  RewriteRule ^flyfortwo/?$ fly-for-two.php [L,QSA]
+  RewriteRule ^flyfortwo/(dashboard|login|logout|embed|terms|privacy)/?$ $1.php [L,QSA]
+
+  # Never serve internals
+  RewriteRule ^(config|includes|database|storage)(/|$) - [F,L]
+  RewriteRule (^|/)\.(?!well-known) - [F,L]
+  RewriteRule \.(sql|log|md|lock)$ - [F,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType image/webp "access plus 30 days"
+  ExpiresByType text/css "access plus 7 days"
+  ExpiresByType application/javascript "access plus 7 days"
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json text/plain image/svg+xml
+</IfModule>

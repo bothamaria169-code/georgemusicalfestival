@@ -1,0 +1,20 @@
+# Server-only / secrets
+config/config.php
+storage/installed.lock
+storage/logs/*
+storage/draws/*
+uploads/media/*
+!storage/logs/.keep
+!storage/draws/.keep
+!uploads/media/.keep
+# Source material & local files (not part of the site)
+*.pdf
+/*.jpeg
+/*.jpg
+*.zip
+*.sql
+*.log
+gmf-deployment-guide.md
+.claude/
+Thumbs.db
+.DS_Store
