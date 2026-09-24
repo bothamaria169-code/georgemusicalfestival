@@ -16,6 +16,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_ok() && ($_POST['action'] ?? '
     redirect('flyfortwo/dashboard');
 }
 
+// Winner photo (shown on the live reveal screen and winner announcement if this entrant wins).
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_ok() && ($_POST['action'] ?? '') === 'photo') {
+    if (!empty($_POST['remove'])) {
+        if ($me['photo'] && str_starts_with($me['photo'], 'uploads/entrants/')) {
+            @unlink(APP_ROOT . '/' . $me['photo']);
+        }
+        q('UPDATE entrants SET photo = NULL WHERE id = ?', [$id]);
+        flash('success', 'Your photo was removed.');
+    } elseif (empty($_POST['photo_consent'])) {
+        flash('error', 'Please tick the box to agree to your photo being shown if you win.');
+    } elseif (!rate_limit('photo_upload', (string) $id, 10, 3600)) {
+        flash('error', 'Too many uploads — please try again later.');
+    } else {
+        $saved = save_entrant_photo($_FILES['photo'] ?? [], $id);
+        flash($saved ? 'success' : 'error', $saved ? 'Your photo is saved.' : 'That file could not be used. Please upload a JPG, PNG or WebP photo.');
+    }
+    redirect('flyfortwo/dashboard');
+}
+
 $count    = entry_count($id);
 $bd       = entry_breakdown($id);
 $stats    = referral_stats($id);
@@ -23,13 +42,10 @@ $link     = ref_link($me);
 $shareCap = (int) setting('share_bonus_cap');
 $refPer   = (int) setting('referral_entries_per_signup');
 $refCap   = (int) setting('referral_entry_cap');
-$leaders  = referral_leaderboard(10);
-$rank     = null;
-if ($stats['verified'] > 0) {
-    $rank = 1 + (int) q("SELECT COUNT(*) FROM (
-                SELECT referred_by, COUNT(*) c FROM entrants WHERE status = 'verified' AND referred_by IS NOT NULL GROUP BY referred_by
-              ) t WHERE t.c > ?", [$stats['verified']])->fetchColumn();
-}
+$leaders  = public_leaderboard(10);
+$rank     = leaderboard_rank($id);
+// The leader never sees "#1" — only admins know who is winning until the reveal.
+$rankLabel = $rank === null ? '—' : ($rank === 1 ? 'Top 10' : ($rank <= 10 ? '#' . $rank : '#' . $rank));
 $friends = q('SELECT full_name, town, status, created_at, verified_at FROM entrants WHERE referred_by = ? ORDER BY created_at DESC LIMIT 50', [$id])->fetchAll();
 $first   = explode(' ', $me['full_name'])[0];
 $prize   = (string) setting('prize_headline');
@@ -51,7 +67,7 @@ require __DIR__ . '/includes/header.php';
     <div>
       <span class="dash-status"><i class="fa-solid fa-circle-check"></i> Verified entrant · <?= e($me['ref_code']) ?></span>
       <h1 class="display huge" style="margin-top:18px;">Hey <?= e($first) ?>, <span class="serif-i">you're in.</span></h1>
-      <p class="lede" style="margin:16px 0 0;max-width:620px;color:var(--text-light-muted);">You have <strong style="color:var(--text-light)"><?= $count ?> entr<?= $count === 1 ? 'y' : 'ies' ?></strong> in the draw for <?= e($prize) ?>. Now spread the word — every friend you bring counts on the leaderboard.</p>
+      <p class="lede" style="margin:16px 0 0;max-width:620px;color:var(--text-light-muted);">Your score: <strong style="color:var(--text-light)"><?= $stats['clicks'] ?> link open<?= $stats['clicks'] === 1 ? '' : 's' ?></strong>. The person whose link is opened by the most people wins <?= e($prize) ?>, and the runner-up wins the second prize. Keep sharing!</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;">
         <a class="btn btn-orange" href="https://wa.me/?text=<?= rawurlencode($scripts['WhatsApp status']) ?>" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Share now</a>
         <a class="btn btn-ghost" href="<?= e(url('flyfortwo/logout')) ?>">Sign out</a>
@@ -70,10 +86,10 @@ require __DIR__ . '/includes/header.php';
 <section class="dash-main">
   <div class="wrap">
     <div class="stat-row" style="margin-bottom:22px;">
-      <div class="stat is-accent"><small>Entries in the draw</small><strong><?= $count ?></strong><span><?= $bd['base'] ?> entry<?= $bd['share_bonus'] ? ' + ' . $bd['share_bonus'] . ' share bonus' : '' ?><?= $bd['referral_bonus'] ? ' + ' . $bd['referral_bonus'] . ' referral' : '' ?></span></div>
-      <div class="stat"><small>Link opens</small><strong><?= $stats['clicks'] ?></strong><span>people opened your link</span></div>
-      <div class="stat"><small>Friends entered</small><strong><?= $stats['verified'] ?></strong><span><?= $stats['pending'] ? $stats['pending'] . ' still verifying' : 'verified entries' ?></span></div>
-      <div class="stat"><small>Leaderboard</small><strong><?= $rank ? '#' . $rank : '—' ?></strong><span><?= $rank ? 'your current rank' : 'bring one friend to rank' ?></span></div>
+      <div class="stat is-accent"><small>Your score</small><strong><?= $stats['clicks'] ?></strong><span>people opened your link</span></div>
+      <div class="stat"><small>Leaderboard</small><strong><?= e($rankLabel) ?></strong><span><?= $rank === null ? 'share your link to get on the board' : ($rank === 1 ? 'the leader stays secret until draw day' : 'your current position') ?></span></div>
+      <div class="stat"><small>Friends entered</small><strong><?= $stats['verified'] ?></strong><span><?= $stats['pending'] ? $stats['pending'] . ' still verifying' : 'through your link' ?></span></div>
+      <div class="stat"><small>Winner photo</small><strong><?= $me['photo'] ? '<i class="fa-solid fa-circle-check" style="color:var(--success)"></i>' : '—' ?></strong><span><?= $me['photo'] ? 'ready for the reveal' : 'add one below' ?></span></div>
     </div>
 
     <div class="dash-grid">
@@ -81,7 +97,7 @@ require __DIR__ . '/includes/header.php';
         <!-- Share link -->
         <div class="panel">
           <h2>Your personal link</h2>
-          <p class="panel-sub">Everyone who opens this link is tracked to you. <?php if ($shareCap > 0): ?>The first friend to open it earns you a bonus entry.<?php endif; ?></p>
+          <p class="panel-sub">Every different person who opens this link adds 1 to your score. Opening it yourself doesn't count. The top referrer wins <?= e($prize) ?>.</p>
           <div class="ref-box">
             <input id="refLink" value="<?= e($link) ?>" readonly aria-label="Your personal link">
             <button class="btn btn-dark btn-sm" type="button" data-copy-target="refLink"><i class="fa-regular fa-copy"></i> Copy</button>
@@ -119,20 +135,22 @@ require __DIR__ . '/includes/header.php';
           <?php endforeach; ?>
         </div>
 
-        <!-- Bonus progress -->
-        <div class="panel">
-          <h2>Bonus entries</h2>
-          <?php if ($shareCap > 0): ?>
-            <p class="panel-sub" style="margin-bottom:4px;">Share bonus — earned when a friend opens your link</p>
-            <div class="progress-bar"><span style="width:<?= min(100, $bd['share_bonus'] / $shareCap * 100) ?>%"></span></div>
-            <small class="muted"><?= $bd['share_bonus'] ?> of <?= $shareCap ?> earned</small>
+        <!-- Winner photo -->
+        <div class="panel" id="photo">
+          <h2>Your winner photo</h2>
+          <p class="panel-sub">If you win, this photo appears on the big screen when the winner is revealed and in the winner announcement. It's optional, and you can remove it at any time.</p>
+          <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+            <div class="photo-preview"><?php if ($me['photo']): ?><img src="<?= e(media_url($me['photo'])) ?>" alt="Your photo"><?php else: ?><i class="fa-regular fa-user"></i><?php endif; ?></div>
+            <form method="post" enctype="multipart/form-data" style="flex:1;min-width:220px;" id="photoForm">
+              <?= csrf_field() ?><input type="hidden" name="action" value="photo">
+              <input type="file" name="photo" accept="image/jpeg,image/png,image/webp" required id="photoInput" class="input" style="padding:10px">
+              <label class="check"><input type="checkbox" name="photo_consent" value="1" required> I agree that this photo, my first name, surname initial and town may be shown publicly if I win.</label>
+              <button class="btn btn-dark btn-sm" type="submit"><i class="fa-solid fa-upload"></i> <?= $me['photo'] ? 'Replace photo' : 'Upload photo' ?></button>
+            </form>
+          </div>
+          <?php if ($me['photo']): ?>
+          <form method="post" style="margin-top:10px;"><?= csrf_field() ?><input type="hidden" name="action" value="photo"><input type="hidden" name="remove" value="1"><button class="btn btn-outline-dark btn-sm" type="submit">Remove my photo</button></form>
           <?php endif; ?>
-          <?php if ($refPer > 0 && $refCap > 0): ?>
-            <p class="panel-sub" style="margin:18px 0 4px;">Referral entries — one per friend who verifies their entry</p>
-            <div class="progress-bar"><span style="width:<?= min(100, $bd['referral_bonus'] / $refCap * 100) ?>%"></span></div>
-            <small class="muted"><?= $bd['referral_bonus'] ?> of <?= $refCap ?> earned</small>
-          <?php endif; ?>
-          <p class="muted" style="font-size:.86rem;margin:16px 0 0;"><?= e(setting('referral_reward_text')) ?></p>
         </div>
 
         <!-- Friends -->
@@ -161,15 +179,15 @@ require __DIR__ . '/includes/header.php';
 
         <div class="panel">
           <h2>Leaderboard</h2>
-          <p class="panel-sub">Most friends entered</p>
+          <p class="panel-sub">Top 10 by link opens. The leader is kept secret until draw day.</p>
           <?php if ($leaders): ?>
             <ol class="ff-leaders">
-              <?php foreach ($leaders as $i => $l): ?>
-                <li class="<?= (int) $l['id'] === $id ? 'is-me' : '' ?>"><span class="rank"><?= $i + 1 ?></span><span class="who"><?= (int) $l['id'] === $id ? 'You' : e(short_name($l['full_name'])) ?><?php if ($l['town']): ?><small><?= e($l['town']) ?></small><?php endif; ?></span><span class="score"><?= (int) $l['referrals'] ?></span></li>
+              <?php foreach ($leaders as $l): $isMe = !$l['hidden'] && $l['id'] === $id; ?>
+                <li class="<?= $isMe ? 'is-me' : '' ?><?= $l['hidden'] ? ' is-hidden' : '' ?>"><span class="rank"><?= $l['hidden'] ? '<i class="fa-solid fa-lock"></i>' : $l['rank'] ?></span><span class="who"><?= $isMe ? 'You' : e($l['name']) ?><?php if ($l['town']): ?><small><?= e($l['town']) ?></small><?php endif; ?></span><span class="score"><?= $l['hidden'] ? '?' : (int) $l['clicks'] ?></span></li>
               <?php endforeach; ?>
             </ol>
           <?php else: ?>
-            <p class="muted" style="margin:0;">Nobody's on the board yet — your first referral puts you at #1.</p>
+            <p class="muted" style="margin:0;">Nobody's on the board yet — share your link and be the first.</p>
           <?php endif; ?>
         </div>
 
@@ -226,6 +244,19 @@ require __DIR__ . '/includes/header.php';
   if (ns) ns.addEventListener('click', function () {
     if (navigator.share) navigator.share({ title: 'FLY FOR TWO', text: ns.dataset.text, url: ns.dataset.url }).catch(function () {});
     else copyText(ns.dataset.text).then(function () { toast('Message copied — paste it anywhere'); });
+  });
+  // Shrink big phone photos in the browser before upload (max 1400px, JPEG).
+  var pin = document.getElementById('photoInput');
+  if (pin && window.DataTransfer) pin.addEventListener('change', function () {
+    var f = pin.files[0]; if (!f || !/^image\//.test(f.type) || f.size < 1500000) return;
+    var img = new Image(), url = URL.createObjectURL(f);
+    img.onload = function () {
+      var k = Math.min(1, 1400 / Math.max(img.width, img.height)), c = document.createElement('canvas');
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      c.toBlob(function (b) { var dt = new DataTransfer(); dt.items.add(new File([b], 'photo.jpg', { type: 'image/jpeg' })); pin.files = dt.files; URL.revokeObjectURL(url); }, 'image/jpeg', 0.86);
+    };
+    img.src = url;
   });
   var box = document.getElementById('qr');
   if (box && window.QRCode) {

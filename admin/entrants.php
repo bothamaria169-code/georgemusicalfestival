@@ -17,6 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAdmin && csrf_ok()) {
         audit('entrant.reinstate', ['id' => $id]);
         flash('success', 'Entrant reinstated.');
     }
+    if (($_POST['action'] ?? '') === 'photo') {
+        $saved = save_entrant_photo($_FILES['photo'] ?? [], $id);
+        audit('entrant.photo', ['id' => $id, 'ok' => (bool) $saved]);
+        flash($saved ? 'success' : 'error', $saved ? 'Photo saved — it will show on the winner reveal.' : 'That file could not be used (JPG, PNG or WebP only).');
+    }
     redirect('admin/entrants.php?' . http_build_query(array_diff_key($_GET, ['page' => 1])));
 }
 
@@ -49,7 +54,7 @@ if ($search !== '') {
 }
 $w = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 
-$select = "SELECT p.*, (SELECT COUNT(*) FROM entries e WHERE e.entrant_id = p.id) AS entries,
+$select = "SELECT p.*, (SELECT COUNT(*) FROM referral_clicks c WHERE c.referrer_id = p.id) AS entries,
                   (SELECT COUNT(*) FROM entrants x WHERE x.referred_by = p.id AND x.status = 'verified') AS referrals,
                   (SELECT COUNT(*) FROM entrants d WHERE d.device_fp = p.device_fp AND d.status = 'verified') AS same_device,
                   r.full_name AS referrer_name
@@ -60,7 +65,7 @@ if (isset($_GET['export'])) {
     $rows = q($select . ' ORDER BY p.id', $params);
     csv_download('flyfortwo-entrants-' . date('Ymd-His') . '.csv',
         ['ID', 'Full name', 'Email', 'Phone', 'Town', 'Travel profile', 'Terms consent', 'Marketing consent', 'Consent at', 'Status', 'Verified at', 'Verified via',
-         'Channel', 'Activation point', 'Source town', 'Time slot', 'UTM source', 'UTM medium', 'UTM campaign', 'Referral code', 'Referred by', 'Entries', 'Friends referred', 'Created at'],
+         'Channel', 'Activation point', 'Source town', 'Time slot', 'UTM source', 'UTM medium', 'UTM campaign', 'Referral code', 'Referred by', 'Link opens', 'Friends referred', 'Created at'],
         (function () use ($rows) {
             foreach ($rows as $p) {
                 yield [$p['id'], $p['full_name'], $p['email'], display_phone($p['phone']), $p['town'], $p['fly_frequency'], $p['consent_terms'] ? 'yes' : 'no',
@@ -93,12 +98,12 @@ admin_head('Entrants', 'entrants');
 
 <div class="card">
   <div class="t-wrap"><table class="t">
-    <thead><tr><th>#</th><th>Entrant</th><th>Contact</th><th>Town</th><th>Channel / source</th><th>Consent</th><th class="num">Entries</th><th class="num">Friends</th><th>Status</th><?php if ($isAdmin): ?><th></th><?php endif; ?></tr></thead>
+    <thead><tr><th>#</th><th>Entrant</th><th>Contact</th><th>Town</th><th>Channel / source</th><th>Consent</th><th class="num">Link opens</th><th class="num">Friends</th><th>Status</th><?php if ($isAdmin): ?><th></th><?php endif; ?></tr></thead>
     <tbody>
     <?php foreach ($rows as $p): ?>
       <tr>
         <td class="muted"><?= (int) $p['id'] ?></td>
-        <td><strong><?= e($p['full_name']) ?></strong><br><small class="muted"><?= e($p['ref_code']) ?><?= $p['referrer_name'] ? ' · via ' . e(short_name($p['referrer_name'])) : '' ?></small></td>
+        <td><?php if ($p['photo']): ?><img src="<?= e(media_url($p['photo'])) ?>" alt="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;float:left;margin-right:8px"><?php endif; ?><strong><?= e($p['full_name']) ?></strong><br><small class="muted"><?= e($p['ref_code']) ?><?= $p['referrer_name'] ? ' · via ' . e(short_name($p['referrer_name'])) : '' ?></small></td>
         <td><?= e($p['email'] ?: '—') ?><br><small class="muted"><?= e(display_phone($p['phone'])) ?></small></td>
         <td><?= e($p['town'] ?: '—') ?><br><small class="muted"><?= e($p['fly_frequency']) ?></small></td>
         <td><span class="pill pill-info"><?= e($p['channel']) ?></span><br><small class="muted"><?= e(trim(($p['activation_point'] ?? '') . ' ' . ($p['time_slot'] ? '· ' . $p['time_slot'] : ''))) ?></small></td>
@@ -114,6 +119,7 @@ admin_head('Entrants', 'entrants');
         <td>
           <?php if ($p['status'] === 'verified'): ?>
             <form method="post" onsubmit="var n=prompt('Reason for disqualification (logged):');if(!n)return false;this.note.value=n;"><?= csrf_field() ?><input type="hidden" name="id" value="<?= (int) $p['id'] ?>"><input type="hidden" name="action" value="disqualify"><input type="hidden" name="note"><button class="btn btn-sm btn-danger" type="submit" title="Disqualify"><i class="fa-solid fa-ban"></i></button></form>
+            <form method="post" enctype="multipart/form-data" style="margin-top:6px"><?= csrf_field() ?><input type="hidden" name="id" value="<?= (int) $p['id'] ?>"><input type="hidden" name="action" value="photo"><label class="btn btn-sm" title="Upload a winner photo for this entrant" style="cursor:pointer"><i class="fa-solid fa-camera"></i><input type="file" name="photo" accept="image/jpeg,image/png,image/webp" hidden onchange="this.form.submit()"></label></form>
           <?php elseif ($p['status'] === 'disqualified'): ?>
             <form method="post"><?= csrf_field() ?><input type="hidden" name="id" value="<?= (int) $p['id'] ?>"><input type="hidden" name="action" value="reinstate"><button class="btn btn-sm btn-ok" type="submit" title="Reinstate"><i class="fa-solid fa-rotate-left"></i></button></form>
           <?php endif; ?>

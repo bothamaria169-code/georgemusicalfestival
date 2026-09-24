@@ -1,6 +1,6 @@
 <?php
-/** Boarding-pass confirmation for a signed-in entrant. Expects $me and $count. */
-$bd = entry_breakdown((int) $me['id']);
+/** Boarding-pass confirmation for a signed-in entrant. Expects $me. Shows their leaderboard score. */
+$score = referral_stats((int) $me['id'])['clicks'];
 ?>
 <div class="pass">
   <div class="pass-top"><span class="pass-brand"><?= e(setting('comp_name')) ?></span><span class="pass-tag">GMF × ACSA</span></div>
@@ -14,10 +14,8 @@ $bd = entry_breakdown((int) $me['id']);
   </div>
   <div class="pass-divider"></div>
   <div class="pass-bottom">
-    <div class="pass-entries"><span class="num"><?= $count ?></span><span>entr<?= $count === 1 ? 'y' : 'ies' ?> confirmed</span></div>
+    <div class="pass-entries"><span class="num"><?= $score ?></span><span>link open<?= $score === 1 ? '' : 's' ?> · your score</span></div>
     <div class="pass-barcode" aria-hidden="true"></div>
   </div>
-  <?php if ((int) setting('share_bonus_cap') > 0): ?>
-  <div class="pass-foot"><?= $bd['share_bonus'] > 0 ? '<i class="fa-solid fa-circle-check"></i> Share bonus earned' : '<i class="fa-regular fa-clock"></i> Share bonus: unlocks when a friend opens your link' ?></div>
-  <?php endif; ?>
+  <div class="pass-foot"><i class="fa-solid fa-circle-check"></i> Entry confirmed · the most link opens wins</div>
 </div>

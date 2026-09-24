@@ -21,3 +21,5 @@ Thumbs.db
 gmf-deploy-steps.md
 !database/schema.sql
 _source/
+uploads/entrants/*
+!uploads/entrants/.keep

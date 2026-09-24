@@ -598,3 +598,15 @@ button { font: inherit; }
 .moyeni-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 22px; }
 .moyeni-photos img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: center 20%; border-radius: 14px; }
 @media (max-width: 900px) { .moyeni-grid { grid-template-columns: 1fr; } }
+
+/* LIVE activity ticker: new entrants and referrals */
+.live-ticker { display: flex; align-items: stretch; background: var(--navy); color: var(--text-light); border-bottom: 1px solid var(--line-dark); font-size: .88rem; }
+.live-badge { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--orange); color: #2a1402; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; font-size: .72rem; flex-shrink: 0; z-index: 1; }
+.live-dot { width: 8px; height: 8px; border-radius: 50%; background: #c0180c; animation: blink 1.2s infinite; }
+.live-window { overflow: hidden; flex: 1; display: flex; align-items: center; }
+.live-track { display: flex; width: max-content; animation: marquee 60s linear infinite; }
+.live-item { display: inline-flex; align-items: center; gap: 8px; padding: 0 28px; white-space: nowrap; font-weight: 600; }
+.live-item i { color: var(--orange); }
+.live-item.is-referral i { color: var(--teal-2); }
+.live-ticker:hover .live-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .live-track { animation: none; } }

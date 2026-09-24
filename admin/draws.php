@@ -19,19 +19,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAdmin && csrf_ok()) {
     redirect('admin/draws.php');
 }
 
-$draws = q('SELECT * FROM draws ORDER BY scheduled_for, id')->fetchAll();
-$pool = (int) q("SELECT COUNT(*) FROM entries e JOIN entrants p ON p.id = e.entrant_id WHERE p.status = 'verified'")->fetchColumn();
-$poolPeople = (int) q("SELECT COUNT(*) FROM entrants WHERE status = 'verified'")->fetchColumn();
+$draws = q("SELECT * FROM draws ORDER BY FIELD(draw_key, 'final', 'event_day'), id")->fetchAll();
+$board = leaderboard_scores(null, 25);
+$people = (int) q("SELECT COUNT(*) FROM entrants WHERE status = 'verified'")->fetchColumn();
 
 admin_head('Draws', 'draws');
 ?>
 <div class="card" style="margin-bottom:16px;">
-  <div class="toolbar" style="margin:0">
-    <div class="grow">
-      <h3 style="margin:0">Current pool: <?= number_format($pool) ?> entries · <?= number_format($poolPeople) ?> verified entrants</h3>
-      <p class="muted" style="margin:4px 0 0">Every run is random, automated and logged with a seed and pool hash so it can be independently re-computed. A redraw only happens after the previous winner is marked ineligible, with a recorded reason.</p>
-    </div>
-  </div>
+  <h2>Live leaderboard — admins only <span class="muted" style="letter-spacing:0;text-transform:none;font-weight:600"><?= number_format($people) ?> verified entrants · the public sees the top 10 with #1 hidden</span></h2>
+  <p class="muted" style="margin-top:0">Score = link opens: unique visitors who opened the entrant's personal link while entries were open (own devices never count; one network adds at most 3 opens per person per day). Ties go to more friends entered, then whoever got there first. 1st place wins the Grand Prize, the next eligible person the Second Prize.</p>
+  <div class="t-wrap"><table class="t">
+    <thead><tr><th>#</th><th>Entrant</th><th>Contact</th><th class="num">Link opens</th><th class="num">Networks</th><th class="num">Friends entered</th><th>Last open</th><th></th></tr></thead>
+    <tbody>
+    <?php foreach ($board as $i => $r):
+        $suspicious = (int) $r['clicks'] >= 10 && (int) $r['networks'] / max(1, (int) $r['clicks']) < 0.3; ?>
+      <tr>
+        <td><strong style="font-family:var(--f-d);font-size:1.2rem;<?= $i < 2 ? 'color:var(--orange)' : '' ?>"><?= $i + 1 ?></strong></td>
+        <td style="display:flex;gap:10px;align-items:center"><?php if ($r['photo']): ?><img src="<?= e(media_url($r['photo'])) ?>" alt="" style="width:34px;height:34px;border-radius:50%;object-fit:cover"><?php endif; ?><span><strong><?= e($r['full_name']) ?></strong><br><small class="muted"><?= e($r['town'] ?: '—') ?> · <?= e($r['ref_code']) ?></small></span></td>
+        <td><?= e($r['email'] ?: '—') ?><br><small class="muted"><?= e(display_phone($r['phone'])) ?></small></td>
+        <td class="num"><strong><?= (int) $r['clicks'] ?></strong></td>
+        <td class="num"><?= (int) $r['networks'] ?></td>
+        <td class="num"><?= (int) $r['referrals'] ?></td>
+        <td class="muted"><?= e(fmt_date($r['last_click'], 'j M H:i')) ?></td>
+        <td><?php if ($suspicious): ?><span class="pill pill-warn" title="Most opens came from very few networks — check before confirming as a winner">Check</span><?php endif; ?><?php if (!$r['photo']): ?> <span class="pill pill-muted" title="No photo yet — upload one under Entrants">No photo</span><?php endif; ?></td>
+      </tr>
+    <?php endforeach; ?>
+    <?php if (!$board): ?><tr><td colspan="8" class="muted">No link opens yet. The leaderboard fills as entrants share their links.</td></tr><?php endif; ?>
+    </tbody>
+  </table></div>
 </div>
 
 <div class="grid g-2">
@@ -40,7 +55,7 @@ admin_head('Draws', 'draws');
     <h2><?= e($d['title']) ?>
       <span class="pill <?= ['scheduled' => 'pill-muted', 'drawn' => 'pill-warn', 'confirmed' => 'pill-ok', 'published' => 'pill-info'][$d['status']] ?>"><?= e($d['status']) ?></span>
     </h2>
-    <p style="margin:0 0 12px"><strong><?= e(fmt_date($d['scheduled_for'], 'l, j F Y')) ?></strong><br><span class="muted"><?= nl2br(e($d['prize_description'] ?: 'Prize to be confirmed')) ?></span></p>
+    <p style="margin:0 0 12px"><span class="pill pill-info"><?= $d['draw_key'] === 'final' ? '1st place on the leaderboard' : '2nd place (next eligible after the Grand Prize winner)' ?></span><br><strong><?= e(fmt_date($d['scheduled_for'], 'l, j F Y')) ?></strong><br><span class="muted"><?= nl2br(e($d['prize_description'] ?: 'Prize to be confirmed')) ?></span></p>
 
     <?php if ($last): ?>
       <div class="winner-box" style="margin-bottom:12px">
@@ -52,7 +67,7 @@ admin_head('Draws', 'draws');
     <?php endif; ?>
 
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
-      <?php if ($isAdmin): ?><a class="btn btn-primary" href="draw-live.php?draw=<?= (int) $d['id'] ?>" target="_blank"><i class="fa-solid fa-display"></i> Live draw screen</a><?php endif; ?>
+      <?php if ($isAdmin): ?><a class="btn btn-primary" href="draw-live.php?draw=<?= (int) $d['id'] ?>" target="_blank"><i class="fa-solid fa-display"></i> Live reveal screen</a><?php endif; ?>
       <?php if ($runs): ?>
         <a class="btn" href="draw-log.php?draw=<?= (int) $d['id'] ?>" target="_blank"><i class="fa-solid fa-file-signature"></i> Certification log</a>
         <a class="btn" href="draw-log.php?draw=<?= (int) $d['id'] ?>&format=csv"><i class="fa-solid fa-file-csv"></i> CSV</a>
@@ -64,13 +79,13 @@ admin_head('Draws', 'draws');
 
     <?php if ($runs): ?>
       <div class="t-wrap"><table class="t">
-        <thead><tr><th>Run</th><th>Time</th><th class="num">Pool</th><th>Selected</th><th>Outcome</th></tr></thead>
+        <thead><tr><th>Run</th><th>Time</th><th class="num">Place · opens</th><th>Selected</th><th>Outcome</th></tr></thead>
         <tbody>
         <?php foreach ($runs as $r): ?>
           <tr>
             <td><?= (int) $r['run_no'] ?><?= $r['is_redraw'] ? ' <span class="pill pill-warn">redraw</span>' : '' ?></td>
             <td class="muted"><?= e(fmt_date($r['created_at'], 'j M H:i:s')) ?></td>
-            <td class="num"><?= number_format((int) $r['pool_entries']) ?></td>
+            <td class="num">#<?= (int) $r['selected_index'] + 1 ?> · <?= (int) $r['selected_entry_id'] ?></td>
             <td><?= e($r['full_name']) ?></td>
             <td><?= e($r['outcome']) ?><?= $r['outcome_note'] ? '<br><small class="muted">' . e($r['outcome_note']) . '</small>' : '' ?></td>
           </tr>

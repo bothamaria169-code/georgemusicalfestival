@@ -66,7 +66,7 @@ require __DIR__ . '/includes/header.php';
       <img class="moyeni-logo reveal" src="<?= e(url('assets/img/brand/acsa-teal-lg.png')) ?>" width="900" height="439" alt="Airports Company South Africa" loading="lazy">
       <span class="kicker reveal" style="color:var(--orange-deep);margin-top:18px;">Meet Moyeni</span>
       <h2 class="display big reveal" style="margin-top:12px;color:var(--navy-2);">ACSA's mascot is flying <span class="serif-i" style="color:var(--orange-deep)">to George.</span></h2>
-      <p class="reveal" style="color:var(--text-muted);margin:14px 0 0;">Find Moyeni and the Airports Company South Africa team at the ACSA Experience at <?= e($eventName) ?> — enter FLY FOR TWO on the spot and watch the Event-Day Draw live.</p>
+      <p class="reveal" style="color:var(--text-muted);margin:14px 0 0;">Find Moyeni and the Airports Company South Africa team at the ACSA Experience at <?= e($eventName) ?> — enter FLY FOR TWO on the spot and get sharing.</p>
       <div class="moyeni-photos reveal">
         <img src="<?= e(url('assets/img/acsa/moyeni-with-young-fan.jpg')) ?>" alt="A young fan with Moyeni at an ACSA stand" loading="lazy">
         <img src="<?= e(url('assets/img/acsa/moyeni-dancing.jpg')) ?>" alt="Moyeni dancing at an ACSA event" loading="lazy">
@@ -80,7 +80,7 @@ require __DIR__ . '/includes/header.php';
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
     <?php for ($i = 0; $i < 2; $i++): ?>
-      <span>Win a trip for two</span><span>Enter free</span><span>Share for a bonus entry</span><span>Draws <?= e(fmt_date($eventDraw['scheduled_for'] ?? null, 'j M')) ?> &amp; <?= e(fmt_date($finalDraw['scheduled_for'] ?? null, 'j M')) ?></span><span><?= e($eventName) ?></span>
+      <span>Win a trip for two</span><span>Enter free</span><span>Most link opens wins</span><span>Winners revealed <?= e(fmt_date($finalDraw['scheduled_for'] ?? null, 'j M')) ?></span><span><?= e($eventName) ?></span>
     <?php endfor; ?>
   </div>
 </div>
@@ -91,7 +91,7 @@ require __DIR__ . '/includes/header.php';
     <div class="enter-copy">
       <span class="kicker reveal">FLY FOR TWO · Enter here</span>
       <h2 class="display big reveal" style="margin-top:18px;">Enter in under a <span class="serif-i text-orange">minute.</span></h2>
-      <p class="lede reveal" style="margin-top:18px;">Fill in your details, tap the button in the email we send you, and you're in the draw.<?php if ($shareCap > 0): ?> Share your personal link and the first friend who opens it earns you a <strong>bonus entry</strong>.<?php endif; ?></p>
+      <p class="lede reveal" style="margin-top:18px;">Fill in your details and tap the button in the email we send you. Then share your personal link: <strong>the person whose link is opened by the most people wins</strong>, and the runner-up wins the second prize.</p>
       <div class="ff-prize reveal" style="margin-top:26px;">
         <div class="ff-prize-label">What you win</div>
         <div class="ff-prize-title"><?= e(setting('prize_headline')) ?></div>
@@ -100,10 +100,7 @@ require __DIR__ . '/includes/header.php';
         </ul>
         <i class="fa-solid fa-plane ff-prize-plane" aria-hidden="true"></i>
       </div>
-      <div class="draw-dates reveal">
-        <div class="draw-date"><small>Event-Day Draw</small><strong><?= e(fmt_date($eventDraw['scheduled_for'] ?? null, 'j M')) ?></strong><span><?= e(prize_lines($eventDraw)[0] ?? 'Prize to be announced') ?></span></div>
-        <div class="draw-date"><small>Final Draw</small><strong><?= e(fmt_date($finalDraw['scheduled_for'] ?? null, 'j M')) ?></strong><span>Entries close <?= e(fmt_date(setting('comp_close_at'), 'j M')) ?></span></div>
-      </div>
+      <?php $placesClass = 'reveal'; include __DIR__ . '/includes/prize-places.php'; ?>
       <p class="reveal" style="margin-top:22px;display:flex;gap:18px;flex-wrap:wrap;">
         <a class="text-link" href="<?= e(url('flyfortwo/how-to-enter')) ?>">How to enter, step by step <i class="fa-solid fa-arrow-right"></i></a>
         <a class="text-link" href="<?= e(url('flyfortwo/')) ?>">Full competition page <i class="fa-solid fa-arrow-right"></i></a>
@@ -121,7 +118,7 @@ require __DIR__ . '/includes/header.php';
     <div class="ff-steps">
       <div class="ff-step reveal"><span class="n">01</span><h3>Enter</h3><p>Name, cellphone, email and one quick travel question. Free, and one entry per person.</p></div>
       <div class="ff-step reveal reveal-d1"><span class="n">02</span><h3>Confirm</h3><p>Tap <strong>Confirm my entry</strong> in the email we send, or type the 6-digit code. Only confirmed entries go into the draw.</p></div>
-      <div class="ff-step reveal reveal-d2"><span class="n">03</span><h3>Share</h3><p><?= $shareCap > 0 ? 'Send your personal link on WhatsApp. The first friend who opens it earns you a bonus entry.' : 'Send your personal link on WhatsApp and climb the leaderboard.' ?></p></div>
+      <div class="ff-step reveal reveal-d2"><span class="n">03</span><h3>Share</h3><p>Send your personal link on WhatsApp and everywhere else. Every different person who opens it adds 1 to your score — the top two scores win.</p></div>
     </div>
     <p class="reveal" style="text-align:center;margin:34px 0 0;"><a class="btn btn-outline-dark" href="<?= e(url('flyfortwo/how-to-enter')) ?>">Read the full how-to-enter guide</a></p>
   </div>
@@ -135,7 +132,7 @@ require __DIR__ . '/includes/header.php';
       <span class="kicker reveal" style="margin-top:26px;">ACSA × GMF</span>
       <h2 class="display big reveal" style="margin-top:16px;">Getting the <span class="serif-i text-orange">unflown</span> flying.</h2>
       <p class="lede reveal" style="margin-top:18px;">For many people on the Garden Route, flying still feels out of reach. Together with Airports Company South Africa, George Music Festival is changing that — one weekend getaway, one first flight, one new journey at a time.</p>
-      <p class="muted reveal">At <?= e($eventName) ?>, the ACSA Experience brings airports closer: meet Moyeni, the ACSA mascot, talk to the airport team about travel and careers, and watch the Event-Day Draw live on the day.</p>
+      <p class="muted reveal">At <?= e($eventName) ?>, the ACSA Experience brings airports closer: meet Moyeni, the ACSA mascot, talk to the airport team about travel and careers, and find out how to climb the FLY FOR TWO leaderboard.</p>
     </div>
     <div class="acsa-collage reveal reveal-d2">
       <img class="c-a" src="<?= e(url('assets/img/acsa/or-tambo-building.jpg')) ?>" alt="Airports Company South Africa building at O.R. Tambo" loading="lazy">
@@ -202,7 +199,7 @@ require __DIR__ . '/includes/header.php';
       </article>
       <article class="exp-card reveal reveal-d2">
         <img src="<?= e(url('assets/img/acsa/moyeni-with-young-fan.jpg')) ?>" alt="A young fan with Moyeni, the ACSA mascot" loading="lazy">
-        <div class="exp-body"><span class="exp-n">03</span><h3>The ACSA Experience</h3><p>Meet Moyeni, discover what flying is really like, enter FLY FOR TWO on the spot and see the Event-Day Draw live.</p></div>
+        <div class="exp-body"><span class="exp-n">03</span><h3>The ACSA Experience</h3><p>Meet Moyeni, discover what flying is really like, enter FLY FOR TWO on the spot and share your link for a place on the leaderboard.</p></div>
       </article>
       <article class="exp-card reveal reveal-d3">
         <img src="<?= e(url('assets/img/acsa/acsa-team-kerbside.jpg')) ?>" alt="The ACSA airport team" loading="lazy">

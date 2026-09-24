@@ -13,7 +13,7 @@ $eventDay = draw_by_key('event_day');
 $prizes   = prize_lines($final);
 $towns    = lines((string) setting('towns'));
 $flyOpts  = lines((string) setting('travel_options'));
-$leaders  = referral_leaderboard(10);
+$leaders  = public_leaderboard(10);
 $shareCap = (int) setting('share_bonus_cap');
 $winners  = q("SELECT d.title, d.prize_description, p.full_name, p.town
                FROM draws d
@@ -62,10 +62,7 @@ require __DIR__ . '/includes/header.php';
         </ul>
         <i class="fa-solid fa-plane ff-prize-plane" aria-hidden="true"></i>
       </div>
-      <div class="draw-dates">
-        <div class="draw-date"><small>Event-Day Draw</small><strong><?= e(fmt_date($eventDay['scheduled_for'] ?? null, 'j M')) ?></strong><span><?= e(prize_lines($eventDay)[0] ?? 'Prize to be announced') ?></span></div>
-        <div class="draw-date"><small>Final Draw</small><strong><?= e(fmt_date($final['scheduled_for'] ?? null, 'j M')) ?></strong><span>Entries close <?= e(fmt_date(setting('comp_close_at'), 'j M')) ?></span></div>
-      </div>
+      <?php $placesClass = ''; include __DIR__ . '/includes/prize-places.php'; ?>
       <figure class="moyeni-render ff-moyeni"><img src="<?= e(url('assets/img/acsa/moyeni-3d.jpg')) ?>" width="1127" height="754" alt="Moyeni, the Airports Company South Africa mascot" loading="lazy"></figure>
     </div>
   </div>
@@ -79,7 +76,7 @@ require __DIR__ . '/includes/header.php';
     <div class="ff-steps">
       <div class="ff-step reveal"><span class="n">01</span><h3>Enter</h3><p>Your name, cellphone, email and one quick travel question. Scan a GMF QR code or enter right here.</p></div>
       <div class="ff-step reveal reveal-d1"><span class="n">02</span><h3>Verify</h3><p>We email you a 6-digit code. Your entry only counts once it's confirmed — one per phone number.</p></div>
-      <div class="ff-step reveal reveal-d2"><span class="n">03</span><h3>Share</h3><p>Send your personal link on WhatsApp. <?= $shareCap > 0 ? 'The first friend who opens it earns you a bonus entry.' : 'Track every friend who joins on your dashboard.' ?> Climb the leaderboard.</p></div>
+      <div class="ff-step reveal reveal-d2"><span class="n">03</span><h3>Share</h3><p>Send your personal link on WhatsApp and everywhere else. Every different person who opens it adds 1 to your score. The top score wins the Grand Prize, the runner-up the Second Prize.</p></div>
     </div>
   </div>
 </section>
@@ -89,19 +86,19 @@ require __DIR__ . '/includes/header.php';
   <div class="wrap ff-lead-grid">
     <div>
       <span class="kicker reveal">Leaderboard</span>
-      <h2 class="display big reveal" style="margin-top:18px;">Top <span class="serif-i text-orange">ambassadors</span></h2>
-      <p class="muted reveal" style="margin-top:18px;max-width:440px;"><?= e(setting('referral_reward_text')) ?></p>
+      <h2 class="display big reveal" style="margin-top:18px;">The <span class="serif-i text-orange">leaderboard</span></h2>
+      <p class="muted reveal" style="margin-top:18px;max-width:440px;">Ranked by link opens — the number of different people who opened each entrant's personal link. <strong style="color:var(--text-light)">The leader is kept secret until the winners are revealed on <?= e(fmt_date($final['scheduled_for'] ?? null, 'j F')) ?>.</strong> <?= e(setting('referral_reward_text')) ?></p>
       <?php if ($me): ?><a class="btn btn-orange reveal" style="margin-top:22px" href="<?= e(url('flyfortwo/dashboard')) ?>">Get my link</a><?php endif; ?>
     </div>
     <div class="reveal reveal-d2">
       <?php if ($leaders): ?>
         <ol class="ff-leaders">
-          <?php foreach ($leaders as $i => $l): ?>
-            <li><span class="rank"><?= $i + 1 ?></span><span class="who"><?= e(short_name($l['full_name'])) ?><?php if ($l['town']): ?><small><?= e($l['town']) ?></small><?php endif; ?></span><span class="score"><?= (int) $l['referrals'] ?> <small>friend<?= (int) $l['referrals'] === 1 ? '' : 's' ?></small></span></li>
+          <?php foreach ($leaders as $l): ?>
+            <li class="<?= $l['hidden'] ? 'is-hidden' : '' ?>"><span class="rank"><?= $l['hidden'] ? '<i class="fa-solid fa-lock"></i>' : $l['rank'] ?></span><span class="who"><?= e($l['name']) ?><?php if ($l['town']): ?><small><?= e($l['town']) ?></small><?php endif; ?></span><span class="score"><?= $l['hidden'] ? '?' : (int) $l['clicks'] ?> <small>opens</small></span></li>
           <?php endforeach; ?>
         </ol>
       <?php else: ?>
-        <div class="ff-leaders-empty"><i class="fa-solid fa-trophy"></i><p>The board is empty — be the first name on it. Enter, share your link, and watch your friends roll in.</p></div>
+        <div class="ff-leaders-empty"><i class="fa-solid fa-trophy"></i><p>The board is empty — be the first name on it. Enter, share your link, and every person who opens it lifts you up the board.</p></div>
       <?php endif; ?>
     </div>
   </div>
@@ -123,9 +120,9 @@ require __DIR__ . '/includes/header.php';
     </div>
     <div class="ff-faq reveal">
       <details open><summary>Who can enter?</summary><p>South African residents aged 18 and over. Entry is free. Full rules are in the <a href="<?= e(url('flyfortwo/terms')) ?>">competition terms</a>.</p></details>
-      <details><summary>How many times can I enter?</summary><p>Once per phone number and email address. <?php if ($shareCap > 0): ?>You can earn <?= $shareCap === 1 ? 'one bonus entry' : $shareCap . ' bonus entries' ?> when friends open your personal share link.<?php endif; ?></p></details>
-      <details><summary>Why do I need a verification code?</summary><p>The code confirms that your email is real and that the entry is yours. Unverified entries are not included in the draw.</p></details>
-      <details><summary>When are the draws?</summary><p>The Event-Day Draw happens live on <?= e(fmt_date($eventDay['scheduled_for'] ?? null)) ?> at <?= e(setting('event_venue')) ?>. The Final Draw for <?= e(setting('prize_headline')) ?> takes place on <?= e(fmt_date($final['scheduled_for'] ?? null)) ?>.</p></details>
+      <details><summary>How many times can I enter?</summary><p>Once per phone number and email address. After that, your score grows each time a different person opens your personal link.</p></details>
+      <details><summary>Why do I need a verification code?</summary><p>The code confirms that your email is real and that the entry is yours. Unconfirmed entries aren't on the leaderboard and can't win.</p></details>
+      <details><summary>When are the winners revealed?</summary><p>Entries and link opens count until <?= e(fmt_date(setting('comp_close_at'), 'j F Y, H:i')) ?>. The winners are revealed on <?= e(fmt_date($final['scheduled_for'] ?? null, 'j F Y')) ?>: 1st place wins <?= e(setting('prize_headline')) ?> and 2nd place wins the Second Prize.</p></details>
       <details><summary>How is the winner chosen?</summary><p><?= e(setting('draw_reassurance')) ?></p></details>
       <details><summary>What happens to my information?</summary><p>Your details are used to run the competition and are owned by Airports Company South Africa. You'll only get marketing messages if you ticked the optional box. See the <a href="<?= e(url('flyfortwo/privacy')) ?>">privacy notice</a>.</p></details>
     </div>

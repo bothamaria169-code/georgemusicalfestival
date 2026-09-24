@@ -10,8 +10,10 @@ if (!$draw) {
 }
 $runs = draw_runs((int) $draw['id']);
 $last = end($runs) ?: null;
-$pool = (int) q("SELECT COUNT(*) FROM entries e JOIN entrants p ON p.id = e.entrant_id WHERE p.status = 'verified'")->fetchColumn();
-$people = (int) q("SELECT COUNT(*) FROM entrants WHERE status = 'verified'")->fetchColumn();
+$boardNow = leaderboard_scores();
+$pool = (int) array_sum(array_column($boardNow, 'clicks'));   // total link opens
+$people = count($boardNow);                                    // entrants on the leaderboard
+$lastPhoto = $last && $last['outcome'] !== 'disqualified' ? q('SELECT photo FROM entrants WHERE id = ?', [$last['selected_entrant_id']])->fetchColumn() : null;
 $prize = prize_lines($draw);
 ?><!DOCTYPE html>
 <html lang="en">
@@ -52,6 +54,8 @@ $prize = prize_lines($draw);
   .confetti { position: fixed; top: -20px; width: 10px; height: 16px; z-index: 5; animation: fall linear forwards; }
   @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
   .msg { color: #ff9c8a; font-weight: 700; margin-top: 14px; min-height: 1.4em; }
+  .photo { width: clamp(150px, 20vw, 260px); height: clamp(150px, 20vw, 260px); border-radius: 50%; object-fit: cover; border: 6px solid var(--o); box-shadow: 0 0 80px rgba(247,128,26,.45); margin: 6px auto 4px; display: block; animation: pop .8s cubic-bezier(.2,.8,.2,1.2); }
+  .count { font-family: Oswald; font-size: clamp(6rem, 18vw, 16rem); line-height: 1; color: var(--o); }
   .fs { position: fixed; top: 110px; right: 44px; font-size: .7rem; padding: 10px 14px; }
 </style>
 </head>
@@ -67,29 +71,30 @@ $prize = prize_lines($draw);
   <h1><?= e($draw['title']) ?></h1>
   <p class="prize"><?= e(implode(' · ', $prize) ?: 'Prize to be announced') ?></p>
 
+  <img class="photo <?= $lastPhoto ? '' : 'hidden' ?>" id="photo" src="<?= $lastPhoto ? e(media_url($lastPhoto)) : '' ?>" alt="">
   <div class="slot" id="slot"><?= $last && $last['outcome'] !== 'disqualified' ? e(short_name($last['full_name'])) : '— ? —' ?></div>
-  <div class="meta" id="meta"><?= $last && $last['outcome'] !== 'disqualified' ? e(mask_phone($last['phone']) . ($last['town'] ? ' · ' . $last['town'] : '')) : '' ?></div>
+  <div class="meta" id="meta"><?= $last && $last['outcome'] !== 'disqualified' ? e(($last['town'] ? $last['town'] . ' · ' : '') . (int) $last['selected_entry_id'] . ' link opens · Place #' . ((int) $last['selected_index'] + 1)) : '' ?></div>
 
   <div class="stats" id="stats">
-    <div>Entries in pool<strong id="poolEntries"><?= number_format($last ? (int) $last['pool_entries'] : $pool) ?></strong></div>
-    <div>Entrants<strong id="poolPeople"><?= number_format($last ? (int) $last['pool_entrants'] : $people) ?></strong></div>
+    <div>Link opens<strong id="poolEntries"><?= number_format($last ? (int) $last['pool_entries'] : $pool) ?></strong></div>
+    <div>On the leaderboard<strong id="poolPeople"><?= number_format($last ? (int) $last['pool_entrants'] : $people) ?></strong></div>
   </div>
 
   <div class="controls <?= $last && $last['outcome'] !== 'disqualified' ? 'hidden' : '' ?>" id="runControls">
     <input id="witness" placeholder="ACSA witness name (recorded in the log)">
-    <button class="go" id="runBtn"><i class="fa-solid fa-shuffle"></i> Run the draw</button>
+    <button class="go" id="runBtn"><i class="fa-solid fa-trophy"></i> Reveal the winner</button>
   </div>
   <div class="controls <?= $last && $last['outcome'] === 'selected' ? '' : 'hidden' ?>" id="outcomeControls">
     <button id="confirmBtn"><i class="fa-solid fa-circle-check"></i> Winner verified</button>
-    <button id="redrawBtn"><i class="fa-solid fa-rotate"></i> Winner ineligible — redraw</button>
+    <button id="redrawBtn"><i class="fa-solid fa-rotate"></i> Winner ineligible — next on the leaderboard</button>
   </div>
   <div class="msg" id="msg"></div>
 </main>
 <div class="audit" id="audit">
   <?php if ($last): ?>
-    <span>Run <b><?= (int) $last['run_no'] ?></b></span><span>Time <b><?= e($last['created_at']) ?></b></span><span>Pool hash <b><?= e(substr($last['pool_hash'], 0, 16)) ?>…</b></span><span>Seed <b><?= e(substr($last['random_proof'], 0, 16)) ?>…</b></span><span>Index <b><?= (int) $last['selected_index'] ?></b></span>
+    <span>Run <b><?= (int) $last['run_no'] ?></b></span><span>Time <b><?= e($last['created_at']) ?></b></span><span>Leaderboard snapshot <b><?= e(substr($last['pool_hash'], 0, 16)) ?>…</b></span><span>Place <b>#<?= (int) $last['selected_index'] + 1 ?></b></span>
   <?php else: ?>
-    <span>Automated random selection · every run logged for independent certification</span>
+    <span>Winner = most link opens at the cut-off · every reveal is logged with a snapshot of the leaderboard</span>
   <?php endif; ?>
 </div>
 
@@ -97,6 +102,7 @@ $prize = prize_lines($draw);
 (function () {
   var CSRF = <?= json_encode(csrf_token()) ?>, DRAW = <?= (int) $draw['id'] ?>;
   var runId = <?= $last ? (int) $last['id'] : 'null' ?>;
+  var photo = document.getElementById('photo');
   var slot = document.getElementById('slot'), meta = document.getElementById('meta'), msg = document.getElementById('msg');
   var runControls = document.getElementById('runControls'), outcomeControls = document.getElementById('outcomeControls');
   <?php if ($last && $last['outcome'] !== 'disqualified'): ?>runControls.classList.add('hidden');<?php endif; ?>
@@ -108,17 +114,14 @@ $prize = prize_lines($draw);
   }
   function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
-  function shuffle(names) {
-    slot.className = 'slot spin'; meta.textContent = '';
-    var i = 0, delay = 45, total = 0;
+  function countdown() {
+    slot.className = 'slot'; meta.textContent = ''; photo.classList.add('hidden');
     return new Promise(function (resolve) {
+      var n = 3;
       (function step() {
-        var n = names[i++ % names.length];
-        slot.textContent = n.name; meta.textContent = n.town;
-        total += delay;
-        if (total > 2600) delay *= 1.12;
-        if (delay > 420) return resolve();
-        setTimeout(step, delay);
+        if (n === 0) return resolve();
+        slot.innerHTML = '<span class="count">' + n + '</span>'; n--;
+        setTimeout(step, 900);
       })();
     });
   }
@@ -127,12 +130,13 @@ $prize = prize_lines($draw);
     runId = res.run.id;
     slot.className = 'slot win';
     slot.textContent = res.winner.name;
-    meta.textContent = [res.winner.phone, res.winner.town, 'Entry ' + res.winner.entry].filter(Boolean).join(' · ');
-    document.getElementById('poolEntries').textContent = res.run.pool_entries.toLocaleString();
+    if (res.winner.photo) { photo.src = res.winner.photo; photo.classList.remove('hidden'); }
+    meta.textContent = [res.winner.town, res.winner.score + ' link opens', 'Place #' + res.winner.rank].filter(Boolean).join(' · ');
+    document.getElementById('poolEntries').textContent = res.run.pool_entries.toLocaleString();   // total link opens
     document.getElementById('poolPeople').textContent = res.run.pool_entrants.toLocaleString();
     document.getElementById('audit').innerHTML =
       '<span>Run <b>' + res.run.run_no + (res.run.is_redraw ? ' (redraw)' : '') + '</b></span><span>Time <b>' + res.run.created_at + '</b></span>' +
-      '<span>Pool hash <b>' + res.run.pool_hash.slice(0, 16) + '…</b></span><span>Seed <b>' + res.run.seed.slice(0, 16) + '…</b></span><span>Index <b>' + res.run.index + '</b></span>';
+      '<span>Leaderboard snapshot <b>' + res.run.pool_hash.slice(0, 16) + '…</b></span><span>Place <b>#' + (res.run.index + 1) + '</b></span>';
     confetti();
     runControls.classList.add('hidden');
     outcomeControls.classList.remove('hidden');
@@ -140,11 +144,9 @@ $prize = prize_lines($draw);
 
   function draw(fn) {
     msg.textContent = '';
-    return post({ action: 'sample', draw_id: DRAW }).then(function (s) {
-      var names = (s.names && s.names.length) ? s.names : [{ name: '• • •', town: '' }];
-      // The winner is selected on the server; the shuffle is only for the audience.
-      return Promise.all([fn(), shuffle(names)]).then(function (all) { return all[0]; });
-    }).then(function (res) {
+    // The winner comes from the frozen leaderboard on the server; the countdown is for the audience.
+    return Promise.all([fn(), countdown()]).then(function (all) {
+      var res = all[0];
       if (!res.ok) { slot.className = 'slot'; slot.textContent = '— ? —'; meta.textContent = ''; msg.textContent = res.error; return; }
       reveal(res);
     });

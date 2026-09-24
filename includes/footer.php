@@ -46,7 +46,7 @@ $socials = array_filter([
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; <?= date('Y') ?> George Music Festival. All rights reserved.</span>
+      <span>&copy; <?= date('Y') ?> George Music Festival. All rights reserved. Your personal information is protected under POPIA.</span>
       <span><a href="<?= e(url('flyfortwo/terms')) ?>">Terms</a> · <a href="<?= e(url('flyfortwo/privacy')) ?>">Privacy</a></span>
     </div>
   </div>

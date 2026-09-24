@@ -48,7 +48,7 @@ $winners  = $winners ?? ($state === 'closed' ? q("SELECT d.title, p.full_name, p
 <?php elseif ($me): ?>
   <?php $count = entry_count((int) $me['id']); ?>
   <div class="ff-body">
-    <div class="ff-center"><div class="ff-check"><i class="fa-solid fa-check"></i></div><h2 class="ff-h">You're in the draw, <?= e(explode(' ', $me['full_name'])[0]) ?>.</h2></div>
+    <div class="ff-center"><div class="ff-check"><i class="fa-solid fa-check"></i></div><h2 class="ff-h">You're in, <?= e(explode(' ', $me['full_name'])[0]) ?>.</h2></div>
     <?php include __DIR__ . '/boarding-pass.php'; ?>
     <a class="ff-btn ff-btn-primary" href="<?= e(url('flyfortwo/dashboard')) ?>">Open my dashboard</a>
     <a class="ff-btn ff-btn-ghost" href="<?= e(url('flyfortwo/logout')) ?>">Not you? Sign out</a>

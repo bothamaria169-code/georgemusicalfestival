@@ -45,6 +45,7 @@ if (session_status() === PHP_SESSION_NONE && PHP_SAPI !== 'cli') {
 
 require_once __DIR__ . '/mailer.php';
 require_once __DIR__ . '/competition.php';
+require_once __DIR__ . '/legal-defaults.php';
 
 /* ──────────────────────────── Config & DB ──────────────────────────── */
 
@@ -324,16 +325,16 @@ function setting_defaults(): array
         'travel_question'   => 'Have you flown before?',
         'travel_options'    => "No, I haven't flown yet\nOccasionally — once or twice a year\nFrequently — three or more times a year",
         'towns'             => "George\nThembalethu\nMossel Bay\nOudtshoorn\nPlettenberg Bay\nKnysna\nOther",
-        'draw_reassurance'  => 'Winners are selected by an automated random draw run from this platform, witnessed live by an ACSA representative and certified by an independent attorney.',
-        'share_bonus_cap'   => '1',
+        'draw_reassurance'  => 'The winners are the two entrants whose personal links are opened by the most different people. The leaderboard is frozen when entries close, checked for fair play and recorded before the winners are revealed.',
+        'share_bonus_cap'   => '0',
         'referral_entries_per_signup' => '0',
         'referral_entry_cap'          => '0',
-        'referral_reward_text'        => 'Every friend who enters through your link is tracked on your dashboard. Top referrers are recognised on the GMF leaderboard.',
+        'referral_reward_text'        => 'Every open from a different person counts. Fake or automated clicks are removed.',
         'otp_cooldown'      => '45',
         'otp_ttl_minutes'   => '10',
         'otp_max_attempts'  => '5',
-        'terms_html'        => '<p><strong>Draft — subject to review under Section 36 of the Consumer Protection Act, 2008.</strong></p><ol><li>The FLY FOR TWO competition is run by George Music Festival (GMF) in partnership with Airports Company South Africa (ACSA).</li><li>Entry is free and open to South African residents aged 18 and over.</li><li>One valid entry per verified phone number and email address. Entrants may earn one additional entry by sharing their personal link, as described on the entry page.</li><li>The Event-Day Draw takes place on 3 October 2026. The Final Draw takes place on 31 October 2026 when the competition closes.</li><li>Winners are selected at random by an automated draw, witnessed by an ACSA representative. The Final Draw is certified by an independent attorney.</li><li>If a selected winner cannot be verified or is found ineligible, a redraw takes place from the remaining valid entries.</li><li>Prizes are not transferable and cannot be exchanged for cash.</li><li>Employees of GMF, ACSA and their agencies, and their immediate families, may not enter.</li></ol>',
-        'privacy_html'      => '<p>We collect your name, phone number, email address, town and your answer to the travel question so that we can run the FLY FOR TWO competition, verify your entry and contact winners.</p><p>All competition data is owned by Airports Company South Africa (ACSA). George Music Festival hosts the platform on ACSA\'s behalf and does not use the data for any other purpose.</p><p>We will only send you marketing messages if you ticked the optional marketing box. You can ask us to update or delete your information at any time by contacting us.</p><p>Your information is processed in line with the Protection of Personal Information Act (POPIA).</p>',
+        'terms_html'        => default_terms_html(),
+        'privacy_html'      => default_privacy_html(),
     ];
 }
 

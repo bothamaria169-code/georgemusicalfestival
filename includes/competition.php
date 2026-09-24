@@ -425,8 +425,8 @@ function send_welcome_email(array $entrant): void
     $first = e(explode(' ', $entrant['full_name'])[0]);
     $link = e(ref_link($entrant));
     $dash = e(url('flyfortwo/dashboard'));
-    $html = mail_template("You're in the draw, {$first}.", '<p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Your FLY FOR TWO entry is confirmed. You could win <strong>' . e((string) setting('prize_headline')) . '</strong>.</p>'
-        . '<p style="margin:0 0 10px;font-size:15px;line-height:1.6;">Share your personal link — when a friend opens it, you earn a bonus entry, and every friend who enters is tracked on your dashboard:</p>'
+    $html = mail_template("You're in, {$first}.", '<p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Your FLY FOR TWO entry is confirmed. You could win <strong>' . e((string) setting('prize_headline')) . '</strong>.</p>'
+        . '<p style="margin:0 0 10px;font-size:15px;line-height:1.6;">Now share your personal link. Every different person who opens it adds 1 to your leaderboard score — the top score wins the Grand Prize and the runner-up wins the Second Prize:</p>'
         . "<p style=\"margin:0 0 18px;\"><a href=\"{$link}\" style=\"font-size:16px;font-weight:bold;color:#c9620a;\">{$link}</a></p>"
         . "<p style=\"margin:0 0 18px;\"><a href=\"{$dash}\" style=\"display:inline-block;background:#f7801a;color:#2a1402;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:10px;\">Open my dashboard</a></p>"
         . '<p style="margin:0;font-size:13px;color:#55707a;">' . e((string) setting('draw_reassurance')) . '</p>');
@@ -477,6 +477,9 @@ function record_referral_click(array $referrer): void
     if ($isOwner) {
         return;
     }
+    if (comp_state() !== 'open') {
+        return;   // link opens only score while entries are open
+    }
     if (!rate_limit('ref_click', client_ip() . '|' . $referrer['id'], 3, 86400)) {
         return;
     }
@@ -505,14 +508,121 @@ function referral_stats(int $entrantId): array
     return array_map('intval', $row);
 }
 
-function referral_leaderboard(int $limit = 10): array
+/**
+ * The competition leaderboard. Score = link opens: unique visitors who opened the entrant's
+ * personal link while entries were open (the entrant's own devices never count, and one
+ * network can add at most 3 opens per referrer per day). Ties: more friends who entered,
+ * then whoever reached their score first.
+ */
+function leaderboard_scores(?string $cutoff = null, int $limit = 0): array
 {
-    return q("SELECT r.id, r.full_name, r.town, COUNT(e.id) AS referrals
-              FROM entrants e JOIN entrants r ON r.id = e.referred_by
-              WHERE e.status = 'verified' AND r.status = 'verified'
-              GROUP BY r.id, r.full_name, r.town
-              ORDER BY referrals DESC, MIN(e.verified_at) ASC
-              LIMIT " . (int) $limit)->fetchAll();
+    $open  = (string) setting('comp_open_at');
+    $close = $cutoff ?? date('Y-m-d H:i:s', min(time(), strtotime((string) setting('comp_close_at'))));
+    $sql = "SELECT r.id, r.full_name, r.town, r.photo, r.ref_code, r.email, r.phone,
+                   COUNT(c.id) AS clicks,
+                   COUNT(DISTINCT c.ip_hash) AS networks,
+                   (SELECT COUNT(*) FROM entrants f WHERE f.referred_by = r.id AND f.status = 'verified' AND f.verified_at <= ?) AS referrals,
+                   MAX(c.clicked_at) AS last_click
+            FROM entrants r
+            JOIN referral_clicks c ON c.referrer_id = r.id AND c.clicked_at BETWEEN ? AND ?
+            WHERE r.status = 'verified'
+            GROUP BY r.id
+            ORDER BY clicks DESC, referrals DESC, last_click ASC, r.id ASC";
+    if ($limit > 0) {
+        $sql .= ' LIMIT ' . $limit;
+    }
+    return q($sql, [$close, $open, $close])->fetchAll();
+}
+
+/** 1-based position of an entrant on the leaderboard, or null when they have no link opens yet. */
+function leaderboard_rank(int $entrantId): ?int
+{
+    foreach (leaderboard_scores() as $i => $row) {
+        if ((int) $row['id'] === $entrantId) {
+            return $i + 1;
+        }
+    }
+    return null;
+}
+
+/**
+ * Public top 10: first name + surname initial, town and score. The leader (#1) is hidden
+ * until the winners are published, so nobody but GMF admins knows who is winning.
+ */
+function public_leaderboard(int $limit = 10): array
+{
+    $revealed = (bool) q("SELECT 1 FROM draws WHERE draw_key = 'final' AND status = 'published'")->fetchColumn();
+    $rows = [];
+    foreach (leaderboard_scores(null, $limit) as $i => $r) {
+        $hidden = $i === 0 && !$revealed;
+        $rows[] = [
+            'rank'   => $i + 1,
+            'id'     => (int) $r['id'],
+            'name'   => $hidden ? 'Mystery leader' : short_name($r['full_name']),
+            'town'   => $hidden ? 'Revealed on draw day' : ($r['town'] ?: ''),
+            'clicks' => $hidden ? null : (int) $r['clicks'],
+            'hidden' => $hidden,
+        ];
+    }
+    return $rows;
+}
+
+/** Recent public activity for the live ticker: new entrants and friends joining through a link. */
+function recent_activity(int $limit = 20): array
+{
+    $rows = q("SELECT p.full_name, p.town, p.verified_at, r.full_name AS ref_name
+               FROM entrants p LEFT JOIN entrants r ON r.id = p.referred_by
+               WHERE p.status = 'verified' ORDER BY p.verified_at DESC LIMIT " . (int) $limit)->fetchAll();
+    $out = [];
+    foreach ($rows as $row) {
+        $who = short_name($row['full_name']) . ($row['town'] ? ' from ' . $row['town'] : '');
+        $out[] = [
+            'type' => $row['ref_name'] ? 'referral' : 'join',
+            'text' => $row['ref_name']
+                ? $who . ' joined through ' . short_name($row['ref_name']) . "'s link"
+                : $who . ' just entered',
+            'at'   => $row['verified_at'],
+        ];
+    }
+    return $out;
+}
+
+/** Store an entrant photo: re-encoded square JPEG (strips location and camera data). */
+function save_entrant_photo(array $file, int $entrantId): ?string
+{
+    if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK || $file['size'] > 12 * 1024 * 1024) {
+        return null;
+    }
+    $info = @getimagesize($file['tmp_name']);
+    $mime = $info['mime'] ?? '';
+    $src = match ($mime) {
+        'image/jpeg' => @imagecreatefromjpeg($file['tmp_name']),
+        'image/png'  => @imagecreatefrompng($file['tmp_name']),
+        'image/webp' => function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($file['tmp_name']) : false,
+        default      => false,
+    };
+    if (!$src) {
+        return null;
+    }
+    if ($mime === 'image/jpeg' && function_exists('exif_read_data')) {
+        $o = (int) (@exif_read_data($file['tmp_name'])['Orientation'] ?? 1);
+        $src = match ($o) { 3 => imagerotate($src, 180, 0), 6 => imagerotate($src, -90, 0), 8 => imagerotate($src, 90, 0), default => $src };
+    }
+    $w = imagesx($src); $h = imagesy($src); $side = min($w, $h);
+    $out = imagecreatetruecolor(720, 720);
+    imagecopyresampled($out, $src, 0, 0, (int) (($w - $side) / 2), (int) (($h - $side) / 3), 720, 720, $side, $side);
+    $dir = APP_ROOT . '/uploads/entrants';
+    if (!is_dir($dir)) {
+        mkdir($dir, 0775, true);
+    }
+    $name = 'uploads/entrants/' . $entrantId . '-' . bin2hex(random_bytes(8)) . '.jpg';
+    imagejpeg($out, APP_ROOT . '/' . $name, 85);
+    $old = q('SELECT photo FROM entrants WHERE id = ?', [$entrantId])->fetchColumn();
+    if ($old && str_starts_with($old, 'uploads/entrants/')) {
+        @unlink(APP_ROOT . '/' . $old);
+    }
+    q('UPDATE entrants SET photo = ? WHERE id = ?', [$name, $entrantId]);
+    return $name;
 }
 
 /* ──────────────────────────── Draws ──────────────────────────── */

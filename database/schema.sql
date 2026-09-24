@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS entrants (
   ip_hash           CHAR(64)     NULL,
   user_agent        VARCHAR(255) NULL,
   notes             VARCHAR(255) NULL,
+  photo             VARCHAR(255) NULL,                -- uploads/entrants/… shown on the winner reveal
   created_at        DATETIME     NOT NULL,
   last_login_at     DATETIME     NULL,
   UNIQUE KEY uq_email (email),

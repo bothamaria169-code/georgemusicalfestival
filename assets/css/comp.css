@@ -278,3 +278,10 @@ body.embed .ff-card { box-shadow: none; border: 1px solid var(--card-line); max-
 .dash-plane strong { font-family: var(--f-serif); font-style: italic; font-weight: 400; font-size: 1.3rem; color: var(--text-light); }
 @media (max-width: 760px) { .dash-hero-grid { grid-template-columns: 1fr; } }
 .ff-moyeni { margin-top: 16px; max-width: 560px; }
+
+/* Winner photo + hidden leader */
+.photo-preview { width: 96px; height: 96px; border-radius: 50%; overflow: hidden; background: var(--paper-2); display: grid; place-items: center; color: var(--text-muted); font-size: 2rem; flex-shrink: 0; border: 3px solid var(--orange); }
+.photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+.ff-leaders li.is-hidden .who { font-style: italic; }
+.ff-leaders li.is-hidden .rank { color: var(--orange) !important; font-size: 1.6rem !important; }
+.ff-leaders li.is-hidden .score { color: var(--orange); }

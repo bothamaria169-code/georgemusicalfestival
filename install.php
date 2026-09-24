@@ -80,8 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // 4. Draws
         $st = $pdo->prepare('INSERT IGNORE INTO draws (draw_key, title, prize_description, scheduled_for, created_at) VALUES (?, ?, ?, ?, ?)');
-        $st->execute(['event_day', 'Event-Day Draw', '', '2026-10-03', $now]);
-        $st->execute(['final', 'Final Draw', "Return flights for two\nWeekend accommodation\nShuttle transfers included", '2026-10-31', $now]);
+        $st->execute(['event_day', 'Second Prize — Runner-up', '', '2026-10-31', $now]);
+        $st->execute(['final', 'Grand Prize — Top Referrer', "Return flights for two\nWeekend accommodation\nShuttle transfers included", '2026-10-31', $now]);
 
         // 5. Gallery seed from the partnership proposal imagery
         if (!(int) $pdo->query('SELECT COUNT(*) FROM media')->fetchColumn()) {

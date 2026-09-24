@@ -41,7 +41,7 @@ if ($purpose === 'entry') {
     verify_entrant((int) $entrant['id'], 'email');
     $entrant = q('SELECT * FROM entrants WHERE id = ?', [$entrant['id']])->fetch();
     send_welcome_email($entrant);
-    flash('success', "You're in the draw! Share your personal link below to earn a bonus entry.");
+    flash('success', "You're in! Share your personal link below — every person who opens it adds to your leaderboard score.");
 } else {
     unset($_SESSION['login_entrant_id']);
 }

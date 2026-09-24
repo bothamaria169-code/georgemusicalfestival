@@ -84,7 +84,7 @@ $enterHref = $nav_active === 'home' ? '#enter' : url('flyfortwo/');
   </div>
 </header>
 
-<?php if (!empty($show_logo_ticker)) { include __DIR__ . '/logo-ticker.php'; } ?>
+<?php if (!empty($show_logo_ticker)) { include __DIR__ . '/logo-ticker.php'; include __DIR__ . '/activity-ticker.php'; } ?>
 
 <?php foreach (flashes() as $f): ?>
   <div class="flash flash-<?= e($f['type']) ?>" role="status"><div class="wrap"><?= e($f['message']) ?></div></div>

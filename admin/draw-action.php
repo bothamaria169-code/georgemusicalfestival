@@ -23,7 +23,7 @@ try {
 
         case 'run':
             $witness = mb_substr(trim((string) ($_POST['witness'] ?? '')), 0, 160);
-            $run = run_draw($drawId, $witness);
+            $run = run_leaderboard_draw($drawId, $witness);
             json_out(['ok' => true, 'run' => audit_view($run), 'winner' => public_winner($run)]);
 
         case 'outcome':
@@ -32,7 +32,7 @@ try {
             $run = set_run_outcome($runId, $outcome, mb_substr(trim((string) ($_POST['note'] ?? '')), 0, 255));
             if ($outcome === 'disqualified') {
                 // Immediate, logged redraw from the remaining valid entries.
-                $new = run_draw((int) $run['draw_id'], (string) ($run['witness'] ?? ''), (string) $run['outcome_note']);
+                $new = run_leaderboard_draw((int) $run['draw_id'], (string) ($run['witness'] ?? ''), (string) $run['outcome_note']);
                 json_out(['ok' => true, 'redraw' => true, 'run' => audit_view($new), 'winner' => public_winner($new)]);
             }
             json_out(['ok' => true, 'run' => audit_view($run)]);

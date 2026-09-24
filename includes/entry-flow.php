@@ -43,7 +43,7 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
 
     <div class="ff-consent is-required" data-field="consent_terms">
       <input type="checkbox" id="c-terms" name="consent_terms" value="1">
-      <label for="c-terms"><span class="ff-tag">Required</span> I agree to the <?= e(setting('comp_name')) ?> <a href="<?= e(url('flyfortwo/terms')) ?>" target="_blank">competition terms &amp; conditions</a> and the <a href="<?= e(url('flyfortwo/privacy')) ?>" target="_blank">privacy notice</a>.</label>
+      <label for="c-terms"><span class="ff-tag">Required</span> I agree to the <?= e(setting('comp_name')) ?> <a href="<?= e(url('flyfortwo/terms')) ?>" target="_blank">competition terms &amp; conditions</a> and the <a href="<?= e(url('flyfortwo/privacy')) ?>" target="_blank">privacy notice</a>. My information is processed in line with POPIA, and my first name, surname initial and town may appear on the public leaderboard.</label>
     </div>
     <div class="ff-consent is-optional">
       <input type="checkbox" id="c-mkt" name="consent_marketing" value="1">
@@ -79,7 +79,7 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
     <div class="ff-center">
       <div class="ff-check"><i class="fa-solid fa-check"></i></div>
       <h2 class="ff-h">You're entered!</h2>
-      <p class="ff-sub">Share your personal link. <?php if ($shareCap > 0): ?>When a friend opens it, you get <strong>a bonus entry</strong> automatically — no second code needed.<?php else: ?>Every friend who enters through it shows up on your dashboard.<?php endif; ?></p>
+      <p class="ff-sub">Now share your personal link. <strong>Every different person who opens it adds 1 to your score</strong> — the top score wins the Grand Prize.</p>
     </div>
     <div class="ff-link"><span data-bind="ref_link"></span><button type="button" data-copy aria-label="Copy link"><i class="fa-regular fa-copy"></i></button></div>
     <div class="ff-share-grid">
@@ -89,15 +89,15 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
       <button class="ff-share" type="button" data-share="native"><i class="fa-solid fa-share-nodes"></i><span>More</span></button>
     </div>
     <button class="ff-btn ff-btn-primary" type="button" data-goto="4" data-after-share hidden>Continue <i class="fa-solid fa-arrow-right"></i></button>
-    <button class="ff-btn ff-btn-outline" type="button" data-goto="4">Skip — keep single entry</button>
+    <button class="ff-btn ff-btn-outline" type="button" data-goto="4">Skip for now</button>
   </div>
 
   <!-- STEP 4 · CONFIRMED -->
   <div class="ff-view" id="view-4">
     <div class="ff-center">
       <div class="ff-check"><i class="fa-solid fa-check"></i></div>
-      <h2 class="ff-h">You're in the draw.</h2>
-      <div class="ff-shared-note" hidden><span class="ff-pill"><i class="fa-solid fa-share"></i> Link shared — your bonus entry unlocks when a friend opens it</span></div>
+      <h2 class="ff-h">You're in!</h2>
+      <div class="ff-shared-note" hidden><span class="ff-pill"><i class="fa-solid fa-share"></i> Link shared — every open adds to your score</span></div>
     </div>
     <div class="pass">
       <div class="pass-top"><span class="pass-brand"><?= e(setting('comp_name')) ?></span><span class="pass-tag">GMF × ACSA</span></div>
@@ -111,7 +111,7 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
       </div>
       <div class="pass-divider"></div>
       <div class="pass-bottom">
-        <div class="pass-entries"><span class="num" data-bind="entries">1</span><span>entr<span data-bind="plural">y</span> confirmed</span></div>
+        <div class="pass-entries"><span class="num">0</span><span>link opens so far · share to climb</span></div>
         <div class="pass-barcode" aria-hidden="true"></div>
       </div>
     </div>

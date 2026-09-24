@@ -11,7 +11,7 @@ $state     = comp_state();
 $enterUrl  = url('flyfortwo/');
 
 $page_title       = 'How to enter FLY FOR TWO — win a weekend getaway for two';
-$meta_description = 'Four steps and about a minute: how to enter FLY FOR TWO, confirm your entry by email, earn a bonus entry by sharing, and how the winners are drawn.';
+$meta_description = 'Four steps and about a minute: how to enter FLY FOR TWO, confirm your entry by email, climb the leaderboard by sharing your link, and how the winners are decided.';
 $og_image         = url('assets/img/competition/hero-win-a-trip-for-two.jpg');
 $nav_active       = 'howto';
 $extra_css        = ['assets/css/comp.css'];
@@ -78,8 +78,8 @@ require __DIR__ . '/includes/header.php';
       <article class="howto-step reveal">
         <span class="howto-n">4</span>
         <div>
-          <h3>Share for a bonus entry</h3>
-          <p>You get your own personal link. Send it on WhatsApp, Facebook, SMS or anywhere else.<?php if ($shareCap > 0): ?> <strong>The first friend who opens it earns you <?= $shareCap === 1 ? 'a bonus entry' : $shareCap . ' bonus entries' ?></strong> — no extra steps. Opening your own link doesn't count.<?php endif; ?> Prefer not to share? Tap "Skip" — your entry still counts.</p>
+          <h3>Share your link — climb the leaderboard</h3>
+          <p>You get your own personal link. Send it on WhatsApp, Facebook, SMS or anywhere else. <strong>Every different person who opens it adds 1 to your score.</strong> Opening your own link doesn't count. The top score wins the Grand Prize and the runner-up wins the Second Prize. Track your score on your dashboard.</p>
         </div>
       </article>
     </div>
@@ -113,13 +113,10 @@ require __DIR__ . '/includes/header.php';
 <!-- ═══════════════ DRAWS ═══════════════ -->
 <section class="section">
   <div class="wrap">
-    <span class="kicker reveal">The draws</span>
-    <h2 class="display big reveal" style="margin:16px 0 30px;">Two chances to <span class="serif-i text-orange">win.</span></h2>
-    <div class="draw-dates howto-draws reveal">
-      <div class="draw-date"><small>Event-Day Draw · live at <?= e(setting('event_venue')) ?></small><strong><?= e(fmt_date($eventDay['scheduled_for'] ?? null, 'j F Y')) ?></strong><span><?= e(implode(' · ', prize_lines($eventDay)) ?: 'Prize to be announced') ?></span></div>
-      <div class="draw-date"><small>Final Draw · entries close <?= e(fmt_date(setting('comp_close_at'), 'j F, H:i')) ?></small><strong><?= e(fmt_date($final['scheduled_for'] ?? null, 'j F Y')) ?></strong><span><?= e(setting('prize_headline')) ?>: <?= e(implode(', ', prize_lines($final))) ?></span></div>
-    </div>
-    <p class="muted reveal" style="max-width:760px;margin-top:22px;"><?= e(setting('draw_reassurance')) ?> Event-Day winners stay in the running for the Final Draw.</p>
+    <span class="kicker reveal">The prizes</span>
+    <h2 class="display big reveal" style="margin:16px 0 30px;">Two <span class="serif-i text-orange">winners.</span></h2>
+    <?php $placesClass = 'howto-draws reveal'; include __DIR__ . '/includes/prize-places.php'; ?>
+    <p class="muted reveal" style="max-width:760px;margin-top:22px;"><?= e(setting('draw_reassurance')) ?> The public leaderboard shows the top 10, but the leader stays hidden until the reveal.</p>
   </div>
 </section>
 
@@ -133,14 +130,15 @@ require __DIR__ . '/includes/header.php';
         <li>Free to enter. South African residents aged 18 and over.</li>
         <li>One entry per cellphone number and email address.</li>
         <li>Only confirmed entries go into the draw.</li>
-        <?php if ($shareCap > 0): ?><li>Maximum <?= $shareCap ?> share bonus entr<?= $shareCap === 1 ? 'y' : 'ies' ?> per person.</li><?php endif; ?>
+        <li>Your score is the number of different people who open your link while entries are open. Your own devices never count.</li>
+        <li>1st place wins the Grand Prize and 2nd place the Second Prize. Winners must be verified before prizes are awarded.</li>
         <li>Full details: <a href="<?= e(url('flyfortwo/terms')) ?>">competition terms</a> · <a href="<?= e(url('flyfortwo/privacy')) ?>">privacy notice</a></li>
       </ul>
     </div>
     <div class="ff-faq reveal">
       <details open><summary>I didn't get the email</summary><p>Wait a minute, then check your spam, junk and promotions folders. Still nothing? Go back to the form — it remembers where you were — check the email address is right ("Wrong email? Edit details"), then tap Resend code.</p></details>
       <details><summary>It says I've already entered</summary><p>That phone number or email address is already in the draw. <a href="<?= e(url('flyfortwo/login')) ?>">Sign in</a> to see your entries and your share link.</p></details>
-      <details><summary>Does sharing my link cost anything?</summary><p>No. Sharing is free and optional. <?= $shareCap > 0 ? 'The first friend who opens your link earns you a bonus entry automatically.' : '' ?></p></details>
+      <details><summary>Does sharing my link cost anything?</summary><p>No. Sharing is free. Each different person who opens your link adds 1 to your score — spam or fake clicks are removed and can lead to disqualification.</p></details>
       <details><summary>How is the winner chosen?</summary><p><?= e(setting('draw_reassurance')) ?></p></details>
       <details><summary>What happens to my information?</summary><p>It's used to run the competition and is owned by Airports Company South Africa. You'll only get news and offers if you ticked the optional box, and you can switch that off on your dashboard. See the <a href="<?= e(url('flyfortwo/privacy')) ?>">privacy notice</a>.</p></details>
     </div>
