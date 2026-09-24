@@ -28,6 +28,7 @@ $nav_active       = 'fly';
 $extra_css        = ['assets/css/comp.css'];
 $extra_js         = ['assets/js/enter.js'];
 $needs_turnstile  = true;
+$show_logo_ticker = true;
 require __DIR__ . '/includes/header.php';
 ?>
 
@@ -65,6 +66,7 @@ require __DIR__ . '/includes/header.php';
         <div class="draw-date"><small>Event-Day Draw</small><strong><?= e(fmt_date($eventDay['scheduled_for'] ?? null, 'j M')) ?></strong><span><?= e(prize_lines($eventDay)[0] ?? 'Prize to be announced') ?></span></div>
         <div class="draw-date"><small>Final Draw</small><strong><?= e(fmt_date($final['scheduled_for'] ?? null, 'j M')) ?></strong><span>Entries close <?= e(fmt_date(setting('comp_close_at'), 'j M')) ?></span></div>
       </div>
+      <figure class="moyeni-render ff-moyeni"><img src="<?= e(url('assets/img/acsa/moyeni-3d.jpg')) ?>" width="1127" height="754" alt="Moyeni, the Airports Company South Africa mascot" loading="lazy"></figure>
     </div>
   </div>
 </section>

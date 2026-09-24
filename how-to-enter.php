@@ -15,6 +15,7 @@ $meta_description = 'Four steps and about a minute: how to enter FLY FOR TWO, co
 $og_image         = url('assets/img/competition/hero-win-a-trip-for-two.jpg');
 $nav_active       = 'howto';
 $extra_css        = ['assets/css/comp.css'];
+$show_logo_ticker = true;
 require __DIR__ . '/includes/header.php';
 ?>
 

@@ -28,6 +28,7 @@ $nav_active       = 'home';
 $extra_css        = ['assets/css/comp.css'];
 $extra_js         = ['assets/js/enter.js'];
 $needs_turnstile  = true;
+$show_logo_ticker = true;
 require __DIR__ . '/includes/header.php';
 ?>
 
@@ -52,6 +53,26 @@ require __DIR__ . '/includes/header.php';
       <img src="<?= e(url('assets/img/competition/hero-win-a-trip-for-two.jpg')) ?>" width="1536" height="1024" alt="A smiling couple on a plane holding their boarding passes from Johannesburg to Cape Town" fetchpriority="high">
       <figcaption><span class="win-stamp">Win a ticket<br>for two</span></figcaption>
     </figure>
+  </div>
+</section>
+
+<!-- ═══════════════ MEET MOYENI (ACSA) ═══════════════ -->
+<section class="moyeni-band">
+  <div class="wrap moyeni-grid">
+    <figure class="moyeni-render reveal">
+      <img src="<?= e(url('assets/img/acsa/moyeni-3d.jpg')) ?>" width="1127" height="754" alt="Moyeni, the Airports Company South Africa mascot, with wings spread" loading="lazy">
+    </figure>
+    <div class="moyeni-copy">
+      <img class="moyeni-logo reveal" src="<?= e(url('assets/img/brand/acsa-teal-lg.png')) ?>" width="900" height="439" alt="Airports Company South Africa" loading="lazy">
+      <span class="kicker reveal" style="color:var(--orange-deep);margin-top:18px;">Meet Moyeni</span>
+      <h2 class="display big reveal" style="margin-top:12px;color:var(--navy-2);">ACSA's mascot is flying <span class="serif-i" style="color:var(--orange-deep)">to George.</span></h2>
+      <p class="reveal" style="color:var(--text-muted);margin:14px 0 0;">Find Moyeni and the Airports Company South Africa team at the ACSA Experience at <?= e($eventName) ?> — enter FLY FOR TWO on the spot and watch the Event-Day Draw live.</p>
+      <div class="moyeni-photos reveal">
+        <img src="<?= e(url('assets/img/acsa/moyeni-with-young-fan.jpg')) ?>" alt="A young fan with Moyeni at an ACSA stand" loading="lazy">
+        <img src="<?= e(url('assets/img/acsa/moyeni-dancing.jpg')) ?>" alt="Moyeni dancing at an ACSA event" loading="lazy">
+        <img src="<?= e(url('assets/img/acsa/acsa-team-departures.jpg')) ?>" alt="The ACSA airport team at the departures board" loading="lazy">
+      </div>
+    </div>
   </div>
 </section>
 
@@ -118,8 +139,8 @@ require __DIR__ . '/includes/header.php';
     </div>
     <div class="acsa-collage reveal reveal-d2">
       <img class="c-a" src="<?= e(url('assets/img/acsa/or-tambo-building.jpg')) ?>" alt="Airports Company South Africa building at O.R. Tambo" loading="lazy">
-      <img class="c-b" src="<?= e(url('assets/img/acsa/moyeni-dancing.jpg')) ?>" alt="Moyeni, the ACSA mascot, dancing" loading="lazy">
-      <img class="c-c" src="<?= e(url('assets/img/acsa/acsa-team-departures.jpg')) ?>" alt="The ACSA airport team in front of the departures board" loading="lazy">
+      <img class="c-b" src="<?= e(url('assets/img/acsa/acsa-team-kerbside.jpg')) ?>" alt="The ACSA airport team outside the terminal" loading="lazy">
+      <img class="c-c" src="<?= e(url('assets/img/acsa/plane-at-the-gate.jpg')) ?>" alt="A plane at the gate" loading="lazy">
     </div>
   </div>
 </section>

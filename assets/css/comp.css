@@ -277,3 +277,4 @@ body.embed .ff-card { box-shadow: none; border: 1px solid var(--card-line); max-
 .dash-logos span { color: var(--text-light-muted); font-family: var(--f-display); }
 .dash-plane strong { font-family: var(--f-serif); font-style: italic; font-weight: 400; font-size: 1.3rem; color: var(--text-light); }
 @media (max-width: 760px) { .dash-hero-grid { grid-template-columns: 1fr; } }
+.ff-moyeni { margin-top: 16px; max-width: 560px; }

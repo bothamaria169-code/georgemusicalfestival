@@ -579,3 +579,22 @@ button { font: inherit; }
 .howto-rules li { margin-bottom: 10px; }
 @media (max-width: 860px) { .howto-steps, .howto-draws { grid-template-columns: 1fr; } }
 .exp-card img[src*="moyeni"], .acsa-collage img[src*="moyeni"] { object-position: center 18%; }
+
+/* ACSA × GMF logo ticker (under the header) */
+.logo-ticker { background: #fff; overflow: hidden; border-bottom: 4px solid var(--orange); padding: 14px 0; }
+.logo-ticker-track { display: flex; align-items: center; width: max-content; animation: marquee 40s linear infinite; }
+.logo-ticker-track > * { margin-right: clamp(34px, 5vw, 70px); flex-shrink: 0; }
+.logo-ticker .lt-acsa { height: clamp(54px, 7vw, 84px); width: auto; }
+.logo-ticker .lt-gmf { height: clamp(46px, 6vw, 70px); width: auto; }
+.logo-ticker .lt-text { font-family: var(--f-display); font-weight: 600; text-transform: uppercase; font-size: clamp(1.1rem, 2.2vw, 1.8rem); color: var(--navy-2); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .logo-ticker-track { animation: none; } }
+
+/* Meet Moyeni band: the render sits on its own studio grey, shown whole and large */
+.moyeni-band { background: linear-gradient(180deg, #ffffff 0%, var(--paper) 100%); padding: clamp(40px, 6vw, 90px) 0; color: var(--text-dark); }
+.moyeni-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
+.moyeni-render { margin: 0; border-radius: 26px; overflow: hidden; background: linear-gradient(180deg, #9ea3a9, #c2c5cc); box-shadow: 0 30px 60px -30px rgba(0,56,70,.55); }
+.moyeni-render img { width: 100%; height: auto; display: block; }
+.moyeni-logo { height: clamp(70px, 8vw, 110px); width: auto; }
+.moyeni-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 22px; }
+.moyeni-photos img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: center 20%; border-radius: 14px; }
+@media (max-width: 900px) { .moyeni-grid { grid-template-columns: 1fr; } }
