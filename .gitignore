@@ -19,3 +19,4 @@ gmf-deployment-guide.md
 Thumbs.db
 .DS_Store
 gmf-deploy-steps.md
+!database/schema.sql
