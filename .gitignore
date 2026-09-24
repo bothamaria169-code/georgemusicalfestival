@@ -20,3 +20,4 @@ Thumbs.db
 .DS_Store
 gmf-deploy-steps.md
 !database/schema.sql
+_source/

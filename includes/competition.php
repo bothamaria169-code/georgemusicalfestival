@@ -113,6 +113,16 @@ function capture_source(): array
     return source_data();
 }
 
+/** Attribution + referral handling for any page that shows the entry form. */
+function competition_landing_context(): void
+{
+    capture_source();
+    if (!empty($_GET['ref']) && ($r = entrant_by_ref((string) $_GET['ref']))) {
+        record_referral_click($r);
+        $_SESSION['ref_by'] = $r['ref_code'];
+    }
+}
+
 function source_data(): array
 {
     $s = $_SESSION['source'] ?? [];
@@ -252,6 +262,23 @@ function upsert_pending_entrant(array $data, array $source, ?int $referredBy, ?s
     return ['entrant' => q('SELECT * FROM entrants WHERE id = ?', [$id])->fetch()];
 }
 
+/* ──────────────────────────── Entry tokens ──────────────────────────── */
+
+/** Opaque reference to one entrant, used by the entry API and the email confirm link. */
+function pending_token(array $entrant): string
+{
+    return $entrant['id'] . '.' . substr(app_hash('pending|' . $entrant['id'] . '|' . $entrant['ref_code']), 0, 32);
+}
+
+function entrant_from_token(string $token): ?array
+{
+    if (!preg_match('/^(\d+)\.([a-f0-9]{32})$/', $token, $m)) {
+        return null;
+    }
+    $e = q('SELECT * FROM entrants WHERE id = ?', [(int) $m[1]])->fetch();
+    return ($e && hash_equals(pending_token($e), $token)) ? $e : null;
+}
+
 /* ──────────────────────────── Verification codes ──────────────────────────── */
 
 function otp_hash(int $entrantId, string $purpose, string $code): string
@@ -295,13 +322,17 @@ function otp_issue(array $entrant, string $purpose): array
     ]);
 
     $first = e(explode(' ', $entrant['full_name'])[0]);
+    $link = e(url('flyfortwo/verify') . '?' . http_build_query(['t' => pending_token($entrant), 'c' => $code, 'p' => $purpose]));
     $intro = $purpose === 'login'
-        ? 'Use this code to sign in to your FLY FOR TWO dashboard.'
-        : 'Enter this code to confirm your FLY FOR TWO entry. Your entry only counts once it is verified.';
+        ? 'Tap the button to sign in to your FLY FOR TWO dashboard, or type the code on the sign-in page.'
+        : 'Tap the button to confirm your FLY FOR TWO entry, or type the code on the entry page. Your entry only counts once it is confirmed.';
+    $button = $purpose === 'login' ? 'Sign in to my dashboard' : 'Confirm my entry';
     $html = mail_template("Your code: {$code}", "<p style=\"margin:0 0 14px;font-size:15px;line-height:1.6;\">Hi {$first},</p>"
-        . "<p style=\"margin:0 0 18px;font-size:15px;line-height:1.6;\">{$intro}</p>"
-        . "<p style=\"margin:0 0 18px;font-size:34px;letter-spacing:10px;font-weight:bold;color:#0b1d2a;\">{$code}</p>"
-        . "<p style=\"margin:0 0 8px;font-size:13px;color:#7a7266;\">The code expires in {$ttl} minutes. If you didn't request it, you can ignore this email.</p>");
+        . "<p style=\"margin:0 0 20px;font-size:15px;line-height:1.6;\">{$intro}</p>"
+        . "<p style=\"margin:0 0 22px;\"><a href=\"{$link}\" style=\"display:inline-block;background:#ff9a00;color:#1d1204;text-decoration:none;font-weight:bold;font-size:16px;padding:14px 26px;border-radius:10px;\">{$button}</a></p>"
+        . "<p style=\"margin:0 0 6px;font-size:13px;color:#7a7266;\">Or enter this code:</p>"
+        . "<p style=\"margin:0 0 18px;font-size:32px;letter-spacing:10px;font-weight:bold;color:#0b1d2a;\">{$code}</p>"
+        . "<p style=\"margin:0 0 8px;font-size:13px;color:#7a7266;\">The code and button expire in {$ttl} minutes. If you didn't request this, you can ignore this email.</p>");
     $sent = send_mail($entrant['email'], "{$code} is your FLY FOR TWO code", $html);
     if (!$sent) {
         return ['ok' => false, 'error' => "We couldn't send the email right now. Please check the address and try again.", 'cooldown' => 0];

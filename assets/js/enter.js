@@ -69,6 +69,28 @@
   }
   fingerprint().then(function (fp) { form1.elements.fp.value = fp; });
 
+  /* ── memory: survive leaving the page to check email (mobile browsers often reload it) ── */
+  var PENDING = 'ff_pending_v1', DRAFT = 'ff_draft_v1', MAX_AGE = 30 * 60 * 1000;
+  function store(key, val) { try { val === null ? localStorage.removeItem(key) : localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
+  function load(key) { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) { return null; } }
+  var draftFields = ['full_name', 'email', 'phone', 'town', 'fly_frequency', 'consent_terms', 'consent_marketing'];
+  function saveDraft() {
+    var d = { t: Date.now() };
+    draftFields.forEach(function (n) { var el = form1.elements[n]; if (el) d[n] = el.type === 'checkbox' ? el.checked : el.value; });
+    store(DRAFT, d);
+  }
+  (function restoreDraft() {
+    var d = load(DRAFT);
+    if (!d || Date.now() - d.t > 24 * 3600 * 1000) return;
+    draftFields.forEach(function (n) {
+      var el = form1.elements[n];
+      if (!el || d[n] === undefined) return;
+      if (el.type === 'checkbox') el.checked = !!d[n]; else if (!el.value || n !== 'town') el.value = d[n];
+    });
+  })();
+  form1.addEventListener('input', saveDraft);
+  form1.addEventListener('change', saveDraft);
+
   /* ── STEP 1: entry form ──────────────────────────────── */
   function clearErrors() {
     $$('.field-error', form1).forEach(function (e) { e.remove(); });
@@ -118,6 +140,7 @@
         return;
       }
       state.token = res.token;
+      store(PENDING, { token: res.token, email: res.email, t: Date.now() });
       bind('email', res.email);
       showDevCode(res.dev_code);
       startCooldown(res.cooldown || FF.cooldown);
@@ -179,6 +202,7 @@
         boxes[0].focus();
         return;
       }
+      store(PENDING, null); store(DRAFT, null);
       state.data = res;
       bind('name', res.name);
       bind('ref_link', res.ref_link.replace(/^https?:\/\//, ''));
@@ -270,4 +294,27 @@
     t.textContent = msg; t.classList.add('is-on');
     clearTimeout(t._h); t._h = setTimeout(function () { t.classList.remove('is-on'); }, 2400);
   }
+
+  /* ── resume a saved entry that is waiting for its code ── */
+  (function resume() {
+    var p = load(PENDING);
+    if (!p || !p.token || Date.now() - p.t > MAX_AGE) { store(PENDING, null); return; }
+    post({ action: 'status', token: p.token }).then(function (res) {
+      if (!res.ok) return;
+      if (res.status === 'pending') {
+        state.token = p.token;
+        bind('email', p.email);
+        startCooldown(res.cooldown || 0);
+        goTo(2);
+        alertIn(form2, 'Welcome back — enter the 6-digit code we emailed you, or tap the button in the email.', true);
+      } else if (res.status === 'verified') {
+        store(PENDING, null); store(DRAFT, null);
+        form1.reset();
+        if (res.signedIn) { location.reload(); return; }
+        alertIn(form1, 'Your entry is already confirmed — you’re in the draw. <a href="' + (FF.login || '#') + '">Sign in to see your dashboard</a>.', true);
+      } else {
+        store(PENDING, null);
+      }
+    });
+  })();
 })();

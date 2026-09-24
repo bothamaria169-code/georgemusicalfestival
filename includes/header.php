@@ -16,11 +16,14 @@ header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: strict-origin-when-cross-origin');
 $nav = [
     'home'    => ['index.php', 'Home'],
+    'howto'   => ['flyfortwo/how-to-enter', 'How to enter'],
     'event'   => ['index.php#event', 'The Event'],
     'lineup'  => ['index.php#lineup', 'Line-up'],
     'gallery' => ['gallery.php', 'Gallery'],
-    'watch'   => ['gallery.php#watch', 'Watch'],
+    'tickets' => [$ticketUrl !== '' ? $ticketUrl : 'index.php#tickets', 'Tickets'],
 ];
+// The Enter button jumps to the form on the homepage, and to the competition page everywhere else.
+$enterHref = $nav_active === 'home' ? '#enter' : url('flyfortwo/');
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,10 +64,10 @@ $nav = [
       <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival" width="120" height="82">
     </a>
     <nav class="main-nav" id="mainNav" aria-label="Main">
+      <a href="<?= e(url('flyfortwo/')) ?>" class="nav-fly <?= $nav_active === 'fly' ? 'is-active' : '' ?>"><i class="fa-solid fa-plane-departure"></i> Win a trip</a>
       <?php foreach ($nav as $key => [$href, $label]): ?>
-        <a href="<?= e(url($href)) ?>" class="<?= $nav_active === $key ? 'is-active' : '' ?>"><?= e($label) ?></a>
+        <a href="<?= e(preg_match('#^https?://#', $href) ? $href : url($href)) ?>" class="<?= $nav_active === $key ? 'is-active' : '' ?>"><?= e($label) ?></a>
       <?php endforeach; ?>
-      <a href="<?= e(url('flyfortwo/')) ?>" class="nav-fly <?= $nav_active === 'fly' ? 'is-active' : '' ?>"><i class="fa-solid fa-plane-departure"></i> Fly For Two</a>
       <div class="nav-mobile-extra">
         <a href="<?= e(url($me ? 'flyfortwo/dashboard' : 'flyfortwo/login')) ?>"><?= $me ? 'My dashboard' : 'Sign in' ?></a>
       </div>
@@ -73,7 +76,7 @@ $nav = [
       <a class="header-link" href="<?= e(url($me ? 'flyfortwo/dashboard' : 'flyfortwo/login')) ?>">
         <i class="fa-regular fa-user"></i><span><?= $me ? e(explode(' ', $me['full_name'])[0]) : 'Sign in' ?></span>
       </a>
-      <a class="btn btn-orange btn-sm" href="<?= e($ticketUrl !== '' ? $ticketUrl : url('index.php#tickets')) ?>" <?= $ticketUrl !== '' ? 'target="_blank" rel="noopener"' : '' ?>>Tickets</a>
+      <a class="btn btn-orange btn-sm" href="<?= e($enterHref) ?>"><i class="fa-solid fa-plane-departure"></i> Enter now</a>
       <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mainNav"><span></span><span></span><span></span></button>
     </div>
   </div>

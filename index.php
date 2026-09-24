@@ -1,68 +1,57 @@
 <?php
 require __DIR__ . '/includes/bootstrap.php';
 
+// The homepage carries the entry form, so QR tags and share links work here too.
+competition_landing_context();
+
 $eventName  = (string) setting('event_name');
 $eventDate  = (string) setting('event_date');
 $venue      = (string) setting('event_venue');
 $ticketUrl  = (string) setting('ticket_url');
-$heroVideo  = (string) setting('hero_video_url');
 $finalDraw  = draw_by_key('final');
 $eventDraw  = draw_by_key('event_day');
 $images     = media_items('image', 7);
 $videos     = media_items('video', 5);
 $artists    = media_items('artist');
 $state      = comp_state();
+$me         = current_entrant();
+$shareCap   = (int) setting('share_bonus_cap');
 
-// "Eden Soul & Jazz Reimagined" → cover lines ["Eden", "Soul & Jazz"] + italic "Reimagined"
-$words = preg_split('/\s+/', $eventName) ?: [];
-$accent = count($words) > 2 ? array_pop($words) : '';
-$coverLines = [implode(' ', array_slice($words, 0, 1)), implode(' ', array_slice($words, 1))];
+// "Win a ticket for two" → "Win a ticket for" + italic "two"
+$headWords  = preg_split('/\s+/', trim((string) setting('hero_headline'))) ?: [];
+$headAccent = count($headWords) > 1 ? array_pop($headWords) : '';
 
-$page_title = 'George Music Festival — ' . $eventName . ' · ' . fmt_date($eventDate, 'j M Y');
-$nav_active = 'home';
+$page_title       = 'Win a trip for two — FLY FOR TWO · George Music Festival × ACSA';
+$meta_description = (string) setting('hero_text');
+$og_image         = url('assets/img/competition/hero-win-a-trip-for-two.jpg');
+$nav_active       = 'home';
+$extra_css        = ['assets/css/comp.css'];
+$extra_js         = ['assets/js/enter.js'];
+$needs_turnstile  = true;
 require __DIR__ . '/includes/header.php';
-
-$ytId = preg_match('#(?:youtube\.com/(?:watch\?v=|embed/|shorts/)|youtu\.be/)([\w-]{11})#', $heroVideo, $m) ? $m[1] : null;
 ?>
 
-<!-- ═══════════════ COVER ═══════════════ -->
-<section class="cover grain">
-  <div class="cover-media">
-    <?php if ($ytId): ?>
-      <iframe src="https://www.youtube-nocookie.com/embed/<?= e($ytId) ?>?autoplay=1&mute=1&loop=1&playlist=<?= e($ytId) ?>&controls=0&showinfo=0&modestbranding=1&playsinline=1" allow="autoplay; encrypted-media" title="Festival film" tabindex="-1"></iframe>
-    <?php elseif ($heroVideo !== ''): ?>
-      <video src="<?= e(media_url($heroVideo)) ?>" autoplay muted loop playsinline poster="<?= e(url('assets/img/gallery/crowd-night.jpg')) ?>"></video>
-    <?php else: ?>
-      <img src="<?= e(url('assets/img/gallery/crowd-night.jpg')) ?>" alt="The crowd at a George Music Festival night show" fetchpriority="high">
-    <?php endif; ?>
-  </div>
-
-  <div class="wrap">
-    <div class="cover-meta">
-      <span>George Music Festival · <b>Issue 2026</b></span>
-      <span>Garden Route · South Africa</span>
-    </div>
-
-    <h1 class="display mega cover-title">
-      <span class="line"><span><?= e($coverLines[0]) ?></span></span>
-      <span class="line"><span><?= e($coverLines[1]) ?></span></span>
-      <?php if ($accent): ?><span class="line"><span class="serif-i"><?= e($accent) ?></span></span><?php endif; ?>
-    </h1>
-
-    <div class="cover-foot">
-      <div>
-        <p class="lede"><?= e(setting('event_tagline')) ?></p>
-        <div class="cover-actions">
-          <a class="btn btn-orange btn-lg" href="<?= e($ticketUrl !== '' ? $ticketUrl : '#tickets') ?>" <?= $ticketUrl !== '' ? 'target="_blank" rel="noopener"' : '' ?>><i class="fa-solid fa-ticket"></i> Get tickets</a>
-          <a class="btn btn-ghost btn-lg" href="<?= e(url('flyfortwo/')) ?>"><i class="fa-solid fa-plane-departure"></i> Win a trip for two</a>
-        </div>
+<!-- ═══════════════ HERO: THE COMPETITION ═══════════════ -->
+<section class="win-hero grain">
+  <div class="wrap win-hero-grid">
+    <div class="win-hero-text">
+      <span class="win-kicker"><i class="fa-solid fa-plane-up"></i> <?= e(setting('hero_kicker')) ?></span>
+      <h1 class="display huge"><?= e(implode(' ', $headWords)) ?><?php if ($headAccent): ?> <span class="serif-i"><?= e($headAccent) ?>.</span><?php endif; ?></h1>
+      <p class="lede"><?= e(setting('hero_text')) ?></p>
+      <div class="cover-actions">
+        <a class="btn btn-orange btn-lg" href="#enter"><i class="fa-solid fa-ticket"></i> Enter now — it's free</a>
+        <a class="btn btn-ghost btn-lg" href="<?= e(url('flyfortwo/how-to-enter')) ?>">How to enter</a>
       </div>
-      <div class="cover-facts">
-        <div>Date<strong><?= e(fmt_date($eventDate, 'j M')) ?></strong></div>
-        <div>Venue<strong>Thembalethu</strong></div>
-        <div>City<strong>George</strong></div>
-      </div>
+      <ul class="win-points">
+        <li><i class="fa-solid fa-plane"></i> Return flights for two</li>
+        <li><i class="fa-solid fa-hotel"></i> Weekend accommodation</li>
+        <li><i class="fa-solid fa-van-shuttle"></i> Shuttle transfers</li>
+      </ul>
     </div>
+    <figure class="win-hero-photo">
+      <img src="<?= e(url('assets/img/competition/hero-win-a-trip-for-two.jpg')) ?>" width="1536" height="1024" alt="A smiling couple on a plane holding their boarding passes from Johannesburg to Cape Town" fetchpriority="high">
+      <figcaption><span class="win-stamp">Win a ticket<br>for two</span></figcaption>
+    </figure>
   </div>
 </section>
 
@@ -70,10 +59,70 @@ $ytId = preg_match('#(?:youtube\.com/(?:watch\?v=|embed/|shorts/)|youtu\.be/)([\
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
     <?php for ($i = 0; $i < 2; $i++): ?>
-      <span><?= e(fmt_date($eventDate, 'j F Y')) ?></span><span><?= e($venue) ?></span><span>Soul</span><span>Jazz</span><span>Culture</span><span>Fly For Two</span><span>Garden Route</span>
+      <span>Win a trip for two</span><span>Enter free</span><span>Share for a bonus entry</span><span>Draws <?= e(fmt_date($eventDraw['scheduled_for'] ?? null, 'j M')) ?> &amp; <?= e(fmt_date($finalDraw['scheduled_for'] ?? null, 'j M')) ?></span><span><?= e($eventName) ?></span>
     <?php endfor; ?>
   </div>
 </div>
+
+<!-- ═══════════════ ENTER (the form) ═══════════════ -->
+<section class="section enter-section" id="enter">
+  <div class="wrap enter-grid">
+    <div class="enter-copy">
+      <span class="kicker reveal">FLY FOR TWO · Enter here</span>
+      <h2 class="display big reveal" style="margin-top:18px;">Enter in under a <span class="serif-i text-orange">minute.</span></h2>
+      <p class="lede reveal" style="margin-top:18px;">Fill in your details, tap the button in the email we send you, and you're in the draw.<?php if ($shareCap > 0): ?> Share your personal link and the first friend who opens it earns you a <strong>bonus entry</strong>.<?php endif; ?></p>
+      <div class="ff-prize reveal" style="margin-top:26px;">
+        <div class="ff-prize-label">What you win</div>
+        <div class="ff-prize-title"><?= e(setting('prize_headline')) ?></div>
+        <ul>
+          <?php foreach (prize_lines($finalDraw) as $p): ?><li><span class="dot"></span><?= e($p) ?></li><?php endforeach; ?>
+        </ul>
+        <i class="fa-solid fa-plane ff-prize-plane" aria-hidden="true"></i>
+      </div>
+      <div class="draw-dates reveal">
+        <div class="draw-date"><small>Event-Day Draw</small><strong><?= e(fmt_date($eventDraw['scheduled_for'] ?? null, 'j M')) ?></strong><span><?= e(prize_lines($eventDraw)[0] ?? 'Prize to be announced') ?></span></div>
+        <div class="draw-date"><small>Final Draw</small><strong><?= e(fmt_date($finalDraw['scheduled_for'] ?? null, 'j M')) ?></strong><span>Entries close <?= e(fmt_date(setting('comp_close_at'), 'j M')) ?></span></div>
+      </div>
+      <p class="reveal" style="margin-top:22px;display:flex;gap:18px;flex-wrap:wrap;">
+        <a class="text-link" href="<?= e(url('flyfortwo/how-to-enter')) ?>">How to enter, step by step <i class="fa-solid fa-arrow-right"></i></a>
+        <a class="text-link" href="<?= e(url('flyfortwo/')) ?>">Full competition page <i class="fa-solid fa-arrow-right"></i></a>
+      </p>
+    </div>
+    <div class="enter-card reveal">
+      <?php include __DIR__ . '/includes/entry-card.php'; ?>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+<section class="section-sm on-paper">
+  <div class="wrap">
+    <div class="ff-steps">
+      <div class="ff-step reveal"><span class="n">01</span><h3>Enter</h3><p>Name, cellphone, email and one quick travel question. Free, and one entry per person.</p></div>
+      <div class="ff-step reveal reveal-d1"><span class="n">02</span><h3>Confirm</h3><p>Tap <strong>Confirm my entry</strong> in the email we send, or type the 6-digit code. Only confirmed entries go into the draw.</p></div>
+      <div class="ff-step reveal reveal-d2"><span class="n">03</span><h3>Share</h3><p><?= $shareCap > 0 ? 'Send your personal link on WhatsApp. The first friend who opens it earns you a bonus entry.' : 'Send your personal link on WhatsApp and climb the leaderboard.' ?></p></div>
+    </div>
+    <p class="reveal" style="text-align:center;margin:34px 0 0;"><a class="btn btn-outline-dark" href="<?= e(url('flyfortwo/how-to-enter')) ?>">Read the full how-to-enter guide</a></p>
+  </div>
+</section>
+
+<!-- ═══════════════ ACSA × GMF ═══════════════ -->
+<section class="section acsa-feature">
+  <div class="wrap acsa-grid">
+    <div class="acsa-copy">
+      <img class="acsa-logo reveal" src="<?= e(url('assets/img/brand/acsa-white.png')) ?>" alt="Airports Company South Africa" loading="lazy">
+      <span class="kicker reveal" style="margin-top:26px;">ACSA × GMF</span>
+      <h2 class="display big reveal" style="margin-top:16px;">Getting the <span class="serif-i text-orange">unflown</span> flying.</h2>
+      <p class="lede reveal" style="margin-top:18px;">For many people on the Garden Route, flying still feels out of reach. Together with Airports Company South Africa, George Music Festival is changing that — one weekend getaway, one first flight, one new journey at a time.</p>
+      <p class="muted reveal">At <?= e($eventName) ?>, the ACSA Experience brings airports closer: meet Moyeni, the ACSA mascot, talk to the airport team about travel and careers, and watch the Event-Day Draw live on the day.</p>
+    </div>
+    <div class="acsa-collage reveal reveal-d2">
+      <img class="c-a" src="<?= e(url('assets/img/acsa/or-tambo-building.jpg')) ?>" alt="Airports Company South Africa building at O.R. Tambo" loading="lazy">
+      <img class="c-b" src="<?= e(url('assets/img/acsa/moyeni-dancing.jpg')) ?>" alt="Moyeni, the ACSA mascot, dancing" loading="lazy">
+      <img class="c-c" src="<?= e(url('assets/img/acsa/acsa-team-departures.jpg')) ?>" alt="The ACSA airport team in front of the departures board" loading="lazy">
+    </div>
+  </div>
+</section>
 
 <!-- ═══════════════ 01 THE EVENT ═══════════════ -->
 <section class="section on-paper" id="event">
@@ -103,8 +152,63 @@ $ytId = preg_match('#(?:youtube\.com/(?:watch\?v=|embed/|shorts/)|youtu\.be/)([\
         </div>
       </div>
       <div class="spread-media reveal reveal-d2">
-        <div class="img-a"><img src="<?= e(url('assets/img/gallery/performer-stage.jpg')) ?>" alt="A performer on stage at George Music Festival" loading="lazy"></div>
+        <div class="img-a"><img src="<?= e(url('assets/img/gallery/crowd-night.jpg')) ?>" alt="The crowd at a George Music Festival night show" loading="lazy"></div>
         <div class="img-b"><img src="<?= e(url('assets/img/gallery/activation-22.jpg')) ?>" alt="The GMF street team in George" loading="lazy"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════ 02 THE EXPERIENCE ═══════════════ -->
+<section class="section on-ink-2" id="experience">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker reveal"><span class="num">02</span> The Experience</span>
+        <h2 class="display big reveal">One day. <span class="serif-i text-orange">Four</span> reasons to be there.</h2>
+      </div>
+      <a class="btn btn-ghost reveal" href="<?= e($ticketUrl !== '' ? $ticketUrl : '#tickets') ?>" <?= $ticketUrl !== '' ? 'target="_blank" rel="noopener"' : '' ?>><i class="fa-solid fa-ticket"></i> Tickets</a>
+    </div>
+    <div class="exp-grid">
+      <article class="exp-card reveal">
+        <img src="<?= e(url('assets/img/gallery/performer-stage.jpg')) ?>" alt="A performer on the George Music Festival stage" loading="lazy">
+        <div class="exp-body"><span class="exp-n">01</span><h3>Live soul &amp; jazz</h3><p>A full day of live soul and jazz, from the afternoon until the lights go down.</p></div>
+      </article>
+      <article class="exp-card reveal reveal-d1">
+        <img src="<?= e(url('assets/img/gallery/activation-23.jpg')) ?>" alt="The GMF crew with local partners" loading="lazy">
+        <div class="exp-body"><span class="exp-n">02</span><h3>Food, culture &amp; community</h3><p>Garden Route food, fashion and friends. A day out built for the whole community, not just the front row.</p></div>
+      </article>
+      <article class="exp-card reveal reveal-d2">
+        <img src="<?= e(url('assets/img/acsa/moyeni-with-young-fan.jpg')) ?>" alt="A young fan with Moyeni, the ACSA mascot" loading="lazy">
+        <div class="exp-body"><span class="exp-n">03</span><h3>The ACSA Experience</h3><p>Meet Moyeni, discover what flying is really like, enter FLY FOR TWO on the spot and see the Event-Day Draw live.</p></div>
+      </article>
+      <article class="exp-card reveal reveal-d3">
+        <img src="<?= e(url('assets/img/acsa/acsa-team-kerbside.jpg')) ?>" alt="The ACSA airport team" loading="lazy">
+        <div class="exp-body"><span class="exp-n">04</span><h3>Youth &amp; careers</h3><p>The airport team shares what goes on behind the scenes — from customer service to operations and tourism.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ 03 PLAN YOUR TRIP ═══════════════ -->
+<section class="section on-paper" id="plan">
+  <div class="wrap plan-grid">
+    <figure class="plan-photo reveal">
+      <img src="<?= e(url('assets/img/acsa/plane-window-view.jpg')) ?>" alt="A plane waiting on the apron, seen through a shuttle window" loading="lazy">
+    </figure>
+    <div class="plan-copy">
+      <span class="kicker reveal" style="color:var(--orange-deep)"><span class="num">03</span> Plan your trip</span>
+      <h2 class="display big reveal" style="margin:18px 0 26px;color:var(--text-dark);">Make it a <span class="serif-i" style="color:var(--orange-deep)">weekend</span> away.</h2>
+      <ol class="plan-steps">
+        <li class="reveal"><i class="fa-solid fa-plane-arrival"></i><div><strong>Fly into George Airport</strong><span>The Garden Route's gateway, operated by Airports Company South Africa, with daily domestic flights.</span></div></li>
+        <li class="reveal"><i class="fa-solid fa-location-dot"></i><div><strong><?= e($venue) ?></strong><span><?= e(fmt_date($eventDate, 'l, j F Y')) ?> · <?= e(setting('event_time')) ?></span></div></li>
+        <li class="reveal"><i class="fa-solid fa-bed"></i><div><strong>Stay on the Garden Route</strong><span>George, Mossel Bay, Knysna, Oudtshoorn and Plettenberg Bay are all within reach — turn one festival day into a full weekend.</span></div></li>
+        <li class="reveal"><i class="fa-solid fa-ticket"></i><div><strong><?= $ticketUrl !== '' ? 'Tickets on sale now' : e(setting('ticket_note')) ?></strong><span><?= $ticketUrl !== '' ? '<a class="text-link" href="' . e($ticketUrl) . '" target="_blank" rel="noopener">Buy tickets <i class="fa-solid fa-arrow-right"></i></a>' : 'Join the GMF list at the bottom of this page to hear first.' ?></span></div></li>
+      </ol>
+      <div class="plan-cta reveal">
+        <p>Or let us fly you: <strong>win return flights, accommodation and transfers for two.</strong></p>
+        <a class="btn btn-dark" href="#enter"><i class="fa-solid fa-plane-departure"></i> Enter FLY FOR TWO</a>
       </div>
     </div>
   </div>
@@ -112,7 +216,7 @@ $ytId = preg_match('#(?:youtube\.com/(?:watch\?v=|embed/|shorts/)|youtu\.be/)([\
 
 <!-- ═══════════════ PULL QUOTE ═══════════════ -->
 <section class="bleed">
-  <img src="<?= e(url('assets/img/gallery/airport-terminal.jpg')) ?>" alt="" data-parallax loading="lazy">
+  <img src="<?= e(url('assets/img/acsa/plane-on-apron.jpg')) ?>" alt="" data-parallax loading="lazy">
   <div class="wrap">
     <blockquote class="pullquote reveal">
       <p>GMF creates the <em>reason</em> to travel. ACSA helps define the <em>journey</em>.</p>
@@ -121,47 +225,12 @@ $ytId = preg_match('#(?:youtube\.com/(?:watch\?v=|embed/|shorts/)|youtu\.be/)([\
   </div>
 </section>
 
-<!-- ═══════════════ 02 FLY FOR TWO ═══════════════ -->
-<section class="section fly-feature" id="fly">
-  <div class="wrap fly-grid">
-    <div>
-      <span class="kicker reveal"><span class="num">02</span> The Competition</span>
-      <h2 class="display huge reveal" style="margin-top:22px;">Fly <span class="serif-i">for</span> two.</h2>
-      <p class="lede reveal" style="margin-top:22px;max-width:560px;">Enter free and win <strong><?= e(setting('prize_headline')) ?></strong>. It takes less than a minute — and sharing your link earns you a bonus entry.</p>
-      <ul class="prize-list reveal">
-        <?php $icons = ['fa-plane', 'fa-hotel', 'fa-van-shuttle', 'fa-star'];
-        foreach (prize_lines($finalDraw) as $i => $line): ?>
-          <li><i class="fa-solid <?= $icons[$i] ?? 'fa-star' ?>"></i><?= e($line) ?></li>
-        <?php endforeach; ?>
-      </ul>
-      <div class="reveal" style="display:flex;gap:12px;flex-wrap:wrap;">
-        <?php if ($state === 'open'): ?>
-          <a class="btn btn-orange btn-lg" href="<?= e(url('flyfortwo/')) ?>">Enter now — it's free</a>
-        <?php elseif ($state === 'upcoming'): ?>
-          <a class="btn btn-orange btn-lg" href="<?= e(url('flyfortwo/')) ?>">Opens <?= e(fmt_date(setting('comp_open_at'), 'j M')) ?></a>
-        <?php else: ?>
-          <a class="btn btn-ghost btn-lg" href="<?= e(url('flyfortwo/')) ?>">Competition closed — see results</a>
-        <?php endif; ?>
-        <a class="btn btn-ghost btn-lg" href="<?= e(url('flyfortwo/login')) ?>">My dashboard</a>
-      </div>
-      <div class="draw-dates reveal">
-        <div class="draw-date"><small>Event-Day Draw</small><strong><?= e(fmt_date($eventDraw['scheduled_for'] ?? '2026-10-03', 'j M')) ?></strong><span><?= e(prize_lines($eventDraw)[0] ?? 'Prize to be announced') ?></span></div>
-        <div class="draw-date"><small>Final Draw</small><strong><?= e(fmt_date($finalDraw['scheduled_for'] ?? '2026-10-31', 'j M')) ?></strong><span><?= e(setting('prize_headline')) ?></span></div>
-      </div>
-    </div>
-    <div class="fly-mascot reveal reveal-d2">
-      <div class="fly-ring"></div>
-      <img src="<?= e(url('assets/img/brand/mascot-moyeni.png')) ?>" alt="Moyeni, the ACSA mascot, flying" loading="lazy">
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════ 03 LINE-UP ═══════════════ -->
+<!-- ═══════════════ 04 LINE-UP ═══════════════ -->
 <section class="section" id="lineup">
   <div class="wrap">
     <div class="section-head">
       <div>
-        <span class="kicker reveal"><span class="num">03</span> Line-up</span>
+        <span class="kicker reveal"><span class="num">04</span> Line-up</span>
         <h2 class="display big reveal">On the <span class="serif-i text-orange">stage</span></h2>
       </div>
     </div>
@@ -183,12 +252,12 @@ $ytId = preg_match('#(?:youtube\.com/(?:watch\?v=|embed/|shorts/)|youtu\.be/)([\
   </div>
 </section>
 
-<!-- ═══════════════ 04 GALLERY ═══════════════ -->
+<!-- ═══════════════ 05 GALLERY ═══════════════ -->
 <section class="section on-ink-2" id="gallery">
   <div class="wrap">
     <div class="section-head">
       <div>
-        <span class="kicker reveal"><span class="num">04</span> On the ground</span>
+        <span class="kicker reveal"><span class="num">05</span> On the ground</span>
         <h2 class="display big reveal">The <span class="serif-i text-orange">street</span> is our stage</h2>
       </div>
       <a class="btn btn-ghost reveal" href="<?= e(url('gallery.php')) ?>">Full gallery <i class="fa-solid fa-arrow-right"></i></a>
@@ -205,12 +274,12 @@ $ytId = preg_match('#(?:youtube\.com/(?:watch\?v=|embed/|shorts/)|youtu\.be/)([\
   </div>
 </section>
 
-<!-- ═══════════════ 05 WATCH ═══════════════ -->
+<!-- ═══════════════ 06 WATCH ═══════════════ -->
 <section class="section" id="watch">
   <div class="wrap">
     <div class="section-head">
       <div>
-        <span class="kicker reveal"><span class="num">05</span> Watch</span>
+        <span class="kicker reveal"><span class="num">06</span> Watch</span>
         <h2 class="display big reveal">Press <span class="serif-i text-orange">play</span></h2>
       </div>
       <?php if (count($videos) > 3): ?><a class="btn btn-ghost reveal" href="<?= e(url('gallery.php#watch')) ?>">All videos <i class="fa-solid fa-arrow-right"></i></a><?php endif; ?>
@@ -249,12 +318,12 @@ $ytId = preg_match('#(?:youtube\.com/(?:watch\?v=|embed/|shorts/)|youtu\.be/)([\
   </div>
 </section>
 
-<!-- ═══════════════ 06 CALENDAR ═══════════════ -->
+<!-- ═══════════════ 07 CALENDAR ═══════════════ -->
 <section class="section on-paper" id="calendar">
   <div class="wrap">
     <div class="section-head">
       <div>
-        <span class="kicker reveal" style="color:var(--orange-deep)"><span class="num">06</span> The season</span>
+        <span class="kicker reveal" style="color:var(--orange-deep)"><span class="num">07</span> The season</span>
         <h2 class="display big reveal">Beyond <span class="serif-i" style="color:var(--orange-deep)">October</span></h2>
       </div>
     </div>

@@ -43,7 +43,7 @@ $state    = comp_state();
       <p class="ff-sub"><a href="<?= e(url('flyfortwo/')) ?>" target="_blank" rel="noopener" style="text-decoration:underline">Visit the competition page</a></p></div>
   <?php endif; ?>
 </div>
-<script>window.FF = { api: <?= json_encode(url('api/entry.php')) ?>, cooldown: <?= (int) setting('otp_cooldown') ?> };</script>
+<script>window.FF = { api: <?= json_encode(url('api/entry.php')) ?>, cooldown: <?= (int) setting('otp_cooldown') ?>, login: <?= json_encode(url('flyfortwo/login')) ?> };</script>
 <script src="<?= e(asset('assets/js/enter.js')) ?>"></script>
 </body>
 </html>

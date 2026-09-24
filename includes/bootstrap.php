@@ -294,6 +294,11 @@ function rate_limit(string $action, string $subject, int $max, int $seconds): bo
 function setting_defaults(): array
 {
     return [
+        // Homepage hero (competition-first)
+        'hero_kicker'       => 'ACSA × GMF: Getting the Unflown Flying',
+        'hero_headline'     => 'Win a ticket for two',
+        'hero_text'         => 'In partnership with Airports Company South Africa (ACSA), GMF is making air travel more accessible and inspiring new journeys across South Africa. Enter for your chance to win a Weekend Getaway for Two and experience the journey for yourself.',
+
         // Event
         'event_name'        => 'Eden Soul & Jazz Reimagined',
         'event_tagline'     => 'A day of soul, jazz and Garden Route culture — reimagined for a new generation.',

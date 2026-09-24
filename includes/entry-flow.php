@@ -61,7 +61,7 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
     <div class="ff-center">
       <div class="ff-icon"><i class="fa-regular fa-envelope-open"></i></div>
       <h2 class="ff-h">Check your email</h2>
-      <p class="ff-sub">We've sent a 6-digit code to <strong data-bind="email"></strong>. Enter it below to confirm your entry — this keeps the draw free of bots and duplicates.</p>
+      <p class="ff-sub">We've emailed <strong data-bind="email"></strong>. Tap <strong>Confirm my entry</strong> in that email, or type the 6-digit code here. You can leave this page — we'll remember where you were.</p>
     </div>
     <div class="ff-otp" role="group" aria-label="6-digit code">
       <?php for ($i = 0; $i < 6; $i++): ?><input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" aria-label="Digit <?= $i + 1 ?>" <?= $i === 0 ? 'autocomplete="one-time-code"' : '' ?>><?php endfor; ?>
@@ -71,7 +71,7 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
     <button class="ff-btn ff-btn-primary" type="submit">Confirm code</button>
     <button class="ff-btn ff-btn-ghost" type="button" data-resend>Resend code</button>
     <button class="ff-btn ff-btn-ghost ff-small" type="button" data-back><i class="fa-solid fa-pen"></i> Wrong email? Edit details</button>
-    <p class="ff-fine">Can't find it? Check your spam or promotions folder.</p>
+    <p class="ff-fine">Can't find it after a minute? Check your spam, junk or promotions folder, then tap Resend code.</p>
   </form>
 
   <!-- STEP 3 · SHARE -->

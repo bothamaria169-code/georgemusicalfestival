@@ -32,24 +32,10 @@ if (!$in && str_contains($_SERVER['CONTENT_TYPE'] ?? '', 'application/json')) {
 $apiKey = (string) ($_SERVER['HTTP_X_API_KEY'] ?? '');
 $isPartner = config('partner_api_key') && $apiKey !== '' && hash_equals((string) config('partner_api_key'), $apiKey);
 
-function pending_token(array $entrant): string
-{
-    return $entrant['id'] . '.' . substr(app_hash('pending|' . $entrant['id'] . '|' . $entrant['ref_code']), 0, 32);
-}
-
-function entrant_from_token(string $token): ?array
-{
-    if (!preg_match('/^(\d+)\.([a-f0-9]{32})$/', $token, $m)) {
-        return null;
-    }
-    $e = q('SELECT * FROM entrants WHERE id = ?', [(int) $m[1]])->fetch();
-    return ($e && hash_equals(pending_token($e), $token)) ? $e : null;
-}
-
 $action = $in['action'] ?? '';
 
 try {
-    if (comp_state() !== 'open' && $action !== 'verify') {
+    if (comp_state() !== 'open' && !in_array($action, ['verify', 'status'], true)) {
         json_out(['ok' => false, 'error' => comp_state() === 'upcoming' ? 'Entries open soon — check back shortly.' : 'The competition has closed. Thank you for your support!']);
     }
 
@@ -114,6 +100,18 @@ try {
             'email'    => mask_email($entrant['email']),
             'cooldown' => $sent['cooldown'] ?: otp_cooldown_left((int) $entrant['id'], 'entry'),
             'dev_code' => $sent['dev_code'] ?? null,
+        ]);
+    }
+
+    /* ── Resume check: is a saved in-progress entry still waiting for its code? ── */
+    if ($action === 'status') {
+        $entrant = entrant_from_token((string) ($in['token'] ?? ''));
+        $status = $entrant['status'] ?? 'unknown';
+        json_out([
+            'ok'       => true,
+            'status'   => $status,
+            'signedIn' => $entrant && (int) ($_SESSION['entrant_id'] ?? 0) === (int) $entrant['id'],
+            'cooldown' => $entrant && $status === 'pending' ? otp_cooldown_left((int) $entrant['id'], 'entry') : 0,
         ]);
     }
 

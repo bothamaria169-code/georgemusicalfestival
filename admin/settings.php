@@ -4,6 +4,11 @@ require __DIR__ . '/_layout.php';
 require_admin('admin');
 
 $groups = [
+    'Homepage hero' => [
+        'hero_kicker'   => ['Small line above the headline', 'text'],
+        'hero_headline' => ['Headline (the last word shows in orange italics)', 'text'],
+        'hero_text'     => ['Hero message', 'textarea'],
+    ],
     'Competition' => [
         'comp_name'        => ['Competition name', 'text'],
         'comp_open_at'     => ['Entries open', 'datetime'],

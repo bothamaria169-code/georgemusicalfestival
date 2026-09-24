@@ -8,7 +8,13 @@ declare(strict_types=1);
 function send_mail(string $to, string $subject, string $html, string $text = ''): bool
 {
     $driver = config('mail.driver', 'log');
-    $text = $text !== '' ? $text : trim(html_entity_decode(strip_tags(preg_replace('#<br\s*/?>|</p>#i', "\n", $html)), ENT_QUOTES, 'UTF-8'));
+    if ($text === '') {
+        // Plain-text part: keep links visible ("Confirm my entry: https://…") and paragraphs on their own lines.
+        $plain = preg_replace('#<a\s[^>]*href="([^"]+)"[^>]*>(.*?)</a>#is', '$2: $1', $html);
+        $plain = preg_replace('#<br\s*/?>|</p>|</h1>|</tr>#i', "\n", (string) $plain);
+        $plain = html_entity_decode(strip_tags((string) $plain), ENT_QUOTES, 'UTF-8');
+        $text = trim(preg_replace("/[ \t]+/", ' ', preg_replace("/\n\s*\n+/", "\n\n", $plain)));
+    }
 
     try {
         if ($driver === 'smtp') {

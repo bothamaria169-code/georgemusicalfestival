@@ -259,3 +259,6 @@
 /* ── Embed (iframe on ACSA's site) ─────────────────────────── */
 body.embed { background: transparent; }
 body.embed .ff-card { box-shadow: none; border: 1px solid var(--card-line); max-width: 480px; margin: 0 auto; }
+.ff-intro-photo { margin: 26px 0 0; max-width: 620px; }
+.ff-intro-photo img { width: 100%; height: auto; border-radius: 22px; box-shadow: 0 30px 60px -28px rgba(0,0,0,.7); }
+@media (max-width: 960px) { .ff-intro-photo { display: none; } }
