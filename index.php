@@ -80,7 +80,7 @@ require __DIR__ . '/includes/header.php';
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
     <?php for ($i = 0; $i < 2; $i++): ?>
-      <span>Win a trip for two</span><span>Enter free</span><span>Most link opens wins</span><span>Winners revealed <?= e(fmt_date($finalDraw['scheduled_for'] ?? null, 'j M')) ?></span><span><?= e($eventName) ?></span>
+      <span>Win a trip for two</span><?php if (!empty($artists[0]['title'])): ?><span>Headlining: <?= e($artists[0]['title']) ?> + many more</span><?php endif; ?><span>Enter free</span><span>Most link opens wins</span><span>Winners revealed <?= e(fmt_date($finalDraw['scheduled_for'] ?? null, 'j M')) ?></span><span><?= e($eventName) ?></span>
     <?php endfor; ?>
   </div>
 </div>
@@ -244,6 +244,12 @@ require __DIR__ . '/includes/header.php';
 </section>
 
 <!-- ═══════════════ 04 LINE-UP ═══════════════ -->
+<?php
+// Headliner = the first (featured) line-up entry. Its extra photos are gallery photos whose album is the artist's name.
+$headliner = $artists[0] ?? null;
+$others    = array_slice($artists, 1);
+$hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, false), fn ($m) => strcasecmp($m['album'], (string) $headliner['title']) === 0 && $m['src'] !== $headliner['src'])) : [];
+?>
 <section class="section" id="lineup">
   <div class="wrap">
     <div class="section-head">
@@ -252,14 +258,37 @@ require __DIR__ . '/includes/header.php';
         <h2 class="display big reveal">On the <span class="serif-i text-orange">stage</span></h2>
       </div>
     </div>
-    <?php if ($artists): ?>
-      <div class="lineup-grid">
-        <?php foreach ($artists as $i => $a): ?>
+    <?php if ($headliner): ?>
+      <div class="headliner reveal">
+        <figure class="headliner-photo"><img src="<?= e(media_url($headliner['src'])) ?>" alt="<?= e($headliner['title']) ?> performing on stage" loading="lazy"></figure>
+        <div class="headliner-copy">
+          <span class="headliner-tag"><i class="fa-solid fa-star"></i> Headlining <?= e($eventName) ?></span>
+          <p class="display mega headliner-name"><?= e($headliner['title']) ?></p>
+          <?php if ($headliner['caption']): ?><p class="headliner-caption"><?= e($headliner['caption']) ?></p><?php endif; ?>
+          <p class="muted" style="max-width:520px;margin:18px 0 0;">Live at <?= e($venue) ?> on <?= e(fmt_date($eventDate, 'l, j F Y')) ?> — plus many more artists to be announced.</p>
+          <?php if ($hlPhotos): ?>
+            <div class="headliner-strip">
+              <?php foreach (array_slice($hlPhotos, 0, 3) as $ph): ?>
+                <a href="<?= e(media_url($ph['src'])) ?>" data-lightbox="headliner" data-caption="<?= e($ph['caption'] ?: $headliner['title']) ?>"><img src="<?= e(media_url($ph['src'])) ?>" alt="<?= e($ph['title'] ?: $headliner['title']) ?>" loading="lazy"></a>
+              <?php endforeach; ?>
+            </div>
+          <?php endif; ?>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px;">
+            <a class="btn btn-orange" href="<?= e($ticketUrl !== '' ? $ticketUrl : '#tickets') ?>" <?= $ticketUrl !== '' ? 'target="_blank" rel="noopener"' : '' ?>><i class="fa-solid fa-ticket"></i> Get tickets</a>
+            <a class="btn btn-ghost" href="#enter"><i class="fa-solid fa-plane-departure"></i> Win a trip for two</a>
+          </div>
+        </div>
+      </div>
+      <div class="lineup-grid" style="margin-top:18px;">
+        <?php foreach ($others as $i => $a): ?>
           <figure class="artist-card reveal <?= 'reveal-d' . ($i % 3 + 1) ?>" style="margin:0">
             <img src="<?= e(media_url($a['src'])) ?>" alt="<?= e($a['title']) ?>" loading="lazy">
             <figcaption class="cap"><span><?= e($a['caption'] ?: 'Live') ?></span><strong><?= e($a['title']) ?></strong></figcaption>
           </figure>
         <?php endforeach; ?>
+        <div class="artist-card artist-more reveal">
+          <div><span class="kicker">And many more</span><strong>More artists<br><span class="serif-i text-orange">to be announced.</span></strong><p class="muted">Join the GMF list and hear first.</p><a class="btn btn-ghost btn-sm" href="#join">Notify me</a></div>
+        </div>
       </div>
     <?php else: ?>
       <div class="lineup-soon reveal">
