@@ -307,7 +307,7 @@ function otp_issue(array $entrant, string $purpose): array
     if ($wait > 0) {
         return ['ok' => false, 'error' => "Please wait {$wait} seconds before requesting another code.", 'cooldown' => $wait];
     }
-    if (!rate_limit('otp_entrant', (string) $id, 6, 3600) || !rate_limit('otp_ip', client_ip(), 120, 3600)) {
+    if (!rate_limit('otp_entrant', (string) $id, 6, 3600) || !rate_limit('otp_ip', client_ip(), 300, 3600)) {
         return ['ok' => false, 'error' => 'Too many codes requested. Please try again in an hour.', 'cooldown' => 0];
     }
     if (empty($entrant['email'])) {

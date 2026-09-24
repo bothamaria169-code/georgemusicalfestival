@@ -52,7 +52,7 @@ try {
                 json_out(['ok' => false, 'error' => 'Please complete the security check.'], 400);
             }
         }
-        if (!rate_limit('entry_start', client_ip(), $isPartner ? 600 : 80, 3600)) {
+        if (!rate_limit('entry_start', client_ip(), $isPartner ? 600 : 300, 3600)) {
             json_out(['ok' => false, 'error' => 'Too many attempts from this connection. Please try again later.'], 429);
         }
 
