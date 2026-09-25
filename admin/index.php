@@ -77,6 +77,13 @@ admin_head('Overview', 'overview');
       <?php endforeach; ?>
       <?php if (!$r['travel_profile']): ?><p class="muted">No data yet.</p><?php endif; ?>
     </div>
+    <h2 style="margin-top:22px">Age groups</h2>
+    <div class="hbar">
+      <?php $maxAge = max(array_column($r['age_profile'], 'verified') ?: [1]); foreach ($r['age_profile'] as $row): ?>
+        <div><em><?= e($row['answer']) ?></em><i style="width:<?= round($row['verified'] / $maxAge * 100) ?>%"></i><b><?= (int) $row['verified'] ?></b></div>
+      <?php endforeach; ?>
+      <?php if (!$r['age_profile']): ?><p class="muted">No data yet.</p><?php endif; ?>
+    </div>
   </div>
   <div class="card">
     <h2>Event day by hour <span class="muted" style="letter-spacing:0;text-transform:none;font-weight:600"><?= e(fmt_date(setting('event_date'), 'j M')) ?></span></h2>

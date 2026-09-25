@@ -87,14 +87,26 @@ if ($step === 3) {
     ussd('CON', $menu);
 }
 $town = $towns[(int) $parts[3] - 1] ?? null;
+$ages = lines((string) setting('age_groups'));
 if ($step === 4) {
-    $termsUrl = preg_replace('#^https?://#', '', url('flyfortwo/terms'));
-    ussd('CON', "Do you accept the {$comp} terms & conditions? (See {$termsUrl})\n1. I accept\n2. Cancel");
+    $menu = 'Your age group:';
+    foreach ($ages as $i => $a) {
+        $menu .= "\n" . ($i + 1) . '. ' . $a;
+    }
+    ussd('CON', $menu);
 }
-if ($parts[4] !== '1') {
-    ussd('END', 'Entry cancelled. You need to accept the terms to enter.');
+$age = $ages[(int) $parts[4] - 1] ?? null;
+if (!$age || is_under_18_group($age)) {
+    ussd('END', $age ? 'Sorry, you must be 18 or older to enter.' : 'Invalid choice. Please dial again.');
 }
 if ($step === 5) {
+    $termsUrl = preg_replace('#^https?://#', '', url('flyfortwo/terms'));
+    ussd('CON', "Do you accept the {$comp} terms (see {$termsUrl}) and consent to ACSA processing your personal information under POPIA?\n1. I accept\n2. Cancel");
+}
+if ($parts[5] !== '1') {
+    ussd('END', 'Entry cancelled. You need to accept the terms and POPIA consent to enter.');
+}
+if ($step === 6) {
     ussd('CON', "Optional: receive GMF x ACSA event news and travel offers?\n1. Yes\n2. No");
 }
 
@@ -103,8 +115,10 @@ if ($step === 5) {
     'phone'             => $phone,
     'town'              => $town,
     'fly_frequency'     => $fly,
+    'age_group'         => $age,
     'consent_terms'     => 1,
-    'consent_marketing' => ($parts[5] ?? '') === '1',
+    'consent_popia'     => 1,
+    'consent_marketing' => ($parts[6] ?? '') === '1',
 ], false);
 if ($errors) {
     ussd('END', reset($errors));

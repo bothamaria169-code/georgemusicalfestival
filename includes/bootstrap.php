@@ -324,6 +324,13 @@ function setting_defaults(): array
         'prize_headline'    => 'A Weekend Getaway for Two',
         'travel_question'   => 'Have you flown before?',
         'travel_options'    => "No, I haven't flown yet\nOccasionally — once or twice a year\nFrequently — three or more times a year",
+        'age_groups'        => "Under 18
+18–24
+25–34
+35–44
+45–54
+55+",
+        'popia_consent_text'=> 'I consent to Airports Company South Africa (ACSA) collecting and processing my personal information for the purposes of the Passenger Mobilisation Programme.',
         'towns'             => "George\nThembalethu\nMossel Bay\nOudtshoorn\nPlettenberg Bay\nKnysna\nOther",
         'draw_reassurance'  => 'The winners are the two entrants whose personal links are opened by the most different people. The leaderboard is frozen when entries close, checked for fair play and recorded before the winners are revealed.',
         'share_bonus_cap'   => '0',

@@ -23,7 +23,7 @@ if (($_GET['view'] ?? '') === 'entrants') {
     $page  = max(1, (int) ($_GET['page'] ?? 1));
     $since = !empty($_GET['since']) ? date('Y-m-d H:i:s', strtotime((string) $_GET['since'])) : '1970-01-01 00:00:00';
     $total = (int) q("SELECT COUNT(*) FROM entrants WHERE status = 'verified' AND verified_at >= ?", [$since])->fetchColumn();
-    $rows  = q("SELECT id, full_name, email, phone, town, fly_frequency, consent_terms, consent_marketing, consent_at,
+    $rows  = q("SELECT id, full_name, email, phone, town, age_group, fly_frequency, consent_terms, consent_popia, consent_marketing, consent_at,
                        verified_at, verified_via, channel, activation_point, source_town, time_slot, utm_source, utm_medium, utm_campaign,
                        referred_by, created_at,
                        (SELECT COUNT(*) FROM entries e WHERE e.entrant_id = entrants.id) AS entries

@@ -16,6 +16,8 @@ $groups = [
         'prize_headline'   => ['Prize headline', 'text'],
         'travel_question'  => ['Travel-profile question', 'text'],
         'travel_options'   => ['Answer options (one per line)', 'lines'],
+        'age_groups'       => ['Age groups (one per line — "Under 18" is shown but cannot enter)', 'lines'],
+        'popia_consent_text' => ['POPIA consent wording (required tick box)', 'textarea'],
         'towns'            => ['Town list (one per line)', 'lines'],
         'draw_reassurance' => ['Draw reassurance copy', 'textarea'],
     ],

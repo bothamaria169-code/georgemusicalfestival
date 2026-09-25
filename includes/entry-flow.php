@@ -37,6 +37,10 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
         <select id="f-town" name="town"><option value="">Choose…</option><?php foreach ($towns as $t): ?><option<?= $t === $src['source_town'] ? ' selected' : '' ?>><?= e($t) ?></option><?php endforeach; ?></select>
       </div>
     </div>
+    <div class="field"><label for="f-age">Age group</label>
+      <select id="f-age" name="age_group" required><option value="">Choose…</option><?php foreach (lines((string) setting('age_groups')) as $a): ?><option><?= e($a) ?></option><?php endforeach; ?></select>
+      <small class="ff-hint">Entrants must be 18 or older.</small>
+    </div>
     <div class="field"><label for="f-fly"><?= e(setting('travel_question')) ?></label>
       <select id="f-fly" name="fly_frequency" required><option value="">Choose an answer…</option><?php foreach ($flyOpts as $o): ?><option><?= e($o) ?></option><?php endforeach; ?></select>
     </div>
@@ -44,6 +48,10 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
     <div class="ff-consent is-required" data-field="consent_terms">
       <input type="checkbox" id="c-terms" name="consent_terms" value="1">
       <label for="c-terms"><span class="ff-tag">Required</span> I agree to the <?= e(setting('comp_name')) ?> <a href="<?= e(url('flyfortwo/terms')) ?>" target="_blank">competition terms &amp; conditions</a> and the <a href="<?= e(url('flyfortwo/privacy')) ?>" target="_blank">privacy notice</a>. My information is processed in line with POPIA, and my first name, surname initial and town may appear on the public leaderboard.</label>
+    </div>
+    <div class="ff-consent is-required" data-field="consent_popia">
+      <input type="checkbox" id="c-popia" name="consent_popia" value="1">
+      <label for="c-popia"><span class="ff-tag">Required</span> <strong>POPIA consent:</strong> <?= e(setting('popia_consent_text')) ?></label>
     </div>
     <div class="ff-consent is-optional">
       <input type="checkbox" id="c-mkt" name="consent_marketing" value="1">

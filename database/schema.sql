@@ -8,7 +8,9 @@ CREATE TABLE IF NOT EXISTS entrants (
   phone             VARCHAR(20)  NOT NULL,            -- normalised: 27XXXXXXXXX
   town              VARCHAR(80)  NULL,
   fly_frequency     VARCHAR(60)  NULL,                -- travel-profile answer
+  age_group         VARCHAR(12)  NULL,                -- 18–24, 25–34 …
   consent_terms     TINYINT(1)   NOT NULL DEFAULT 0,
+  consent_popia     TINYINT(1)   NOT NULL DEFAULT 0,  -- explicit POPIA consent (ACSA wording)
   consent_marketing TINYINT(1)   NOT NULL DEFAULT 0,
   consent_at        DATETIME     NULL,
   status            ENUM('pending','verified','disqualified') NOT NULL DEFAULT 'pending',

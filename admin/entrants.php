@@ -64,11 +64,11 @@ if (isset($_GET['export'])) {
     audit('entrants.export', ['filters' => $_GET]);
     $rows = q($select . ' ORDER BY p.id', $params);
     csv_download('flyfortwo-entrants-' . date('Ymd-His') . '.csv',
-        ['ID', 'Full name', 'Email', 'Phone', 'Town', 'Travel profile', 'Terms consent', 'Marketing consent', 'Consent at', 'Status', 'Verified at', 'Verified via',
+        ['ID', 'Full name', 'Email', 'Phone', 'Town', 'Age group', 'Travel profile', 'Terms consent', 'POPIA consent', 'Marketing consent', 'Consent at', 'Status', 'Verified at', 'Verified via',
          'Channel', 'Activation point', 'Source town', 'Time slot', 'UTM source', 'UTM medium', 'UTM campaign', 'Referral code', 'Referred by', 'Link opens', 'Friends referred', 'Created at'],
         (function () use ($rows) {
             foreach ($rows as $p) {
-                yield [$p['id'], $p['full_name'], $p['email'], display_phone($p['phone']), $p['town'], $p['fly_frequency'], $p['consent_terms'] ? 'yes' : 'no',
+                yield [$p['id'], $p['full_name'], $p['email'], display_phone($p['phone']), $p['town'], $p['age_group'], $p['fly_frequency'], $p['consent_terms'] ? 'yes' : 'no', $p['consent_popia'] ? 'yes' : 'no',
                     $p['consent_marketing'] ? 'yes' : 'no', $p['consent_at'], $p['status'], $p['verified_at'], $p['verified_via'], $p['channel'], $p['activation_point'],
                     $p['source_town'], $p['time_slot'], $p['utm_source'], $p['utm_medium'], $p['utm_campaign'], $p['ref_code'], $p['referrer_name'], $p['entries'], $p['referrals'], $p['created_at']];
             }
@@ -105,9 +105,9 @@ admin_head('Entrants', 'entrants');
         <td class="muted"><?= (int) $p['id'] ?></td>
         <td><?php if ($p['photo']): ?><img src="<?= e(media_url($p['photo'])) ?>" alt="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;float:left;margin-right:8px"><?php endif; ?><strong><?= e($p['full_name']) ?></strong><br><small class="muted"><?= e($p['ref_code']) ?><?= $p['referrer_name'] ? ' · via ' . e(short_name($p['referrer_name'])) : '' ?></small></td>
         <td><?= e($p['email'] ?: '—') ?><br><small class="muted"><?= e(display_phone($p['phone'])) ?></small></td>
-        <td><?= e($p['town'] ?: '—') ?><br><small class="muted"><?= e($p['fly_frequency']) ?></small></td>
+        <td><?= e($p['town'] ?: '—') ?><br><small class="muted"><?= e(trim(($p['age_group'] ? $p['age_group'] . ' · ' : '') . $p['fly_frequency'])) ?></small></td>
         <td><span class="pill pill-info"><?= e($p['channel']) ?></span><br><small class="muted"><?= e(trim(($p['activation_point'] ?? '') . ' ' . ($p['time_slot'] ? '· ' . $p['time_slot'] : ''))) ?></small></td>
-        <td><span class="pill pill-ok">Terms</span> <?= $p['consent_marketing'] ? '<span class="pill pill-ok">Mkt</span>' : '<span class="pill pill-muted">No mkt</span>' ?></td>
+        <td><span class="pill pill-ok">Terms</span> <?= $p['consent_popia'] ? '<span class="pill pill-ok">POPIA</span>' : '' ?><?= $p['consent_marketing'] ? '<span class="pill pill-ok">Mkt</span>' : '<span class="pill pill-muted">No mkt</span>' ?></td>
         <td class="num"><strong><?= (int) $p['entries'] ?></strong></td>
         <td class="num"><?= (int) $p['referrals'] ?></td>
         <td>

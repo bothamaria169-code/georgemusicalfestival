@@ -84,7 +84,7 @@ function default_privacy_html(): string
 
 <h2>What we collect</h2>
 <ul>
-<li><strong>Details you give us:</strong> full name, cellphone number, email address, town, your answer to the travel question, and your consent choices.</li>
+<li><strong>Details you give us:</strong> full name, cellphone number, email address, town, age group, your answer to the travel question, and your consent choices (including your POPIA consent to ACSA).</li>
 <li><strong>Your photo,</strong> only if you choose to upload one on your dashboard.</li>
 <li><strong>How you entered:</strong> the channel or QR code used, for example which activation point.</li>
 <li><strong>Fraud-prevention data:</strong> a scrambled (hashed) version of your internet address, a device identifier and browser type. We use these to stop duplicate entries and fake link opens, not to identify you.</li>
@@ -95,7 +95,7 @@ function default_privacy_html(): string
 <ul>
 <li>To run the competition: confirm your entry, calculate the leaderboard, and contact and verify winners.</li>
 <li>To keep the competition fair and prevent fraud.</li>
-<li>To report to ACSA on how the campaign performed, mostly as totals by channel, town and date.</li>
+<li>To report to ACSA on how the campaign performed, mostly as totals by channel, town, age group and date.</li>
 <li>To send you news and travel offers from GMF and ACSA — <strong>only if you ticked the optional marketing box.</strong> You can switch this off on your dashboard or by emailing us.</li>
 </ul>
 <p>We process your information with your consent and because it is necessary to run the competition you entered.</p>

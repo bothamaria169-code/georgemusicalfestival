@@ -40,6 +40,7 @@ function report_summary(): array
         'event_day_by_hour' => q("SELECT HOUR(verified_at) AS hour, channel, COUNT(*) AS verified
                                   FROM entrants WHERE status = 'verified' AND DATE(verified_at) = ?
                                   GROUP BY HOUR(verified_at), channel ORDER BY hour", [setting('event_date')])->fetchAll(),
+        'age_profile' => q("SELECT COALESCE(age_group, 'Not asked') AS answer, COUNT(*) AS verified FROM entrants WHERE status = 'verified' GROUP BY age_group ORDER BY answer")->fetchAll(),
         'travel_profile' => q("SELECT fly_frequency AS answer, COUNT(*) AS verified FROM entrants WHERE status = 'verified' GROUP BY fly_frequency ORDER BY verified DESC")->fetchAll(),
     ];
 }

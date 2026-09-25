@@ -3,7 +3,7 @@
  * FLY FOR TWO entry API — used by the landing page, the ACSA embed, and
  * ACSA's own systems (with X-Api-Key). Every channel writes to the same tables.
  *
- * POST action=start   full_name, email, phone, town, fly_frequency, consent_terms, consent_marketing,
+ * POST action=start   full_name, email, phone, town, age_group, fly_frequency, consent_terms, consent_popia, consent_marketing,
  *                     channel, pt, town_src, slot, ref, fp, timer, website (honeypot), cf-turnstile-response
  * POST action=verify  token, code
  * POST action=resend  token

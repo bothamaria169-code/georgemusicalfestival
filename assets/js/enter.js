@@ -73,7 +73,7 @@
   var PENDING = 'ff_pending_v1', DRAFT = 'ff_draft_v1', MAX_AGE = 30 * 60 * 1000;
   function store(key, val) { try { val === null ? localStorage.removeItem(key) : localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
   function load(key) { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) { return null; } }
-  var draftFields = ['full_name', 'email', 'phone', 'town', 'fly_frequency', 'consent_terms', 'consent_marketing'];
+  var draftFields = ['full_name', 'email', 'phone', 'town', 'age_group', 'fly_frequency', 'consent_terms', 'consent_popia', 'consent_marketing'];
   function saveDraft() {
     var d = { t: Date.now() };
     draftFields.forEach(function (n) { var el = form1.elements[n]; if (el) d[n] = el.type === 'checkbox' ? el.checked : el.value; });
@@ -114,7 +114,10 @@
     if (f.full_name.value.trim().split(/\s+/).length < 2) e.full_name = 'Please enter your first name and surname.';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.value.trim())) e.email = 'Please enter a valid email address.';
     if (f.phone.value.replace(/\D/g, '').length < 9) e.phone = 'Please enter a valid cellphone number.';
+    if (!f.age_group.value) e.age_group = 'Please choose your age group.';
+    else if (/^\s*(under|<)\s*18/i.test(f.age_group.value)) e.age_group = 'Sorry — you must be 18 or older to enter.';
     if (!f.fly_frequency.value) e.fly_frequency = 'Please answer the travel question.';
+    if (!f.consent_popia.checked) e.consent_popia = 'POPIA consent is required to enter.';
     if (!f.consent_terms.checked) e.consent_terms = 'You need to accept the competition terms to enter.';
     return e;
   }

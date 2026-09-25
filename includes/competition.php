@@ -163,6 +163,12 @@ function entrant_by_ref(string $code): ?array
     return q("SELECT * FROM entrants WHERE ref_code = ? AND status = 'verified'", [$code])->fetch() ?: null;
 }
 
+/** True for the "Under 18" option (or any wording that starts with "under"). */
+function is_under_18_group(string $age): bool
+{
+    return $age !== '' && (bool) preg_match('/^\s*(under|<)\s*18/i', $age);
+}
+
 /**
  * Validate an entry submission. Returns [clean data, errors].
  * $requireEmail is false only for USSD, where the network verifies the phone.
@@ -177,6 +183,8 @@ function validate_entry(array $in, bool $requireEmail = true): array
     $towns = lines((string) setting('towns'));
     $fly = trim((string) ($in['fly_frequency'] ?? ''));
     $town = trim((string) ($in['town'] ?? ''));
+    $ages = lines((string) setting('age_groups'));
+    $age = trim((string) ($in['age_group'] ?? ''));
 
     if (mb_strlen($name) < 3 || !str_contains($name, ' ')) {
         $errors['full_name'] = 'Please enter your first name and surname.';
@@ -195,6 +203,14 @@ function validate_entry(array $in, bool $requireEmail = true): array
     if ($towns && $town !== '' && !in_array($town, $towns, true)) {
         $errors['town'] = 'Please choose your town from the list.';
     }
+    if ($ages && !in_array($age, $ages, true)) {
+        $errors['age_group'] = 'Please choose your age group.';
+    } elseif (is_under_18_group($age)) {
+        $errors['age_group'] = 'Sorry — you must be 18 or older to enter.';
+    }
+    if (empty($in['consent_popia'])) {
+        $errors['consent_popia'] = 'POPIA consent is required to enter.';
+    }
     if (empty($in['consent_terms'])) {
         $errors['consent_terms'] = 'You need to accept the competition terms to enter.';
     }
@@ -205,7 +221,9 @@ function validate_entry(array $in, bool $requireEmail = true): array
         'phone'             => $phone,
         'town'              => $town !== '' ? $town : null,
         'fly_frequency'     => $fly,
+        'age_group'         => $age !== '' ? $age : null,
         'consent_terms'     => 1,
+        'consent_popia'     => 1,
         'consent_marketing' => !empty($in['consent_marketing']) ? 1 : 0,
     ], $errors];
 }
