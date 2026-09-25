@@ -158,6 +158,9 @@ require __DIR__ . '/includes/header.php';
           <div><small>Time</small><strong><?= e(setting('event_time')) ?></strong></div>
           <div><small>Tickets</small><strong><?= e($ticketUrl !== '' ? 'On sale now' : setting('ticket_note')) ?></strong></div>
         </div>
+        <?php if ($ticketUrl !== ''): ?>
+          <a class="btn btn-primary btn-lg reveal" style="margin-top:26px" href="<?= e($ticketUrl) ?>" target="_blank" rel="noopener"><i class="fa-solid fa-ticket"></i> Buy tickets on Computicket</a>
+        <?php endif; ?>
 
         <div class="reveal" style="margin-top:34px;" data-countdown="<?= e(date('c', strtotime($eventDate . ' 12:00'))) ?>">
           <span class="kicker" style="color:var(--orange-deep)">Countdown</span>
