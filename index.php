@@ -134,9 +134,9 @@ require __DIR__ . '/includes/header.php';
       <p class="lede reveal" style="margin-top:18px;">For many people on the Garden Route, flying still feels out of reach. Together with Airports Company South Africa, George Music Festival is changing that — one weekend getaway, one first flight, one new journey at a time.</p>
       <p class="muted reveal">At <?= e($eventName) ?>, the ACSA Experience brings airports closer: meet Moyeni, the ACSA mascot, talk to the airport team about travel and careers, and find out how to climb the FLY FOR TWO leaderboard.</p>
     </div>
-    <div class="acsa-collage reveal reveal-d2">
-      <img class="c-a" src="<?= e(url('assets/img/acsa/or-tambo-building.jpg')) ?>" alt="Airports Company South Africa building at O.R. Tambo" loading="lazy">
-      <img class="c-b" src="<?= e(url('assets/img/acsa/acsa-team-kerbside.jpg')) ?>" alt="The ACSA airport team outside the terminal" loading="lazy">
+    <div class="acsa-collage acsa-collage--wide reveal reveal-d2">
+      <img class="c-a" src="<?= e(url('assets/img/acsa/acsa-team-kerbside.jpg')) ?>" alt="The ACSA airport team in the terminal" loading="lazy">
+      <img class="c-b" src="<?= e(url('assets/img/acsa/or-tambo-building.jpg')) ?>" alt="Airports Company South Africa building at O.R. Tambo" loading="lazy">
       <img class="c-c" src="<?= e(url('assets/img/acsa/plane-at-the-gate.jpg')) ?>" alt="A plane at the gate" loading="lazy">
     </div>
   </div>
@@ -202,7 +202,7 @@ require __DIR__ . '/includes/header.php';
         <div class="exp-body"><span class="exp-n">03</span><h3>The ACSA Experience</h3><p>Meet Moyeni, discover what flying is really like, enter FLY FOR TWO on the spot and share your link for a place on the leaderboard.</p></div>
       </article>
       <article class="exp-card reveal reveal-d3">
-        <img src="<?= e(url('assets/img/acsa/acsa-team-kerbside.jpg')) ?>" alt="The ACSA airport team" loading="lazy">
+        <img src="<?= e(url('assets/img/acsa/acsa-team-kerbside.jpg')) ?>" alt="The ACSA airport team in the terminal" loading="lazy">
         <div class="exp-body"><span class="exp-n">04</span><h3>Youth &amp; careers</h3><p>The airport team shares what goes on behind the scenes — from customer service to operations and tourism.</p></div>
       </article>
     </div>

@@ -625,3 +625,14 @@ button { font: inherit; }
 .artist-more strong { display: block; font-family: var(--f-display); text-transform: uppercase; font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1; margin: 12px 0 10px; }
 .artist-more .kicker::after { display: none; }
 @media (max-width: 860px) { .headliner { grid-template-columns: 1fr; } .headliner-photo { aspect-ratio: 4 / 5; } }
+
+/* ACSA collage, wide variant: the team group photo across the top, two photos below */
+.acsa-collage--wide { grid-template-columns: 1fr 1fr; grid-template-rows: none; }
+.acsa-collage--wide .c-a { grid-column: span 2; grid-row: auto; aspect-ratio: 2 / 1; }
+.acsa-collage--wide .c-b, .acsa-collage--wide .c-c { grid-row: auto; aspect-ratio: 4 / 3; }
+@media (max-width: 900px) { .acsa-collage--wide { grid-template-rows: none; } }
+
+/* Long button labels wrap on small phones instead of pushing past the screen edge */
+@media (max-width: 480px) { .btn { white-space: normal; text-align: center; line-height: 1.3; } }
+.howto-steps > *, .howto-step > div { min-width: 0; }
+.howto-step > div { overflow-wrap: anywhere; }
