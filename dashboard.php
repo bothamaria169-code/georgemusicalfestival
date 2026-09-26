@@ -51,8 +51,8 @@ $first   = explode(' ', $me['full_name'])[0];
 $prize   = (string) setting('prize_headline');
 
 $scripts = [
-    'WhatsApp status' => "📱 I just entered WIN A HUAWEI — you could win {$prize} worth " . setting('prize_value') . " with George Music Festival × Cell C. Free to enter, takes a minute 👉 {$link}",
-    'Group chat'      => "Guys, GMF and Cell C are giving away {$prize} worth " . setting('prize_value') . ". Enter free here before " . fmt_date(setting('comp_close_at'), 'j F') . ": {$link}",
+    'WhatsApp status' => "📱 I just entered WIN A HUAWEI — you could win {$prize} worth " . setting('prize_value') . " with George Musical Festival × Cell C. Free to enter, takes a minute 👉 {$link}",
+    'Group chat'      => "Guys, George Musical Festival and Cell C are giving away {$prize} worth " . setting('prize_value') . ". Enter free here before " . fmt_date(setting('comp_close_at'), 'j F') . ": {$link}",
     'Short & sweet'   => "Win a brand-new Huawei Pura 80 Pro 📱 {$link}",
 ];
 
@@ -76,7 +76,7 @@ require __DIR__ . '/includes/header.php';
     <figure class="dash-plane">
       <img src="<?= e(url('assets/img/cellc/prize-phone-side.jpg')) ?>" width="1800" height="1200" alt="A sleek white premium smartphone">
       <figcaption>
-        <span class="dash-logos"><img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival"><span>×</span><img src="<?= e(url('assets/img/brand/cellc-white.png')) ?>" alt="Cell C"></span>
+        <span class="dash-logos"><img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Musical Festival"><span>×</span><img src="<?= e(url('assets/img/brand/cellc-white.png')) ?>" alt="Cell C"></span>
         <strong>Your new phone is waiting.</strong>
       </figcaption>
     </figure>
@@ -201,7 +201,7 @@ require __DIR__ . '/includes/header.php';
           </ul>
           <form method="post" style="margin-top:14px;">
             <?= csrf_field() ?><input type="hidden" name="action" value="marketing">
-            <label class="check"><input type="checkbox" name="consent_marketing" value="1" <?= $me['consent_marketing'] ? 'checked' : '' ?> onchange="this.form.submit()"> Keep me updated on future GMF × Cell C events and offers.</label>
+            <label class="check"><input type="checkbox" name="consent_marketing" value="1" <?= $me['consent_marketing'] ? 'checked' : '' ?> onchange="this.form.submit()"> Keep me updated on future George Musical Festival × Cell C events and offers.</label>
           </form>
           <p class="muted" style="font-size:.8rem;margin:8px 0 0;">Need to change or delete your details? Email <a href="mailto:<?= e(setting('contact_email')) ?>" style="text-decoration:underline"><?= e(setting('contact_email')) ?></a>.</p>
         </div>

@@ -29,7 +29,7 @@ $winners  = $winners ?? ($state === 'closed' ? q("SELECT d.title, p.full_name, p
       <input type="hidden" name="timer" value="<?= e(form_timer()) ?>"><input type="hidden" name="source" value="fly-notify">
       <div class="hp" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
       <div class="field"><label for="n-email">Email me when it opens</label><input id="n-email" type="email" name="email" required placeholder="you@example.com"></div>
-      <label class="check"><input type="checkbox" name="consent" value="1" required> Send me GMF news and the competition launch alert.</label>
+      <label class="check"><input type="checkbox" name="consent" value="1" required> Send me George Musical Festival news and the competition launch alert.</label>
       <button class="ff-btn ff-btn-primary" type="submit">Notify me</button>
     </form>
   </div>

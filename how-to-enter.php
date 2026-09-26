@@ -51,7 +51,7 @@ require __DIR__ . '/includes/header.php';
           <p>Use whichever is easiest:</p>
           <ul>
             <li>The form at the top of <a href="<?= e(url('index.php#enter')) ?>">georgemusicalfestival.co.za</a> or on the <a href="<?= e($enterUrl) ?>">competition page</a></li>
-            <li>Scan a WIN A HUAWEI QR code on a GMF flyer, poster or event screen</li>
+            <li>Scan a WIN A HUAWEI QR code on a George Musical Festival flyer, poster or event screen</li>
             <li>A friend's personal share link</li>
           </ul>
         </div>
@@ -140,7 +140,7 @@ require __DIR__ . '/includes/header.php';
       <details><summary>It says I've already entered</summary><p>That phone number or email address is already in the draw. <a href="<?= e(url('win/login')) ?>">Sign in</a> to see your entries and your share link.</p></details>
       <details><summary>Does sharing my link cost anything?</summary><p>No. Sharing is free. Each different person who opens your link adds 1 to your score — spam or fake clicks are removed and can lead to disqualification.</p></details>
       <details><summary>How is the winner chosen?</summary><p><?= e(setting('draw_reassurance')) ?></p></details>
-      <details><summary>What happens to my information?</summary><p>It's used to run the competition and is held by Cell C and GMF. You'll only get news and offers if you ticked the optional box, and you can switch that off on your dashboard. See the <a href="<?= e(url('win/privacy')) ?>">privacy notice</a>.</p></details>
+      <details><summary>What happens to my information?</summary><p>It's used to run the competition and is held by Cell C and George Musical Festival. You'll only get news and offers if you ticked the optional box, and you can switch that off on your dashboard. See the <a href="<?= e(url('win/privacy')) ?>">privacy notice</a>.</p></details>
     </div>
   </div>
 </section>

@@ -21,7 +21,7 @@ $shareCap   = (int) setting('share_bonus_cap');
 $headWords  = preg_split('/\s+/', trim((string) setting('hero_headline'))) ?: [];
 $headAccent = count($headWords) > 1 ? array_pop($headWords) : '';
 
-$page_title       = 'Win a Huawei Pura 80 Pro — WIN A HUAWEI · George Music Festival × Cell C';
+$page_title       = 'Win a Huawei Pura 80 Pro — WIN A HUAWEI · George Musical Festival × Cell C';
 $meta_description = (string) setting('hero_text');
 $og_image         = url('assets/img/cellc/hero-win-a-huawei.jpg');
 $nav_active       = 'home';
@@ -124,15 +124,15 @@ require __DIR__ . '/includes/header.php';
   </div>
 </section>
 
-<!-- ═══════════════ CELL C × GMF ═══════════════ -->
+<!-- ═══════════════ CELL C × George Musical Festival ═══════════════ -->
 <section class="section acsa-feature">
   <div class="wrap acsa-grid">
     <div class="acsa-copy">
       <img class="acsa-logo reveal" src="<?= e(url('assets/img/brand/cellc-white.png')) ?>" alt="Cell C" loading="lazy">
-      <span class="kicker reveal" style="margin-top:26px;">Cell C × GMF</span>
+      <span class="kicker reveal" style="margin-top:26px;">Cell C × George Musical Festival</span>
       <h2 class="display big reveal" style="margin-top:16px;">Change your <span class="serif-i text-orange">world.</span></h2>
-      <p class="lede reveal" style="margin-top:18px;">Music brings the Garden Route together, and your phone keeps you connected to it. Cell C and George Music Festival are celebrating both, with a brand-new Huawei Pura 80 Pro for one lucky entrant.</p>
-      <p class="muted reveal">Enter online or at any GMF activation point, then share your personal link with friends and family. Every different person who opens it moves you up the <?= e(setting('comp_name')) ?> leaderboard.</p>
+      <p class="lede reveal" style="margin-top:18px;">Music brings the Garden Route together, and your phone keeps you connected to it. Cell C and George Musical Festival are celebrating both, with a brand-new Huawei Pura 80 Pro for one lucky entrant.</p>
+      <p class="muted reveal">Enter online or at any George Musical Festival activation point, then share your personal link with friends and family. Every different person who opens it moves you up the <?= e(setting('comp_name')) ?> leaderboard.</p>
     </div>
     <div class="acsa-collage acsa-collage--wide reveal reveal-d2">
       <img class="c-a" src="<?= e(url('assets/img/cellc/friends-phones.jpg')) ?>" alt="Young friends sharing something on their phones" loading="lazy">
@@ -150,7 +150,7 @@ require __DIR__ . '/includes/header.php';
         <span class="kicker reveal"><span class="num">01</span> The Event</span>
         <h2 class="display huge reveal" style="margin:22px 0 34px;">Music is the <span class="serif-i text-orange">reason</span> to travel.</h2>
         <p class="lede dropcap reveal"><?= e($eventName) ?> brings soul, jazz and the sound of the Garden Route to <?= e($venue) ?> — a full day of live music, food, culture and community under the George sky.</p>
-        <p class="reveal muted">George Music Festival is a regional platform connecting music, culture, community, lifestyle and tourism. Local talent gives it authenticity; the Garden Route gives it a destination worth the trip. This year, with Cell C, we're keeping everyone connected — from the first flyer on the street to the final note on stage.</p>
+        <p class="reveal muted">George Musical Festival is a regional platform connecting music, culture, community, lifestyle and tourism. Local talent gives it authenticity; the Garden Route gives it a destination worth the trip. This year, with Cell C, we're keeping everyone connected — from the first flyer on the street to the final note on stage.</p>
 
         <div class="fact-grid reveal">
           <div><small>Date</small><strong><?= e(fmt_date($eventDate, 'l, j F Y')) ?></strong></div>
@@ -173,8 +173,8 @@ require __DIR__ . '/includes/header.php';
         </div>
       </div>
       <div class="spread-media reveal reveal-d2">
-        <div class="img-a"><img src="<?= e(url('assets/img/gallery/crowd-night.jpg')) ?>" alt="The crowd at a George Music Festival night show" loading="lazy"></div>
-        <div class="img-b"><img src="<?= e(url('assets/img/gallery/activation-22.jpg')) ?>" alt="The GMF street team in George" loading="lazy"></div>
+        <div class="img-a"><img src="<?= e(url('assets/img/gallery/crowd-night.jpg')) ?>" alt="The crowd at a George Musical Festival night show" loading="lazy"></div>
+        <div class="img-b"><img src="<?= e(url('assets/img/gallery/activation-22.jpg')) ?>" alt="The George Musical Festival street team in George" loading="lazy"></div>
       </div>
     </div>
   </div>
@@ -193,11 +193,11 @@ require __DIR__ . '/includes/header.php';
     </div>
     <div class="exp-grid">
       <article class="exp-card reveal">
-        <img src="<?= e(url('assets/img/gallery/performer-stage.jpg')) ?>" alt="A performer on the George Music Festival stage" loading="lazy">
+        <img src="<?= e(url('assets/img/gallery/performer-stage.jpg')) ?>" alt="A performer on the George Musical Festival stage" loading="lazy">
         <div class="exp-body"><span class="exp-n">01</span><h3>Live soul &amp; jazz</h3><p>A full day of live soul and jazz, from the afternoon until the lights go down.</p></div>
       </article>
       <article class="exp-card reveal reveal-d1">
-        <img src="<?= e(url('assets/img/gallery/activation-23.jpg')) ?>" alt="The GMF crew with local partners" loading="lazy">
+        <img src="<?= e(url('assets/img/gallery/activation-23.jpg')) ?>" alt="The George Musical Festival crew with local partners" loading="lazy">
         <div class="exp-body"><span class="exp-n">02</span><h3>Food, culture &amp; community</h3><p>Garden Route food, fashion and friends. A day out built for the whole community, not just the front row.</p></div>
       </article>
       <article class="exp-card reveal reveal-d2">
@@ -225,7 +225,7 @@ require __DIR__ . '/includes/header.php';
         <li class="reveal"><i class="fa-solid fa-route"></i><div><strong>Getting to George</strong><span>Drive in over the Outeniqua Pass or along the N2, or fly into George Airport with daily domestic flights.</span></div></li>
         <li class="reveal"><i class="fa-solid fa-location-dot"></i><div><strong><?= e($venue) ?></strong><span><?= e(fmt_date($eventDate, 'l, j F Y')) ?> · <?= e(setting('event_time')) ?></span></div></li>
         <li class="reveal"><i class="fa-solid fa-bed"></i><div><strong>Stay on the Garden Route</strong><span>George, Mossel Bay, Knysna, Oudtshoorn and Plettenberg Bay are all within reach — turn one festival day into a full weekend.</span></div></li>
-        <li class="reveal"><i class="fa-solid fa-ticket"></i><div><strong><?= $ticketUrl !== '' ? 'Tickets on sale now' : e(setting('ticket_note')) ?></strong><span><?= $ticketUrl !== '' ? '<a class="text-link" href="' . e($ticketUrl) . '" target="_blank" rel="noopener">Buy tickets <i class="fa-solid fa-arrow-right"></i></a>' : 'Join the GMF list at the bottom of this page to hear first.' ?></span></div></li>
+        <li class="reveal"><i class="fa-solid fa-ticket"></i><div><strong><?= $ticketUrl !== '' ? 'Tickets on sale now' : e(setting('ticket_note')) ?></strong><span><?= $ticketUrl !== '' ? '<a class="text-link" href="' . e($ticketUrl) . '" target="_blank" rel="noopener">Buy tickets <i class="fa-solid fa-arrow-right"></i></a>' : 'Join the George Musical Festival list at the bottom of this page to hear first.' ?></span></div></li>
       </ol>
       <div class="plan-cta reveal">
         <p>And capture it all on a new phone: <strong>win a brand-new Huawei Pura 80 Pro worth <?= e(setting('prize_value')) ?>.</strong></p>
@@ -240,8 +240,8 @@ require __DIR__ . '/includes/header.php';
   <img src="<?= e(url('assets/img/cellc/concert-phones-blue.jpg')) ?>" alt="" data-parallax loading="lazy">
   <div class="wrap">
     <blockquote class="pullquote reveal">
-      <p>GMF brings the <em>music</em>. Cell C keeps you <em>connected</em>.</p>
-      <cite>George Music Festival × Cell C</cite>
+      <p>George Musical Festival brings the <em>music</em>. Cell C keeps you <em>connected</em>.</p>
+      <cite>George Musical Festival × Cell C</cite>
     </blockquote>
   </div>
 </section>
@@ -290,7 +290,7 @@ $hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, fals
           </figure>
         <?php endforeach; ?>
         <div class="artist-card artist-more reveal">
-          <div><span class="kicker">And many more</span><strong>More artists<br><span class="serif-i text-orange">to be announced.</span></strong><p class="muted">Join the GMF list and hear first.</p><a class="btn btn-ghost btn-sm" href="#join">Notify me</a></div>
+          <div><span class="kicker">And many more</span><strong>More artists<br><span class="serif-i text-orange">to be announced.</span></strong><p class="muted">Join the George Musical Festival list and hear first.</p><a class="btn btn-ghost btn-sm" href="#join">Notify me</a></div>
         </div>
       </div>
     <?php else: ?>
@@ -316,7 +316,7 @@ $hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, fals
       <?php $spans = ['m-a', 'm-b', 'm-c', 'm-d', 'm-e', 'm-f', 'm-g'];
       foreach (array_slice($images, 0, 7) as $i => $img): ?>
         <a class="tile <?= $spans[$i] ?> reveal" href="<?= e(media_url($img['src'])) ?>" data-lightbox="home" data-caption="<?= e($img['caption'] ?: $img['title']) ?>">
-          <img src="<?= e(media_url($img['src'])) ?>" alt="<?= e($img['title'] ?: 'George Music Festival') ?>" loading="lazy">
+          <img src="<?= e(media_url($img['src'])) ?>" alt="<?= e($img['title'] ?: 'George Musical Festival') ?>" loading="lazy">
           <span class="tile-cap"><?= e($img['album']) ?></span>
         </a>
       <?php endforeach; ?>
@@ -357,7 +357,7 @@ $hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, fals
       <div class="video-soon reveal">
         <div>
           <p class="display big" style="margin:0">Festival films<br><span class="serif-i text-orange">dropping soon.</span></p>
-          <p class="muted" style="margin:18px 0 0;max-width:520px;">Artist sessions, behind-the-scenes and the story of the street campaign — follow GMF so you don't miss the premiere.</p>
+          <p class="muted" style="margin:18px 0 0;max-width:520px;">Artist sessions, behind-the-scenes and the story of the street campaign — follow George Musical Festival so you don't miss the premiere.</p>
         </div>
         <div class="video-card" style="width:min(420px,100%);cursor:default;">
           <img src="<?= e(url('assets/img/gallery/crowd-night.jpg')) ?>" alt="" loading="lazy">
@@ -417,7 +417,7 @@ $hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, fals
   <div class="wrap">
     <p class="kicker reveal" style="color:var(--text-muted);justify-content:center;display:flex;">In partnership</p>
     <div class="partners reveal" style="margin-top:26px;">
-      <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival" loading="lazy">
+      <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Musical Festival" loading="lazy">
       <span class="x">×</span>
       <img src="<?= e(url('assets/img/brand/cellc-orange.png')) ?>" alt="Cell C" loading="lazy">
     </div>
@@ -429,9 +429,9 @@ $hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, fals
   <div class="wrap">
     <div class="join-box reveal">
       <div style="position:relative">
-        <span class="kicker">The GMF list</span>
+        <span class="kicker">The George Musical Festival list</span>
         <h2 class="display big" style="margin-top:16px;">Hear it <span class="serif-i text-orange">first.</span></h2>
-        <p class="muted" style="margin-top:14px;">Line-up drops, ticket releases, travel deals and every GMF event across the Garden Route — straight to your inbox and phone.</p>
+        <p class="muted" style="margin-top:14px;">Line-up drops, ticket releases, travel deals and every George Musical Festival event across the Garden Route — straight to your inbox and phone.</p>
       </div>
       <form action="<?= e(url('api/subscribe.php')) ?>" method="post" data-ajax style="position:relative">
         <input type="hidden" name="timer" value="<?= e(form_timer()) ?>">
@@ -439,7 +439,7 @@ $hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, fals
         <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
         <div class="field"><label for="sub-email">Email address</label><input id="sub-email" type="email" name="email" required autocomplete="email" placeholder="you@example.com"></div>
         <div class="field"><label for="sub-phone">Cellphone <span class="muted">(optional)</span></label><input id="sub-phone" type="tel" name="phone" autocomplete="tel" placeholder="082 123 4567"></div>
-        <label class="check"><input type="checkbox" name="consent" value="1" required> I'd like to receive news and offers from George Music Festival. I can unsubscribe at any time.</label>
+        <label class="check"><input type="checkbox" name="consent" value="1" required> I'd like to receive news and offers from George Musical Festival. I can unsubscribe at any time.</label>
         <button class="btn btn-orange btn-block" type="submit" style="margin-top:8px;">Join the list</button>
       </form>
     </div>

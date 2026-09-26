@@ -55,7 +55,7 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
     </div>
     <div class="ff-consent is-optional">
       <input type="checkbox" id="c-mkt" name="consent_marketing" value="1">
-      <label for="c-mkt"><span class="ff-tag ff-tag-soft">Optional</span> Keep me updated on future GMF × Cell C events and offers.</label>
+      <label for="c-mkt"><span class="ff-tag ff-tag-soft">Optional</span> Keep me updated on future George Musical Festival × Cell C events and offers.</label>
     </div>
 
     <?php if (turnstile_enabled()): ?><div class="cf-turnstile" data-sitekey="<?= e(config('turnstile.site_key')) ?>" data-appearance="interaction-only" style="margin:6px 0"></div><?php endif; ?>
@@ -108,7 +108,7 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
       <div class="ff-shared-note" hidden><span class="ff-pill"><i class="fa-solid fa-share"></i> Link shared — every open adds to your score</span></div>
     </div>
     <div class="pass">
-      <div class="pass-top"><span class="pass-brand"><?= e(setting('comp_name')) ?></span><span class="pass-tag">GMF × Cell C</span></div>
+      <div class="pass-top"><span class="pass-brand"><?= e(setting('comp_name')) ?></span><span class="pass-tag">George Musical Festival × Cell C</span></div>
       <div class="pass-mid">
         <div><small>Entrant</small><strong data-bind="name"></strong></div>
         <div><small>Event</small><strong><?= e(mb_strimwidth((string) setting('event_name'), 0, 18, '…')) ?></strong></div>

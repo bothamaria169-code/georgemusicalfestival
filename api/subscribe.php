@@ -1,5 +1,5 @@
 <?php
-/** Newsletter / notify-me list — builds the GMF database of potential clients. */
+/** Newsletter / notify-me list — builds the George Musical Festival database of potential clients. */
 require dirname(__DIR__) . '/includes/bootstrap.php';
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {

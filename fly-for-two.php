@@ -21,8 +21,8 @@ $winners  = q("SELECT d.title, d.prize_description, p.full_name, p.town
                JOIN entrants p ON p.id = r.selected_entrant_id
                WHERE d.status = 'published' ORDER BY d.scheduled_for")->fetchAll();
 
-$page_title       = setting('comp_name') . ' — Win ' . setting('prize_headline') . ' | GMF × Cell C';
-$meta_description = 'Enter WIN A HUAWEI free and win ' . setting('prize_headline') . ' worth ' . setting('prize_value') . '. George Music Festival × Cell C.';
+$page_title       = setting('comp_name') . ' — Win ' . setting('prize_headline') . ' | George Musical Festival × Cell C';
+$meta_description = 'Enter WIN A HUAWEI free and win ' . setting('prize_headline') . ' worth ' . setting('prize_value') . '. George Musical Festival × Cell C.';
 $og_image         = url('assets/img/cellc/hero-win-a-huawei.jpg');
 $nav_active       = 'fly';
 $extra_css        = ['assets/css/comp.css'];
@@ -74,7 +74,7 @@ require __DIR__ . '/includes/header.php';
     <span class="kicker reveal" style="color:var(--orange-deep)">How it works</span>
     <h2 class="display big reveal" style="margin:18px 0 50px;">Three steps to <span class="serif-i" style="color:var(--orange-deep)">win</span></h2>
     <div class="ff-steps">
-      <div class="ff-step reveal"><span class="n">01</span><h3>Enter</h3><p>Your name, cellphone, email, age group and one quick question. Scan a GMF QR code or enter right here.</p></div>
+      <div class="ff-step reveal"><span class="n">01</span><h3>Enter</h3><p>Your name, cellphone, email, age group and one quick question. Scan a George Musical Festival QR code or enter right here.</p></div>
       <div class="ff-step reveal reveal-d1"><span class="n">02</span><h3>Verify</h3><p>We email you a 6-digit code. Your entry only counts once it's confirmed — one per phone number.</p></div>
       <div class="ff-step reveal reveal-d2"><span class="n">03</span><h3>Share</h3><p>Send your personal link on WhatsApp and everywhere else. Every different person who opens it adds 1 to your score. The top score wins the Grand Prize, the runner-up the Second Prize.</p></div>
     </div>
@@ -124,7 +124,7 @@ require __DIR__ . '/includes/header.php';
       <details><summary>Why do I need a verification code?</summary><p>The code confirms that your email is real and that the entry is yours. Unconfirmed entries aren't on the leaderboard and can't win.</p></details>
       <details><summary>When are the winners revealed?</summary><p>Entries and link opens count until <?= e(fmt_date(setting('comp_close_at'), 'j F Y, H:i')) ?>. The winners are revealed on <?= e(fmt_date($final['scheduled_for'] ?? null, 'j F Y')) ?>: 1st place wins <?= e(setting('prize_headline')) ?> and 2nd place wins the Second Prize.</p></details>
       <details><summary>How is the winner chosen?</summary><p><?= e(setting('draw_reassurance')) ?></p></details>
-      <details><summary>What happens to my information?</summary><p>Your details are used to run the competition and are held by Cell C and GMF. You'll only get marketing messages if you ticked the optional box. See the <a href="<?= e(url('win/privacy')) ?>">privacy notice</a>.</p></details>
+      <details><summary>What happens to my information?</summary><p>Your details are used to run the competition and are held by Cell C and George Musical Festival. You'll only get marketing messages if you ticked the optional box. See the <a href="<?= e(url('win/privacy')) ?>">privacy notice</a>.</p></details>
     </div>
   </div>
 </section>

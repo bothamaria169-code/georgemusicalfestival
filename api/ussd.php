@@ -107,7 +107,7 @@ if ($parts[5] !== '1') {
     ussd('END', 'Entry cancelled. You need to accept the terms and POPIA consent to enter.');
 }
 if ($step === 6) {
-    ussd('CON', "Optional: receive GMF x Cell C event news and offers?\n1. Yes\n2. No");
+    ussd('CON', "Optional: receive George Musical Festival x Cell C event news and offers?\n1. Yes\n2. No");
 }
 
 [$data, $errors] = validate_entry([

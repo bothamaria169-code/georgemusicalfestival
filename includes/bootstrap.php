@@ -45,6 +45,7 @@ if (session_status() === PHP_SESSION_NONE && PHP_SAPI !== 'cli') {
 
 require_once __DIR__ . '/mailer.php';
 require_once __DIR__ . '/competition.php';
+require_once __DIR__ . '/email-health.php';
 require_once __DIR__ . '/legal-defaults.php';
 
 /* ──────────────────────────── Config & DB ──────────────────────────── */
@@ -296,9 +297,9 @@ function setting_defaults(): array
 {
     return [
         // Homepage hero (competition-first)
-        'hero_kicker'       => 'Cell C × GMF: Change your world',
+        'hero_kicker'       => 'Cell C × George Musical Festival: Change your world',
         'hero_headline'     => 'Win a Huawei Pura 80 Pro',
-        'hero_text'         => 'In partnership with Cell C, George Music Festival is giving away a brand-new Huawei Pura 80 Pro worth R18 000. Enter free in under a minute, share your personal link, and climb the leaderboard to win.',
+        'hero_text'         => 'In partnership with Cell C, George Musical Festival is giving away a brand-new Huawei Pura 80 Pro worth R18 000. Enter free in under a minute, share your personal link, and climb the leaderboard to win.',
 
         // Event
         'event_name'        => 'Eden Soul & Jazz Reimagined',
@@ -335,7 +336,7 @@ Other",
 45–54
 55+",
         'prize_value'       => 'R18 000',
-        'popia_consent_text'=> 'I consent to Cell C Limited and George Music Festival collecting and processing my personal information for the purposes of the WIN A HUAWEI competition.',
+        'popia_consent_text'=> 'I consent to Cell C Limited and George Musical Festival collecting and processing my personal information for the purposes of the WIN A HUAWEI competition.',
         'towns'             => "George\nThembalethu\nMossel Bay\nOudtshoorn\nPlettenberg Bay\nKnysna\nOther",
         'draw_reassurance'  => 'The winners are the two entrants whose personal links are opened by the most different people. The leaderboard is frozen when entries close, checked for fair play and recorded before the winners are revealed.',
         'share_bonus_cap'   => '0',
@@ -457,7 +458,7 @@ function require_admin(string $role = 'viewer'): array
     }
     if ($role === 'admin' && $admin['role'] !== 'admin') {
         http_response_code(403);
-        exit('This area is limited to GMF administrators.');
+        exit('This area is limited to George Musical Festival administrators.');
     }
     return $admin;
 }

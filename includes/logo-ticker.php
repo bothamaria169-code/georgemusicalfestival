@@ -1,9 +1,9 @@
 <?php
-/** Big scrolling Cell C × GMF logo strip, shown directly under the header on the competition pages. */
+/** Big scrolling Cell C × George Musical Festival logo strip, shown directly under the header on the competition pages. */
 $acsaLogo = url('assets/img/brand/cellc-orange.png');
 $gmfLogo  = url('assets/img/brand/gmf-logo-orange.png');
 ?>
-<div class="logo-ticker" role="img" aria-label="In partnership with Cell C and George Music Festival">
+<div class="logo-ticker" role="img" aria-label="In partnership with Cell C and George Musical Festival">
   <div class="logo-ticker-track" aria-hidden="true">
     <?php for ($i = 0; $i < 4; $i++): ?>
       <img class="lt-acsa" src="<?= e($acsaLogo) ?>" alt="" width="684" height="265">

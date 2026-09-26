@@ -33,6 +33,14 @@ admin_head('Overview', 'overview');
   <a class="btn" href="index.php"><i class="fa-solid fa-rotate"></i> Refresh</a>
 </div>
 
+<?php $mailProblems = (int) q('SELECT COUNT(*) FROM entrants WHERE email_status IS NOT NULL')->fetchColumn(); ?>
+<?php if ($mailProblems): ?>
+<div class="card" style="margin-bottom:16px;border-left:4px solid #e05a4f;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+  <i class="fa-solid fa-triangle-exclamation" style="color:#e05a4f;font-size:1.3rem"></i>
+  <div style="flex:1;min-width:220px"><strong><?= $mailProblems ?> entrant<?= $mailProblems === 1 ? '' : 's' ?> with an email problem</strong><br><span class="muted">Their code emails bounced or could not be sent — usually a mistyped address. They can't confirm or sign in until the email is fixed.</span></div>
+  <a class="btn" href="entrants.php?status=all&amp;mail=problem"><i class="fa-solid fa-at"></i> Review &amp; fix</a>
+</div>
+<?php endif; ?>
 <div class="grid g-4" style="margin-bottom:16px;">
   <div class="card kpi is-accent"><small>Verified entrants</small><strong><?= number_format($t['verified_entrants']) ?></strong><span>+<?= $t['verified_today'] ?> today</span></div>
   <div class="card kpi"><small>Draw entries</small><strong><?= number_format($t['draw_entries']) ?></strong><span><?= (int) ($t['entries_by_kind']['share_bonus'] ?? 0) ?> share bonus · <?= (int) ($t['entries_by_kind']['referral_bonus'] ?? 0) ?> referral</span></div>

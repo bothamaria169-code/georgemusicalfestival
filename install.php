@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $st = $pdo->prepare('INSERT INTO media (kind, title, caption, src, album, featured, sort_order, created_at) VALUES (\'image\', ?, ?, ?, ?, ?, ?, ?)');
             $seed = [
                 ['crowd-night', 'Under the lights', 'The GMF crowd after dark', 'Festival', 1],
-                ['performer-stage', 'On stage', 'Live at a George Music Festival show', 'Festival', 1],
+                ['performer-stage', 'On stage', 'Live at a George Musical Festival show', 'Festival', 1],
                 ['activation-02', 'Taxi rank activation', 'Meeting commuters across the Garden Route', 'Street activations', 1],
                 ['activation-22', 'Street team, George', 'Flyering with the FLY FOR TWO crew', 'Street activations', 1],
                 ['activation-04', 'Forecourt stop', 'Eden Soul & Jazz on the road', 'Street activations', 1],

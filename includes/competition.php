@@ -193,6 +193,8 @@ function validate_entry(array $in, bool $requireEmail = true): array
     }
     if ($requireEmail && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = 'Please enter a valid email address — your verification code is sent there.';
+    } elseif ($email !== '' && ($problem = email_entry_problem($email))) {
+        $errors['email'] = $problem;
     }
     if (!$phone) {
         $errors['phone'] = 'Please enter a valid cellphone number, e.g. 082 123 4567.';
@@ -353,6 +355,7 @@ function otp_issue(array $entrant, string $purpose): array
         . "<p style=\"margin:0 0 8px;font-size:13px;color:#6b645e;\">The code and button expire in {$ttl} minutes. If you didn't request this, you can ignore this email.</p>");
     $sent = send_mail($entrant['email'], "{$code} is your WIN A HUAWEI code", $html);
     if (!$sent) {
+        mark_email_problem((string) $entrant['email'], 'send_failed', 'The code email could not be sent (' . date('j M H:i') . ')');
         return ['ok' => false, 'error' => "We couldn't send the email right now. Please check the address and try again.", 'cooldown' => 0];
     }
 
@@ -565,7 +568,7 @@ function leaderboard_rank(int $entrantId): ?int
 
 /**
  * Public top 10: first name + surname initial, town and score. The leader (#1) is hidden
- * until the winners are published, so nobody but GMF admins knows who is winning.
+ * until the winners are published, so nobody but George Musical Festival admins knows who is winning.
  */
 function public_leaderboard(int $limit = 10): array
 {

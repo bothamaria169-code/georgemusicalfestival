@@ -3,7 +3,7 @@
 $score = referral_stats((int) $me['id'])['clicks'];
 ?>
 <div class="pass">
-  <div class="pass-top"><span class="pass-brand"><?= e(setting('comp_name')) ?></span><span class="pass-tag">GMF × Cell C</span></div>
+  <div class="pass-top"><span class="pass-brand"><?= e(setting('comp_name')) ?></span><span class="pass-tag">George Musical Festival × Cell C</span></div>
   <div class="pass-mid">
     <div><small>Entrant</small><strong><?= e(short_name($me['full_name'])) ?></strong></div>
     <div><small>Pass</small><strong><?= e($me['ref_code']) ?></strong></div>

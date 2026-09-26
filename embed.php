@@ -34,7 +34,7 @@ $state    = comp_state();
 <div class="ff-card" id="entryCard">
   <div style="background:var(--navy);color:var(--paper);padding:18px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px">
     <div><div style="font-family:var(--f-display);font-size:1.5rem;text-transform:uppercase;line-height:1"><?= e(setting('comp_name')) ?></div><small style="color:var(--orange);font-weight:800;letter-spacing:.12em;font-size:.62rem">WIN <?= e(mb_strtoupper((string) setting('prize_headline'))) ?></small></div>
-    <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival" style="height:40px;width:auto">
+    <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Musical Festival" style="height:40px;width:auto">
   </div>
   <?php if ($state === 'open'): ?>
     <?php include __DIR__ . '/includes/entry-flow.php'; ?>

@@ -22,15 +22,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!csrf_ok()) {
         $error = 'Your session expired. Please try again.';
     } elseif (($_POST['step'] ?? '') === 'email') {
+        // Sign in with the entry's email address or its cellphone number (the code always goes to the email on the entry).
         $email = mb_strtolower(trim((string) ($_POST['email'] ?? '')));
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $error = 'Please enter a valid email address.';
+        $byPhone = !str_contains($email, '@') ? normalize_phone($email) : null;
+        if (!$byPhone && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = 'Please enter the email address or cellphone number you entered with.';
         } elseif (!rate_limit('login_email', client_ip(), 60, 3600)) {
             $error = 'Too many sign-in attempts. Please try again later.';
         } else {
-            $found = q('SELECT * FROM entrants WHERE email = ?', [$email])->fetch();
-            if (!$found) {
-                $error = "We couldn't find an entry with that email. Enter the competition first — it takes a minute.";
+            $found = $byPhone
+                ? q('SELECT * FROM entrants WHERE phone = ?', [$byPhone])->fetch()
+                : q('SELECT * FROM entrants WHERE email = ?', [$email])->fetch();
+            if (!$found && !$byPhone) {
+                $error = "We couldn't find an entry with that email. If you used a different email, try your cellphone number instead — or enter the competition first.";
+            } elseif (!$found) {
+                $error = "We couldn't find an entry with that cellphone number. Try the email you entered with, or enter the competition first.";
+            } elseif ($found['status'] === 'verified' && $found['email_status'] === 'bounced') {
+                $error = 'Emails to ' . mask_email($found['email']) . " can't be delivered (" . strtolower((string) $found['email_issue']) . '). Please contact '
+                    . setting('contact_email') . ' from your correct email address and we will fix your entry.';
             } elseif ($found['status'] === 'pending') {
                 $error = "That entry was never verified. Please enter again on the competition page to receive a new code.";
             } elseif ($found['status'] !== 'verified') {
@@ -77,7 +86,7 @@ require __DIR__ . '/includes/header.php';
 ?>
 <section class="auth-wrap">
   <div class="auth-media">
-    <img src="<?= e(url('assets/img/gallery/activation-23.jpg')) ?>" alt="GMF street team handing out WIN A HUAWEI flyers">
+    <img src="<?= e(url('assets/img/gallery/activation-23.jpg')) ?>" alt="George Musical Festival street team handing out WIN A HUAWEI flyers">
     <div class="cap">
       <span class="kicker">Your dashboard</span>
       <p class="display big" style="margin-top:14px;">Share it. <span class="serif-i text-orange">Own it.</span></p>
@@ -90,11 +99,11 @@ require __DIR__ . '/includes/header.php';
         <?php if ($step === 'email'): ?>
           <div class="ff-center"><div class="ff-icon"><i class="fa-regular fa-user"></i></div>
             <h1 class="ff-h">Sign in</h1>
-            <p class="ff-sub">Use the email address you entered WIN A HUAWEI with. We'll send you a one-time code — no password needed.</p>
+            <p class="ff-sub">Use the email address or cellphone number you entered WIN A HUAWEI with. We'll send you a one-time code — no password needed.</p>
           </div>
           <form method="post" novalidate>
             <?= csrf_field() ?><input type="hidden" name="step" value="email">
-            <div class="field"><label for="l-email">Email address</label><input id="l-email" type="email" name="email" required autocomplete="email" inputmode="email" value="<?= e($_POST['email'] ?? '') ?>" autofocus></div>
+            <div class="field"><label for="l-email">Email or cellphone number</label><input id="l-email" type="text" name="email" required autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="you@example.com or 082 123 4567" value="<?= e($_POST['email'] ?? '') ?>" autofocus></div>
             <?php if ($error): ?><div class="ff-alert"><?= e($error) ?></div><?php endif; ?>
             <button class="ff-btn ff-btn-primary" type="submit">Send my code</button>
           </form>

@@ -11,7 +11,7 @@ function default_terms_html(): string
 <p><strong>WIN A HUAWEI — Competition terms and conditions.</strong> By entering you agree to these terms. Please also read the <a href="/cellc/win/privacy">privacy notice</a>, which explains how your personal information is protected under the Protection of Personal Information Act 4 of 2013 (POPIA).</p>
 
 <h2>1. The promoter</h2>
-<p>WIN A HUAWEI is run by George Music Festival ("GMF") in partnership with Cell C Limited ("Cell C"), together "the Promoter". Contact: info@georgemusicalfestival.co.za.</p>
+<p>WIN A HUAWEI is run by George Musical Festival ("GMF") in partnership with Cell C Limited ("Cell C"), together "the Promoter". Contact: info@georgemusicalfestival.co.za.</p>
 
 <h2>2. Competition period</h2>
 <p>Entries open on 24 September 2026 and close on 31 October 2026 at 23:59 (South African time). Entries and link opens received outside this period do not count.</p>
@@ -80,7 +80,7 @@ function default_privacy_html(): string
 <p><strong>This notice explains how WIN A HUAWEI collects and protects your personal information under the Protection of Personal Information Act 4 of 2013 (POPIA).</strong></p>
 
 <h2>Who is responsible</h2>
-<p>Cell C Limited (Cell C) and George Music Festival (GMF) are responsible for the personal information collected through the competition. GMF operates this website and platform, and competition data is not used for any other purpose. Contact for privacy requests: info@georgemusicalfestival.co.za.</p>
+<p>Cell C Limited (Cell C) and George Musical Festival (GMF) are responsible for the personal information collected through the competition. GMF operates this website and platform, and competition data is not used for any other purpose. Contact for privacy requests: info@georgemusicalfestival.co.za.</p>
 
 <h2>What we collect</h2>
 <ul>

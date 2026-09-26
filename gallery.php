@@ -6,7 +6,7 @@ $videos = media_items('video', 0);
 $albums = array_values(array_unique(array_column($images, 'album')));
 $hero   = $images[0]['src'] ?? 'assets/img/gallery/crowd-night.jpg';
 
-$page_title = 'Gallery & Videos — George Music Festival';
+$page_title = 'Gallery & Videos — George Musical Festival';
 $nav_active = 'gallery';
 require __DIR__ . '/includes/header.php';
 ?>
@@ -15,7 +15,7 @@ require __DIR__ . '/includes/header.php';
   <div class="wrap">
     <span class="kicker reveal">The archive · <?= count($images) ?> photos<?= $videos ? ' · ' . count($videos) . ' films' : '' ?></span>
     <h1 class="display mega reveal">The <span class="serif-i text-orange">gallery</span></h1>
-    <p class="lede muted reveal">Street activations across the Garden Route, nights under the lights and the people who make George Music Festival what it is.</p>
+    <p class="lede muted reveal">Street activations across the Garden Route, nights under the lights and the people who make George Musical Festival what it is.</p>
   </div>
 </section>
 
@@ -24,7 +24,7 @@ require __DIR__ . '/includes/header.php';
   <div class="mosaic">
     <?php foreach (array_slice($images, 0, 3) as $i => $img): ?>
       <a class="tile <?= ['m-a', 'm-f', 'm-g'][$i] ?> reveal" style="<?= $i === 0 ? 'grid-column:span 7;grid-row:span 5' : 'grid-column:span 5;grid-row:span ' . ($i === 1 ? 3 : 2) ?>" href="<?= e(media_url($img['src'])) ?>" data-lightbox="lead" data-caption="<?= e($img['caption'] ?: $img['title']) ?>">
-        <img src="<?= e(media_url($img['src'])) ?>" alt="<?= e($img['title'] ?: 'George Music Festival') ?>" <?= $i ? 'loading="lazy"' : '' ?>>
+        <img src="<?= e(media_url($img['src'])) ?>" alt="<?= e($img['title'] ?: 'George Musical Festival') ?>" <?= $i ? 'loading="lazy"' : '' ?>>
         <span class="tile-cap"><?= e($img['title'] ?: $img['album']) ?></span>
       </a>
     <?php endforeach; ?>
@@ -43,7 +43,7 @@ require __DIR__ . '/includes/header.php';
     <div class="masonry">
       <?php foreach ($images as $img): ?>
         <a class="tile reveal" data-album="<?= e($img['album']) ?>" href="<?= e(media_url($img['src'])) ?>" data-lightbox="all" data-caption="<?= e($img['caption'] ?: $img['title']) ?>">
-          <img src="<?= e(media_url($img['src'])) ?>" alt="<?= e($img['title'] ?: 'George Music Festival') ?>" loading="lazy">
+          <img src="<?= e(media_url($img['src'])) ?>" alt="<?= e($img['title'] ?: 'George Musical Festival') ?>" loading="lazy">
           <span class="tile-cap"><?= e($img['album']) ?></span>
         </a>
       <?php endforeach; ?>
@@ -86,7 +86,7 @@ require __DIR__ . '/includes/header.php';
       <div class="video-soon reveal">
         <div>
           <p class="display big" style="margin:0">Premieres<br><span class="serif-i text-orange">coming soon.</span></p>
-          <p class="muted" style="margin:18px 0 0;max-width:520px;">Artist sessions and the story of the street campaign are in the edit. Join the GMF list to catch the premiere.</p>
+          <p class="muted" style="margin:18px 0 0;max-width:520px;">Artist sessions and the story of the street campaign are in the edit. Join the George Musical Festival list to catch the premiere.</p>
           <a class="btn btn-orange" style="margin-top:22px" href="<?= e(url('index.php#join')) ?>">Join the list</a>
         </div>
         <div class="video-card" style="width:min(420px,100%);cursor:default;"><img src="<?= e(media_url($hero)) ?>" alt="" loading="lazy"><span class="play" style="animation:none;opacity:.85"><i class="fa-solid fa-clock"></i></span></div>

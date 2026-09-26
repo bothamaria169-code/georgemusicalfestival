@@ -1,4 +1,4 @@
-/* George Music Festival — site interactions (no dependencies) */
+/* George Musical Festival — site interactions (no dependencies) */
 (function () {
   'use strict';
   var doc = document.documentElement;

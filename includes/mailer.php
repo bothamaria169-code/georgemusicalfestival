@@ -52,7 +52,7 @@ function mail_build_mime(string $to, string $subject, string $html, string $text
 {
     $boundary = 'b' . bin2hex(random_bytes(12));
     $fromEmail = config('mail.from_email');
-    $fromName = mail_encode_header((string) config('mail.from_name', 'George Music Festival'));
+    $fromName = mail_encode_header((string) config('mail.from_name', 'George Musical Festival'));
     $domain = substr(strrchr((string) $fromEmail, '@') ?: '@localhost', 1);
 
     $h = [];
@@ -148,10 +148,10 @@ function mail_template(string $heading, string $bodyHtml): string
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f1ed;padding:28px 12px;"><tr><td align="center">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:14px;overflow:hidden;">
 <tr><td style="background:#2b2b2b;padding:20px 28px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-<td align="left"><img src="{$logo}" alt="George Music Festival" height="44" style="display:block;height:44px;"></td>
+<td align="left"><img src="{$logo}" alt="George Musical Festival" height="44" style="display:block;height:44px;"></td>
 <td align="right"><img src="{$acsa}" alt="Cell C" height="40" style="display:inline-block;height:40px;"></td></tr></table></td></tr>
 <tr><td style="padding:30px 28px 10px;"><h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#1f1f1f;">{$heading}</h1>{$bodyHtml}</td></tr>
-<tr><td style="padding:18px 28px 26px;font-size:12px;color:#6b645e;border-top:1px solid #ebe4dd;">WIN A HUAWEI · George Music Festival × Cell C<br>&copy; {$year} George Music Festival</td></tr>
+<tr><td style="padding:18px 28px 26px;font-size:12px;color:#6b645e;border-top:1px solid #ebe4dd;">WIN A HUAWEI · George Musical Festival × Cell C<br>&copy; {$year} George Musical Festival</td></tr>
 </table></td></tr></table></body></html>
 HTML;
 }
