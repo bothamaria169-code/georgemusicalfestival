@@ -167,7 +167,7 @@ try {
             'name'       => short_name($entrant['full_name']),
             'entries'    => entry_count((int) $entrant['id']),
             'ref_link'   => $link,
-            'share_text' => "I just entered FLY FOR TWO — win a weekend getaway for two with George Music Festival × ACSA. Enter free here: {$link}",
+            'share_text' => "I just entered FLY FOR TWO — win a weekend getaway for two with George Musical Festival × ACSA. Enter free here: {$link}",
             'dashboard'  => url('flyfortwo/dashboard'),
         ]);
     }

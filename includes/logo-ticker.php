@@ -3,7 +3,7 @@
 $acsaLogo = url('assets/img/brand/acsa-teal-lg.png');
 $gmfLogo  = url('assets/img/brand/gmf-logo-orange.png');
 ?>
-<div class="logo-ticker" role="img" aria-label="In partnership with Airports Company South Africa and George Music Festival">
+<div class="logo-ticker" role="img" aria-label="In partnership with Airports Company South Africa and George Musical Festival">
   <div class="logo-ticker-track" aria-hidden="true">
     <?php for ($i = 0; $i < 4; $i++): ?>
       <img class="lt-acsa" src="<?= e($acsaLogo) ?>" alt="" width="900" height="439">

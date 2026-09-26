@@ -1,6 +1,6 @@
 # GMF × ACSA — FLY FOR TWO platform
 
-PHP 8.1+ / MySQL (MariaDB) platform for the George Music Festival website and the
+PHP 8.1+ / MySQL (MariaDB) platform for the George Musical Festival website and the
 FLY FOR TWO competition. There's no framework and no Composer, so it uploads to any cPanel host as-is.
 
 | Page | What it is |

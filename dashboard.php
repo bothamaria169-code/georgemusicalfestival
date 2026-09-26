@@ -51,7 +51,7 @@ $first   = explode(' ', $me['full_name'])[0];
 $prize   = (string) setting('prize_headline');
 
 $scripts = [
-    'WhatsApp status' => "✈️ I just entered FLY FOR TWO — you could win {$prize} with George Music Festival × ACSA. Free to enter, takes a minute 👉 {$link}",
+    'WhatsApp status' => "✈️ I just entered FLY FOR TWO — you could win {$prize} with George Musical Festival × ACSA. Free to enter, takes a minute 👉 {$link}",
     'Group chat'      => "Guys, GMF and Airports Company SA are giving away {$prize} — return flights, accommodation and transfers. Enter free here before " . fmt_date(setting('comp_close_at'), 'j F') . ": {$link}",
     'Short & sweet'   => "Win a weekend away for two ✈️ {$link}",
 ];
@@ -76,7 +76,7 @@ require __DIR__ . '/includes/header.php';
     <figure class="dash-plane">
       <img src="<?= e(url('assets/img/acsa/plane-at-the-gate.jpg')) ?>" width="1800" height="1201" alt="A South African Airways plane at the gate, ready to board">
       <figcaption>
-        <span class="dash-logos"><img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival"><span>×</span><img src="<?= e(url('assets/img/brand/acsa-white.png')) ?>" alt="Airports Company South Africa"></span>
+        <span class="dash-logos"><img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Musical Festival"><span>×</span><img src="<?= e(url('assets/img/brand/acsa-white.png')) ?>" alt="Airports Company South Africa"></span>
         <strong>Your seat is waiting.</strong>
       </figcaption>
     </figure>

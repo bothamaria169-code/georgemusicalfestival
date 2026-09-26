@@ -61,7 +61,7 @@ $prize = prize_lines($draw);
 </head>
 <body>
 <header>
-  <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival">
+  <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Musical Festival">
   <span class="x">×</span>
   <img src="<?= e(url('assets/img/brand/acsa-white.png')) ?>" alt="Airports Company South Africa">
 </header>

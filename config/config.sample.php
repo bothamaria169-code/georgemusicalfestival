@@ -35,7 +35,7 @@ return [
         'username'   => 'noreply@georgemusicalfestival.co.za',
         'password'   => '',
         'from_email' => 'noreply@georgemusicalfestival.co.za',
-        'from_name'  => 'George Music Festival',
+        'from_name'  => 'George Musical Festival',
     ],
 
     // ── Bot protection (optional) ──────────────────────────────────────

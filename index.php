@@ -21,7 +21,7 @@ $shareCap   = (int) setting('share_bonus_cap');
 $headWords  = preg_split('/\s+/', trim((string) setting('hero_headline'))) ?: [];
 $headAccent = count($headWords) > 1 ? array_pop($headWords) : '';
 
-$page_title       = 'Win a trip for two — FLY FOR TWO · George Music Festival × ACSA';
+$page_title       = 'Win a trip for two — FLY FOR TWO · George Musical Festival × ACSA';
 $meta_description = (string) setting('hero_text');
 $og_image         = url('assets/img/competition/hero-win-a-trip-for-two.jpg');
 $nav_active       = 'home';
@@ -131,7 +131,7 @@ require __DIR__ . '/includes/header.php';
       <img class="acsa-logo reveal" src="<?= e(url('assets/img/brand/acsa-white.png')) ?>" alt="Airports Company South Africa" loading="lazy">
       <span class="kicker reveal" style="margin-top:26px;">ACSA × GMF</span>
       <h2 class="display big reveal" style="margin-top:16px;">Getting the <span class="serif-i text-orange">unflown</span> flying.</h2>
-      <p class="lede reveal" style="margin-top:18px;">For many people on the Garden Route, flying still feels out of reach. Together with Airports Company South Africa, George Music Festival is changing that — one weekend getaway, one first flight, one new journey at a time.</p>
+      <p class="lede reveal" style="margin-top:18px;">For many people on the Garden Route, flying still feels out of reach. Together with Airports Company South Africa, George Musical Festival is changing that — one weekend getaway, one first flight, one new journey at a time.</p>
       <p class="muted reveal">At <?= e($eventName) ?>, the ACSA Experience brings airports closer: meet Moyeni, the ACSA mascot, talk to the airport team about travel and careers, and find out how to climb the FLY FOR TWO leaderboard.</p>
     </div>
     <div class="acsa-collage acsa-collage--wide reveal reveal-d2">
@@ -150,7 +150,7 @@ require __DIR__ . '/includes/header.php';
         <span class="kicker reveal"><span class="num">01</span> The Event</span>
         <h2 class="display huge reveal" style="margin:22px 0 34px;">Music is the <span class="serif-i text-orange">reason</span> to travel.</h2>
         <p class="lede dropcap reveal"><?= e($eventName) ?> brings soul, jazz and the sound of the Garden Route to <?= e($venue) ?> — a full day of live music, food, culture and community under the George sky.</p>
-        <p class="reveal muted">George Music Festival is a regional platform connecting music, culture, community, lifestyle and tourism. Local talent gives it authenticity; the Garden Route gives it a destination worth flying to. This year, with Airports Company South Africa, we're turning the festival into a journey — from the first flyer on the street to the final note on stage.</p>
+        <p class="reveal muted">George Musical Festival is a regional platform connecting music, culture, community, lifestyle and tourism. Local talent gives it authenticity; the Garden Route gives it a destination worth flying to. This year, with Airports Company South Africa, we're turning the festival into a journey — from the first flyer on the street to the final note on stage.</p>
 
         <div class="fact-grid reveal">
           <div><small>Date</small><strong><?= e(fmt_date($eventDate, 'l, j F Y')) ?></strong></div>
@@ -173,7 +173,7 @@ require __DIR__ . '/includes/header.php';
         </div>
       </div>
       <div class="spread-media reveal reveal-d2">
-        <div class="img-a"><img src="<?= e(url('assets/img/gallery/crowd-night.jpg')) ?>" alt="The crowd at a George Music Festival night show" loading="lazy"></div>
+        <div class="img-a"><img src="<?= e(url('assets/img/gallery/crowd-night.jpg')) ?>" alt="The crowd at a George Musical Festival night show" loading="lazy"></div>
         <div class="img-b"><img src="<?= e(url('assets/img/gallery/activation-22.jpg')) ?>" alt="The GMF street team in George" loading="lazy"></div>
       </div>
     </div>
@@ -193,7 +193,7 @@ require __DIR__ . '/includes/header.php';
     </div>
     <div class="exp-grid">
       <article class="exp-card reveal">
-        <img src="<?= e(url('assets/img/gallery/performer-stage.jpg')) ?>" alt="A performer on the George Music Festival stage" loading="lazy">
+        <img src="<?= e(url('assets/img/gallery/performer-stage.jpg')) ?>" alt="A performer on the George Musical Festival stage" loading="lazy">
         <div class="exp-body"><span class="exp-n">01</span><h3>Live soul &amp; jazz</h3><p>A full day of live soul and jazz, from the afternoon until the lights go down.</p></div>
       </article>
       <article class="exp-card reveal reveal-d1">
@@ -241,7 +241,7 @@ require __DIR__ . '/includes/header.php';
   <div class="wrap">
     <blockquote class="pullquote reveal">
       <p>GMF creates the <em>reason</em> to travel. ACSA helps define the <em>journey</em>.</p>
-      <cite>George Music Festival × Airports Company South Africa</cite>
+      <cite>George Musical Festival × Airports Company South Africa</cite>
     </blockquote>
   </div>
 </section>
@@ -316,7 +316,7 @@ $hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, fals
       <?php $spans = ['m-a', 'm-b', 'm-c', 'm-d', 'm-e', 'm-f', 'm-g'];
       foreach (array_slice($images, 0, 7) as $i => $img): ?>
         <a class="tile <?= $spans[$i] ?> reveal" href="<?= e(media_url($img['src'])) ?>" data-lightbox="home" data-caption="<?= e($img['caption'] ?: $img['title']) ?>">
-          <img src="<?= e(media_url($img['src'])) ?>" alt="<?= e($img['title'] ?: 'George Music Festival') ?>" loading="lazy">
+          <img src="<?= e(media_url($img['src'])) ?>" alt="<?= e($img['title'] ?: 'George Musical Festival') ?>" loading="lazy">
           <span class="tile-cap"><?= e($img['album']) ?></span>
         </a>
       <?php endforeach; ?>
@@ -417,7 +417,7 @@ $hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, fals
   <div class="wrap">
     <p class="kicker reveal" style="color:var(--text-muted);justify-content:center;display:flex;">In partnership</p>
     <div class="partners reveal" style="margin-top:26px;">
-      <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival" loading="lazy">
+      <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Musical Festival" loading="lazy">
       <span class="x">×</span>
       <img src="<?= e(url('assets/img/brand/acsa-teal.png')) ?>" alt="Airports Company South Africa" loading="lazy">
     </div>
@@ -439,7 +439,7 @@ $hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, fals
         <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
         <div class="field"><label for="sub-email">Email address</label><input id="sub-email" type="email" name="email" required autocomplete="email" placeholder="you@example.com"></div>
         <div class="field"><label for="sub-phone">Cellphone <span class="muted">(optional)</span></label><input id="sub-phone" type="tel" name="phone" autocomplete="tel" placeholder="082 123 4567"></div>
-        <label class="check"><input type="checkbox" name="consent" value="1" required> I'd like to receive news and offers from George Music Festival. I can unsubscribe at any time.</label>
+        <label class="check"><input type="checkbox" name="consent" value="1" required> I'd like to receive news and offers from George Musical Festival. I can unsubscribe at any time.</label>
         <button class="btn btn-orange btn-block" type="submit" style="margin-top:8px;">Join the list</button>
       </form>
     </div>

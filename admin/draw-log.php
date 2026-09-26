@@ -50,7 +50,7 @@ if (($_GET['format'] ?? '') === 'csv') {
   <img src="<?= e(url('assets/img/brand/acsa-teal.png')) ?>" alt="ACSA">
 </div>
 <table>
-  <tr><th>Competition</th><td><?= e(setting('comp_name')) ?> · George Music Festival × Airports Company South Africa</td></tr>
+  <tr><th>Competition</th><td><?= e(setting('comp_name')) ?> · George Musical Festival × Airports Company South Africa</td></tr>
   <tr><th>Draw</th><td><?= e($draw['title']) ?> (<?= e($draw['draw_key']) ?>) — scheduled <?= e(fmt_date($draw['scheduled_for'], 'j F Y')) ?></td></tr>
   <tr><th>Prize</th><td><?= nl2br(e($draw['prize_description'] ?: 'TBC')) ?></td></tr>
   <tr><th>Competition period</th><td><?= e(setting('comp_open_at')) ?> to <?= e(setting('comp_close_at')) ?></td></tr>

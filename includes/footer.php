@@ -11,7 +11,7 @@ $socials = array_filter([
     <div class="footer-mega">George<br>Music<br><em>Festival</em></div>
     <div class="footer-grid">
       <div>
-        <img class="footer-logo" src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival" width="150" height="102" loading="lazy">
+        <img class="footer-logo" src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Musical Festival" width="150" height="102" loading="lazy">
         <p class="footer-blurb">A regional platform connecting music, culture, community, lifestyle and tourism across the Garden Route.</p>
         <?php if ($socials): ?>
         <div class="footer-social">
@@ -46,7 +46,7 @@ $socials = array_filter([
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; <?= date('Y') ?> George Music Festival. All rights reserved. Your personal information is protected under POPIA.</span>
+      <span>&copy; <?= date('Y') ?> George Musical Festival. All rights reserved. Your personal information is protected under POPIA.</span>
       <span><a href="<?= e(url('flyfortwo/terms')) ?>">Terms</a> · <a href="<?= e(url('flyfortwo/privacy')) ?>">Privacy</a></span>
     </div>
   </div>

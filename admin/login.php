@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <div class="login-page">
   <form class="login-card" method="post">
-    <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival">
+    <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Musical Festival">
     <h1>Control room</h1>
     <p class="muted" style="margin:0 0 20px">FLY FOR TWO · GMF × ACSA</p>
     <?= csrf_field() ?>

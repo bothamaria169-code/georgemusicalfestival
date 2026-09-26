@@ -22,7 +22,7 @@ $winners  = q("SELECT d.title, d.prize_description, p.full_name, p.town
                WHERE d.status = 'published' ORDER BY d.scheduled_for")->fetchAll();
 
 $page_title       = setting('comp_name') . ' — Win ' . setting('prize_headline') . ' | GMF × ACSA';
-$meta_description = 'Enter FLY FOR TWO free and win ' . setting('prize_headline') . ' — return flights, accommodation and shuttle transfers. George Music Festival × Airports Company South Africa.';
+$meta_description = 'Enter FLY FOR TWO free and win ' . setting('prize_headline') . ' — return flights, accommodation and shuttle transfers. George Musical Festival × Airports Company South Africa.';
 $og_image         = url('assets/img/gallery/airport-terminal.jpg');
 $nav_active       = 'fly';
 $extra_css        = ['assets/css/comp.css'];

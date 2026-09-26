@@ -3,8 +3,8 @@
  * Shared public header. Set before including:
  *   $page_title, $meta_description, $body_class ('' | 'page-light' ...), $nav_active, $extra_css[]
  */
-$page_title       = $page_title ?? 'George Music Festival';
-$meta_description = $meta_description ?? 'George Music Festival — music, culture and community on the Garden Route. ' . setting('event_name') . ', ' . fmt_date(setting('event_date')) . ', ' . setting('event_venue') . '.';
+$page_title       = $page_title ?? 'George Musical Festival';
+$meta_description = $meta_description ?? 'George Musical Festival — music, culture and community on the Garden Route. ' . setting('event_name') . ', ' . fmt_date(setting('event_date')) . ', ' . setting('event_venue') . '.';
 $body_class       = $body_class ?? '';
 $nav_active       = $nav_active ?? '';
 $extra_css        = $extra_css ?? [];
@@ -60,8 +60,8 @@ $enterHref = $nav_active === 'home' ? '#enter' : url('flyfortwo/');
 
 <header class="site-header" id="siteHeader">
   <div class="wrap header-inner">
-    <a class="brand" href="<?= e(url('index.php')) ?>" aria-label="George Music Festival × Airports Company South Africa — home">
-      <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival" width="120" height="82">
+    <a class="brand" href="<?= e(url('index.php')) ?>" aria-label="George Musical Festival × Airports Company South Africa — home">
+      <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Musical Festival" width="120" height="82">
       <span class="brand-x" aria-hidden="true">×</span>
       <img class="brand-acsa" src="<?= e(url('assets/img/brand/acsa-white.png')) ?>" alt="Airports Company South Africa" width="160" height="78">
     </a>
