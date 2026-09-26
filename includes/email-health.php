@@ -69,6 +69,16 @@ function clear_email_problem(int $entrantId): void
     q('UPDATE entrants SET email_status = NULL, email_issue = NULL, email_issue_at = NULL WHERE id = ?', [$entrantId]);
 }
 
+/** The server's response quoted in the human-readable part of a failure report. */
+function bounce_text_reason(string $raw): string
+{
+    if (preg_match('/destination host IP "DNSNULL"/i', $raw)) {
+        return 'dnsnull: the email domain has no mail server';
+    }
+    return preg_match('/response from the destination host[^:]*:\s*"([^"]+)"/is', $raw, $d) ? str_replace(['\r\n', '
+'], ' ', $d[1]) : '';
+}
+
 /** Plain-language reason from an SMTP status / diagnostic line. */
 function bounce_reason(string $diagnostic): string
 {
@@ -76,7 +86,7 @@ function bounce_reason(string $diagnostic): string
     return match (true) {
         str_contains($d, '5.1.1') || str_contains($d, 'does not exist') || str_contains($d, 'user unknown') || str_contains($d, 'no such user')
             || str_contains($d, 'recipient address rejected') || str_contains($d, 'invalid recipient') => 'Email address does not exist',
-        str_contains($d, '5.1.2') || str_contains($d, 'domain') && str_contains($d, 'not found') || str_contains($d, 'host unknown') => 'Email domain does not exist',
+        str_contains($d, 'dnsnull') || str_contains($d, '5.1.2') || str_contains($d, 'domain') && str_contains($d, 'not found') || str_contains($d, 'host unknown') => 'Email domain does not exist',
         str_contains($d, '5.2.2') || str_contains($d, 'quota') || str_contains($d, 'mailbox full') => 'Mailbox is full',
         str_contains($d, '5.7.') || str_contains($d, 'blocked') || str_contains($d, 'spam') => 'Rejected by the receiving server (blocked or treated as spam)',
         default => 'Delivery failed: ' . trim(preg_replace('/\s+/', ' ', mb_substr($diagnostic, 0, 160))),
@@ -92,13 +102,16 @@ function parse_bounce(string $raw): array
     $out = [];
     if (preg_match_all('/Final-Recipient:\s*rfc822;\s*<?([^\s<>;]+@[^\s<>;]+)>?(.*?)(?=Final-Recipient:|\z)/is', $raw, $m, PREG_SET_ORDER)) {
         foreach ($m as $block) {
-            $diag = preg_match('/Diagnostic-Code:\s*[a-z]+;\s*(.+)/i', $block[2], $d) ? trim($d[1]) : '';
+            $diag = preg_match('/Diagnostic-Code:[ 	]*[a-z]+;[ 	]*(.*)/i', $block[2], $d) ? trim($d[1]) : '';
+            if ($diag === '') {
+                $diag = bounce_text_reason($raw);   // some reports leave the code empty and explain it in the text part
+            }
             $status = preg_match('/^Status:\s*([245]\.\d+\.\d+)/mi', $block[2], $s) ? $s[1] : (preg_match('/\b([245]\.\d+\.\d+)\b/', $diag, $s) ? $s[1] : '');
             $permanent = $status === '' ? true : $status[0] === '5';
             $out[] = ['email' => mb_strtolower(trim($block[1])), 'reason' => bounce_reason($diag . ' ' . $status), 'permanent' => $permanent];
         }
     } elseif (preg_match('/failed permanently:\s*\*?\s*<?([^\s<>]+@[^\s<>]+)>?/i', $raw, $m)) {
-        $diag = preg_match('/response from the destination host.*?"([^"]+)"/is', $raw, $d) ? $d[1] : '';
+        $diag = bounce_text_reason($raw);
         $out[] = ['email' => mb_strtolower($m[1]), 'reason' => bounce_reason($diag), 'permanent' => true];
     }
     return $out;
