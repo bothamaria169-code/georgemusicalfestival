@@ -100,14 +100,14 @@ if (!$age || is_under_18_group($age)) {
     ussd('END', $age ? 'Sorry, you must be 18 or older to enter.' : 'Invalid choice. Please dial again.');
 }
 if ($step === 5) {
-    $termsUrl = preg_replace('#^https?://#', '', url('flyfortwo/terms'));
-    ussd('CON', "Do you accept the {$comp} terms (see {$termsUrl}) and consent to ACSA processing your personal information under POPIA?\n1. I accept\n2. Cancel");
+    $termsUrl = preg_replace('#^https?://#', '', url('win/terms'));
+    ussd('CON', "Do you accept the {$comp} terms (see {$termsUrl}) and consent to Cell C processing your personal information under POPIA?\n1. I accept\n2. Cancel");
 }
 if ($parts[5] !== '1') {
     ussd('END', 'Entry cancelled. You need to accept the terms and POPIA consent to enter.');
 }
 if ($step === 6) {
-    ussd('CON', "Optional: receive GMF x ACSA event news and travel offers?\n1. Yes\n2. No");
+    ussd('CON', "Optional: receive GMF x Cell C event news and offers?\n1. Yes\n2. No");
 }
 
 [$data, $errors] = validate_entry([

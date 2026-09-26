@@ -70,7 +70,7 @@ admin_head('Overview', 'overview');
     </div>
   </div>
   <div class="card">
-    <h2>Travel profile</h2>
+    <h2>Network</h2>
     <div class="hbar">
       <?php foreach ($r['travel_profile'] as $row): ?>
         <div><em title="<?= e($row['answer']) ?>"><?= e($row['answer'] ?: '—') ?></em><i style="width:<?= round($row['verified'] / $maxFly * 100) ?>%"></i><b><?= (int) $row['verified'] ?></b></div>
@@ -132,7 +132,7 @@ admin_head('Overview', 'overview');
   });
   new Chart(document.getElementById('hourChart'), {
     type: 'line',
-    data: { labels: <?= json_encode(array_map(fn ($h) => sprintf('%02d:00', $h), range(0, 23))) ?>, datasets: [{ data: <?= json_encode($hours) ?>, borderColor: '#1a8ea6', backgroundColor: 'rgba(26,142,166,.18)', fill: true, tension: .35, pointRadius: 0 }] },
+    data: { labels: <?= json_encode(array_map(fn ($h) => sprintf('%02d:00', $h), range(0, 23))) ?>, datasets: [{ data: <?= json_encode($hours) ?>, borderColor: '#ea5b0c', backgroundColor: 'rgba(26,142,166,.18)', fill: true, tension: .35, pointRadius: 0 }] },
     options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } }, x: { grid: { display: false }, ticks: { maxTicksLimit: 8 } } } }
   });
 })();

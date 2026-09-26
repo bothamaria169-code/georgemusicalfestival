@@ -7,9 +7,9 @@ $activity = recent_activity(15);
   <div class="live-window">
     <div class="live-track" id="liveTrack">
       <?php if ($activity): foreach ([0, 1] as $copy): foreach ($activity as $a): ?>
-        <span class="live-item is-<?= e($a['type']) ?>"><i class="fa-solid <?= $a['type'] === 'referral' ? 'fa-user-plus' : 'fa-plane-departure' ?>"></i><?= e($a['text']) ?></span>
+        <span class="live-item is-<?= e($a['type']) ?>"><i class="fa-solid <?= $a['type'] === 'referral' ? 'fa-user-plus' : 'fa-mobile-screen-button' ?>"></i><?= e($a['text']) ?></span>
       <?php endforeach; endforeach; else: ?>
-        <span class="live-item"><i class="fa-solid fa-plane-departure"></i>Be the first to enter FLY FOR TWO — new entries appear here live</span>
+        <span class="live-item"><i class="fa-solid fa-mobile-screen-button"></i>Be the first to enter WIN A HUAWEI — new entries appear here live</span>
       <?php endif; ?>
     </div>
   </div>
@@ -23,7 +23,7 @@ $activity = recent_activity(15);
       if (!res.ok || !res.items || !res.items.length) return;
       var key = JSON.stringify(res.items); if (key === last) return; last = key;
       var html = res.items.map(function (a) {
-        return '<span class="live-item is-' + a.type + '"><i class="fa-solid ' + (a.type === 'referral' ? 'fa-user-plus' : 'fa-plane-departure') + '"></i>' + esc(a.text) + '</span>';
+        return '<span class="live-item is-' + a.type + '"><i class="fa-solid ' + (a.type === 'referral' ? 'fa-user-plus' : 'fa-mobile-screen-button') + '"></i>' + esc(a.text) + '</span>';
       }).join('');
       track.innerHTML = html + html;
     }).catch(function () {});

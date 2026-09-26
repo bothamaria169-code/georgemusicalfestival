@@ -7,4 +7,4 @@ if ($referrer) {
     record_referral_click($referrer);
     $_SESSION['ref_by'] = $referrer['ref_code'];
 }
-redirect('flyfortwo/');
+redirect('win/');

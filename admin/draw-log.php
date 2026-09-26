@@ -47,10 +47,10 @@ if (($_GET['format'] ?? '') === 'csv') {
 <div class="no-print"><button onclick="print()">Print / save as PDF</button> <a href="?draw=<?= (int) $draw['id'] ?>&format=csv">Download CSV</a></div>
 <div class="head">
   <div><h1><?= e(setting('comp_name')) ?> — <?= e($draw['title']) ?></h1>Draw certification log · generated <?= e(date('j F Y H:i:s T')) ?></div>
-  <img src="<?= e(url('assets/img/brand/acsa-teal.png')) ?>" alt="ACSA">
+  <img src="<?= e(url('assets/img/brand/cellc-orange.png')) ?>" alt="Cell C">
 </div>
 <table>
-  <tr><th>Competition</th><td><?= e(setting('comp_name')) ?> · George Music Festival × Airports Company South Africa</td></tr>
+  <tr><th>Competition</th><td><?= e(setting('comp_name')) ?> · George Music Festival × Cell C</td></tr>
   <tr><th>Draw</th><td><?= e($draw['title']) ?> (<?= e($draw['draw_key']) ?>) — scheduled <?= e(fmt_date($draw['scheduled_for'], 'j F Y')) ?></td></tr>
   <tr><th>Prize</th><td><?= nl2br(e($draw['prize_description'] ?: 'TBC')) ?></td></tr>
   <tr><th>Competition period</th><td><?= e(setting('comp_open_at')) ?> to <?= e(setting('comp_close_at')) ?></td></tr>
@@ -74,7 +74,7 @@ if (($_GET['format'] ?? '') === 'csv') {
 <?php if (!$runs): ?><p>No runs yet.</p><?php endif; ?>
 
 <div class="sign">
-  <div>ACSA representative — name, signature, date</div>
+  <div>Cell C representative — name, signature, date</div>
   <div>Independent attorney — name, signature, date</div>
 </div>
 </body></html>

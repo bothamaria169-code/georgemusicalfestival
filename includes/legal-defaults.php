@@ -8,10 +8,10 @@ declare(strict_types=1);
 function default_terms_html(): string
 {
     return <<<'HTML'
-<p><strong>FLY FOR TWO — Competition terms and conditions.</strong> By entering you agree to these terms. Please also read the <a href="/flyfortwo/privacy">privacy notice</a>, which explains how your personal information is protected under the Protection of Personal Information Act 4 of 2013 (POPIA).</p>
+<p><strong>WIN A HUAWEI — Competition terms and conditions.</strong> By entering you agree to these terms. Please also read the <a href="/cellc/win/privacy">privacy notice</a>, which explains how your personal information is protected under the Protection of Personal Information Act 4 of 2013 (POPIA).</p>
 
 <h2>1. The promoter</h2>
-<p>FLY FOR TWO is run by George Music Festival ("GMF") in partnership with Airports Company South Africa SOC Ltd ("ACSA"), together "the Promoter". Contact: info@georgemusicalfestival.co.za.</p>
+<p>WIN A HUAWEI is run by George Music Festival ("GMF") in partnership with Cell C Limited ("Cell C"), together "the Promoter". Contact: info@georgemusicalfestival.co.za.</p>
 
 <h2>2. Competition period</h2>
 <p>Entries open on 24 September 2026 and close on 31 October 2026 at 23:59 (South African time). Entries and link opens received outside this period do not count.</p>
@@ -19,12 +19,12 @@ function default_terms_html(): string
 <h2>3. Who can enter</h2>
 <ol>
 <li>South African residents aged 18 or older with a valid South African cellphone number and a working email address.</li>
-<li>Employees, directors and agents of GMF and ACSA, their advertising and promotion agencies, and their immediate families may not enter.</li>
+<li>Employees, directors and agents of GMF and Cell C, their advertising and promotion agencies, and their immediate families may not enter.</li>
 </ol>
 
 <h2>4. How to enter</h2>
 <ol>
-<li>Entry is free. Complete the entry form on georgemusicalfestival.co.za, through a FLY FOR TWO QR code, on the ACSA website or by any other official channel, then confirm your entry using the link or 6-digit code emailed to you. Only confirmed entries count.</li>
+<li>Entry is free. Complete the entry form on georgemusicalfestival.co.za, through a WIN A HUAWEI QR code, on a Cell C channel or by any other official channel, then confirm your entry using the link or 6-digit code emailed to you. Only confirmed entries count.</li>
 <li>One entry per person, per cellphone number and per email address. Duplicate entries are removed.</li>
 <li>After confirming, you receive a personal share link and a dashboard showing your score.</li>
 </ol>
@@ -40,9 +40,9 @@ function default_terms_html(): string
 
 <h2>6. Prizes</h2>
 <ol>
-<li><strong>Grand Prize:</strong> a weekend getaway for two — return domestic flights, weekend accommodation and shuttle transfers. Travel dates, route and suppliers are confirmed with the winner and are subject to availability within the period set by the Promoter.</li>
+<li><strong>Grand Prize:</strong> one brand-new Huawei Pura 80 Pro smartphone with a recommended retail value of R18 000. The model, colour and storage are as supplied by the Promoter. The phone is delivered to, or collected by, the winner in South Africa as arranged with the Promoter. No airtime, data or contract is included unless the Promoter states otherwise.</li>
 <li><strong>Second Prize:</strong> as announced on the competition page.</li>
-<li>Prizes are not transferable and cannot be exchanged for cash. The Promoter may replace a prize with one of similar value if it becomes unavailable. Costs not listed as part of a prize (such as spending money, meals or travel insurance) are the winner's responsibility.</li>
+<li>Prizes are not transferable and cannot be exchanged for cash. The Promoter may replace a prize with one of similar value if it becomes unavailable. Costs not listed as part of a prize (such as airtime, data, accessories or insurance) are the winner's responsibility. The manufacturer's warranty applies to the phone.</li>
 </ol>
 
 <h2>7. Fair play</h2>
@@ -62,7 +62,7 @@ function default_terms_html(): string
 <p>Winners may be invited, but are not obliged, to take part in reasonable publicity, such as a photo or short interview. Any use of a winner's image beyond the winner announcement needs their separate consent.</p>
 
 <h2>10. Your personal information (POPIA)</h2>
-<p>Your personal information is processed in line with the Protection of Personal Information Act 4 of 2013, only for the purposes explained in the <a href="/flyfortwo/privacy">privacy notice</a>. You will only receive marketing messages if you ticked the optional box, and you can withdraw that consent at any time.</p>
+<p>Your personal information is processed in line with the Protection of Personal Information Act 4 of 2013, only for the purposes explained in the <a href="/cellc/win/privacy">privacy notice</a>. You will only receive marketing messages if you ticked the optional box, and you can withdraw that consent at any time.</p>
 
 <h2>11. General</h2>
 <ol>
@@ -77,14 +77,14 @@ HTML;
 function default_privacy_html(): string
 {
     return <<<'HTML'
-<p><strong>This notice explains how FLY FOR TWO collects and protects your personal information under the Protection of Personal Information Act 4 of 2013 (POPIA).</strong></p>
+<p><strong>This notice explains how WIN A HUAWEI collects and protects your personal information under the Protection of Personal Information Act 4 of 2013 (POPIA).</strong></p>
 
 <h2>Who is responsible</h2>
-<p>Airports Company South Africa SOC Ltd (ACSA) is the responsible party for the personal information collected through the competition. George Music Festival (GMF) operates this website and platform on ACSA's behalf, as an operator in terms of POPIA, and does not use competition data for any other purpose. Contact for privacy requests: info@georgemusicalfestival.co.za.</p>
+<p>Cell C Limited (Cell C) and George Music Festival (GMF) are responsible for the personal information collected through the competition. GMF operates this website and platform, and competition data is not used for any other purpose. Contact for privacy requests: info@georgemusicalfestival.co.za.</p>
 
 <h2>What we collect</h2>
 <ul>
-<li><strong>Details you give us:</strong> full name, cellphone number, email address, town, age group, your answer to the travel question, and your consent choices (including your POPIA consent to ACSA).</li>
+<li><strong>Details you give us:</strong> full name, cellphone number, email address, town, age group, which cellphone network you use, and your consent choices (including your POPIA consent).</li>
 <li><strong>Your photo,</strong> only if you choose to upload one on your dashboard.</li>
 <li><strong>How you entered:</strong> the channel or QR code used, for example which activation point.</li>
 <li><strong>Fraud-prevention data:</strong> a scrambled (hashed) version of your internet address, a device identifier and browser type. We use these to stop duplicate entries and fake link opens, not to identify you.</li>
@@ -95,8 +95,8 @@ function default_privacy_html(): string
 <ul>
 <li>To run the competition: confirm your entry, calculate the leaderboard, and contact and verify winners.</li>
 <li>To keep the competition fair and prevent fraud.</li>
-<li>To report to ACSA on how the campaign performed, mostly as totals by channel, town, age group and date.</li>
-<li>To send you news and travel offers from GMF and ACSA — <strong>only if you ticked the optional marketing box.</strong> You can switch this off on your dashboard or by emailing us.</li>
+<li>To report to Cell C on how the campaign performed, mostly as totals by channel, town, age group and date.</li>
+<li>To send you news and offers from GMF and Cell C — <strong>only if you ticked the optional marketing box.</strong> You can switch this off on your dashboard or by emailing us.</li>
 </ul>
 <p>We process your information with your consent and because it is necessary to run the competition you entered.</p>
 
@@ -105,14 +105,14 @@ function default_privacy_html(): string
 
 <h2>Who we share it with</h2>
 <ul>
-<li>ACSA, as the responsible party.</li>
+<li>Cell C, as a responsible party.</li>
 <li>Service providers who host the website and deliver our emails, under contracts that require them to keep your information confidential and secure. The email service may process messages on servers outside South Africa. Where this happens we rely on providers bound by data-protection laws or agreements that give protection similar to POPIA (section 72).</li>
 <li>Authorities, where the law requires it.</li>
 </ul>
 <p>We do not sell your personal information.</p>
 
 <h2>How we protect it</h2>
-<p>The website uses an encrypted connection (HTTPS). Access to the admin system is limited to authorised GMF and ACSA staff with individual logins, and every administrative action is logged. Network addresses are stored scrambled (hashed). The database is backed up daily.</p>
+<p>The website uses an encrypted connection (HTTPS). Access to the admin system is limited to authorised GMF and Cell C staff with individual logins, and every administrative action is logged. Network addresses are stored scrambled (hashed). The database is backed up daily.</p>
 
 <h2>How long we keep it</h2>
 <p>Competition information is kept for as long as needed to run the competition, award the prizes and keep a record of the result — up to 12 months after the competition closes — and is then deleted or de-identified. If you agreed to marketing, your contact details are kept for that purpose until you unsubscribe.</p>

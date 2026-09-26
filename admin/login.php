@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?><!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
-<title>Sign in — FLY FOR TWO admin</title>
+<title>Sign in — WIN A HUAWEI admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Oswald:wght@600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?= e(asset('assets/css/admin.css')) ?>"></head>
 <body>
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <form class="login-card" method="post">
     <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival">
     <h1>Control room</h1>
-    <p class="muted" style="margin:0 0 20px">FLY FOR TWO · GMF × ACSA</p>
+    <p class="muted" style="margin:0 0 20px">WIN A HUAWEI · GMF × Cell C</p>
     <?= csrf_field() ?>
     <div class="fg"><label class="f" for="email">Email</label><input class="in" id="email" type="email" name="email" required autofocus value="<?= e($_POST['email'] ?? '') ?>"></div>
     <div class="fg"><label class="f" for="pw">Password</label><input class="in" id="pw" type="password" name="password" required></div>

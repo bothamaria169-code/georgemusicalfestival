@@ -63,8 +63,8 @@ $select = "SELECT p.*, (SELECT COUNT(*) FROM referral_clicks c WHERE c.referrer_
 if (isset($_GET['export'])) {
     audit('entrants.export', ['filters' => $_GET]);
     $rows = q($select . ' ORDER BY p.id', $params);
-    csv_download('flyfortwo-entrants-' . date('Ymd-His') . '.csv',
-        ['ID', 'Full name', 'Email', 'Phone', 'Town', 'Age group', 'Travel profile', 'Terms consent', 'POPIA consent', 'Marketing consent', 'Consent at', 'Status', 'Verified at', 'Verified via',
+    csv_download('cellc-entrants-' . date('Ymd-His') . '.csv',
+        ['ID', 'Full name', 'Email', 'Phone', 'Town', 'Age group', 'Network', 'Terms consent', 'POPIA consent', 'Marketing consent', 'Consent at', 'Status', 'Verified at', 'Verified via',
          'Channel', 'Activation point', 'Source town', 'Time slot', 'UTM source', 'UTM medium', 'UTM campaign', 'Referral code', 'Referred by', 'Link opens', 'Friends referred', 'Created at'],
         (function () use ($rows) {
             foreach ($rows as $p) {

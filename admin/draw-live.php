@@ -1,5 +1,5 @@
 <?php
-/** Full-screen live draw for the event-day audience and the ACSA witness. */
+/** Full-screen live draw for the event-day audience and the Cell C witness. */
 require __DIR__ . '/_layout.php';
 require dirname(__DIR__) . '/includes/draw.php';
 
@@ -23,10 +23,10 @@ $prize = prize_lines($draw);
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,400&family=Manrope:wght@500;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
-  :root { --o:#f7801a; --o2:#ff9d4a; --ink:#02262f; --paper:#f6f1e8; --muted:rgba(246,241,232,.6); }
+  :root { --o:#ea5b0c; --o2:#ff7a2e; --ink:#141414; --paper:#f6f1e8; --muted:rgba(246,241,232,.6); }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; }
-  body { background: radial-gradient(ellipse 70% 60% at 50% 110%, rgba(247,128,26,.28), transparent 70%), radial-gradient(ellipse 60% 50% at 90% 0%, rgba(42,163,187,.3), transparent 70%), linear-gradient(160deg,#006780,#02262f); color: var(--paper); font-family: Manrope, sans-serif; display: flex; flex-direction: column; overflow: hidden; }
+  body { background: radial-gradient(ellipse 70% 60% at 50% 110%, rgba(234,91,12,.28), transparent 70%), radial-gradient(ellipse 60% 50% at 90% 0%, rgba(255,122,46,.3), transparent 70%), linear-gradient(160deg,#2b2b2b,#141414); color: var(--paper); font-family: Manrope, sans-serif; display: flex; flex-direction: column; overflow: hidden; }
   header { display: flex; justify-content: space-between; align-items: center; padding: 28px 44px; }
   header img { height: 64px; width: auto; }
   header .x { font-family: Oswald; font-size: 2rem; color: var(--muted); }
@@ -37,7 +37,7 @@ $prize = prize_lines($draw);
   .prize { color: var(--muted); font-size: clamp(1rem, 1.6vw, 1.5rem); margin: 0 0 30px; }
   .slot { min-height: 1.1em; font-family: Oswald; font-weight: 700; text-transform: uppercase; font-size: clamp(3.4rem, 11vw, 11rem); line-height: 1; letter-spacing: -.01em; margin: 10px 0; }
   .slot.spin { color: rgba(246,241,232,.55); filter: blur(.5px); }
-  .slot.win { color: var(--o); animation: pop .7s cubic-bezier(.2,.8,.2,1.2); text-shadow: 0 0 60px rgba(247,128,26,.45); }
+  .slot.win { color: var(--o); animation: pop .7s cubic-bezier(.2,.8,.2,1.2); text-shadow: 0 0 60px rgba(234,91,12,.45); }
   @keyframes pop { from { transform: scale(.6); opacity: 0; } }
   .meta { font-size: clamp(1rem, 1.8vw, 1.7rem); color: var(--muted); min-height: 1.6em; }
   .stats { display: flex; gap: 50px; justify-content: center; margin-top: 36px; }
@@ -54,7 +54,7 @@ $prize = prize_lines($draw);
   .confetti { position: fixed; top: -20px; width: 10px; height: 16px; z-index: 5; animation: fall linear forwards; }
   @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
   .msg { color: #ff9c8a; font-weight: 700; margin-top: 14px; min-height: 1.4em; }
-  .photo { width: clamp(150px, 20vw, 260px); height: clamp(150px, 20vw, 260px); border-radius: 50%; object-fit: cover; border: 6px solid var(--o); box-shadow: 0 0 80px rgba(247,128,26,.45); margin: 6px auto 4px; display: block; animation: pop .8s cubic-bezier(.2,.8,.2,1.2); }
+  .photo { width: clamp(150px, 20vw, 260px); height: clamp(150px, 20vw, 260px); border-radius: 50%; object-fit: cover; border: 6px solid var(--o); box-shadow: 0 0 80px rgba(234,91,12,.45); margin: 6px auto 4px; display: block; animation: pop .8s cubic-bezier(.2,.8,.2,1.2); }
   .count { font-family: Oswald; font-size: clamp(6rem, 18vw, 16rem); line-height: 1; color: var(--o); }
   .fs { position: fixed; top: 110px; right: 44px; font-size: .7rem; padding: 10px 14px; }
 </style>
@@ -63,7 +63,7 @@ $prize = prize_lines($draw);
 <header>
   <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival">
   <span class="x">×</span>
-  <img src="<?= e(url('assets/img/brand/acsa-white.png')) ?>" alt="Airports Company South Africa">
+  <img src="<?= e(url('assets/img/brand/cellc-white.png')) ?>" alt="Cell C">
 </header>
 <button class="fs" onclick="document.documentElement.requestFullscreen && document.documentElement.requestFullscreen()"><i class="fa-solid fa-expand"></i> Full screen</button>
 <main>
@@ -81,7 +81,7 @@ $prize = prize_lines($draw);
   </div>
 
   <div class="controls <?= $last && $last['outcome'] !== 'disqualified' ? 'hidden' : '' ?>" id="runControls">
-    <input id="witness" placeholder="ACSA witness name (recorded in the log)">
+    <input id="witness" placeholder="Cell C witness name (recorded in the log)">
     <button class="go" id="runBtn"><i class="fa-solid fa-trophy"></i> Reveal the winner</button>
   </div>
   <div class="controls <?= $last && $last['outcome'] === 'selected' ? '' : 'hidden' ?>" id="outcomeControls">
@@ -174,7 +174,7 @@ $prize = prize_lines($draw);
   });
 
   function confetti() {
-    var colors = ['#ff9a00', '#ffb74a', '#1a8ea6', '#f6f1e8', '#2f8a5b'];
+    var colors = ['#ff9a00', '#ffb74a', '#ea5b0c', '#f6f1e8', '#2f8a5b'];
     for (var i = 0; i < 140; i++) {
       var c = document.createElement('i'); c.className = 'confetti';
       c.style.left = Math.random() * 100 + 'vw';

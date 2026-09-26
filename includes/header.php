@@ -16,14 +16,14 @@ header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: strict-origin-when-cross-origin');
 $nav = [
     'home'    => ['index.php', 'Home'],
-    'howto'   => ['flyfortwo/how-to-enter', 'How to enter'],
+    'howto'   => ['win/how-to-enter', 'How to enter'],
     'event'   => ['index.php#event', 'The Event'],
     'lineup'  => ['index.php#lineup', 'Line-up'],
     'gallery' => ['gallery.php', 'Gallery'],
     'tickets' => [$ticketUrl !== '' ? $ticketUrl : 'index.php#tickets', 'Tickets'],
 ];
 // The Enter button jumps to the form on the homepage, and to the competition page everywhere else.
-$enterHref = $nav_active === 'home' ? '#enter' : url('flyfortwo/');
+$enterHref = $nav_active === 'home' ? '#enter' : url('win/');
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +31,7 @@ $enterHref = $nav_active === 'home' ? '#enter' : url('flyfortwo/');
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title><?= e($page_title) ?></title>
 <meta name="description" content="<?= e($meta_description) ?>">
-<meta name="theme-color" content="#00485a">
+<meta name="theme-color" content="#1f1f1f">
 <meta property="og:title" content="<?= e($page_title) ?>">
 <meta property="og:description" content="<?= e($meta_description) ?>">
 <meta property="og:image" content="<?= e($og_image ?? url('assets/img/gallery/crowd-night.jpg')) ?>">
@@ -53,32 +53,32 @@ $enterHref = $nav_active === 'home' ? '#enter' : url('flyfortwo/');
 <div class="scroll-progress" aria-hidden="true"></div>
 
 <?php if ($announcement !== '' && comp_state() === 'open' && $nav_active !== 'fly'): ?>
-<a class="announce" href="<?= e(url('flyfortwo/')) ?>">
+<a class="announce" href="<?= e(url('win/')) ?>">
   <span class="announce-dot"></span><?= e($announcement) ?> <strong>Enter now <i class="fa-solid fa-arrow-right"></i></strong>
 </a>
 <?php endif; ?>
 
 <header class="site-header" id="siteHeader">
   <div class="wrap header-inner">
-    <a class="brand" href="<?= e(url('index.php')) ?>" aria-label="George Music Festival × Airports Company South Africa — home">
+    <a class="brand" href="<?= e(url('index.php')) ?>" aria-label="George Music Festival × Cell C — home">
       <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival" width="120" height="82">
       <span class="brand-x" aria-hidden="true">×</span>
-      <img class="brand-acsa" src="<?= e(url('assets/img/brand/acsa-white.png')) ?>" alt="Airports Company South Africa" width="160" height="78">
+      <img class="brand-acsa" src="<?= e(url('assets/img/brand/cellc-white.png')) ?>" alt="Cell C" width="160" height="78">
     </a>
     <nav class="main-nav" id="mainNav" aria-label="Main">
-      <a href="<?= e(url('flyfortwo/')) ?>" class="nav-fly <?= $nav_active === 'fly' ? 'is-active' : '' ?>"><i class="fa-solid fa-plane-departure"></i> Win a trip</a>
+      <a href="<?= e(url('win/')) ?>" class="nav-fly <?= $nav_active === 'fly' ? 'is-active' : '' ?>"><i class="fa-solid fa-mobile-screen-button"></i> Win a Huawei</a>
       <?php foreach ($nav as $key => [$href, $label]): ?>
         <a href="<?= e(preg_match('#^https?://#', $href) ? $href : url($href)) ?>" class="<?= $nav_active === $key ? 'is-active' : '' ?>"><?= e($label) ?></a>
       <?php endforeach; ?>
       <div class="nav-mobile-extra">
-        <a href="<?= e(url($me ? 'flyfortwo/dashboard' : 'flyfortwo/login')) ?>"><?= $me ? 'My dashboard' : 'Sign in' ?></a>
+        <a href="<?= e(url($me ? 'win/dashboard' : 'win/login')) ?>"><?= $me ? 'My dashboard' : 'Sign in' ?></a>
       </div>
     </nav>
     <div class="header-actions">
-      <a class="header-link" href="<?= e(url($me ? 'flyfortwo/dashboard' : 'flyfortwo/login')) ?>">
+      <a class="header-link" href="<?= e(url($me ? 'win/dashboard' : 'win/login')) ?>">
         <i class="fa-regular fa-user"></i><span><?= $me ? e(explode(' ', $me['full_name'])[0]) : 'Sign in' ?></span>
       </a>
-      <a class="btn btn-orange btn-sm" href="<?= e($enterHref) ?>"><i class="fa-solid fa-plane-departure"></i> Enter now</a>
+      <a class="btn btn-orange btn-sm" href="<?= e($enterHref) ?>"><i class="fa-solid fa-mobile-screen-button"></i> Enter now</a>
       <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mainNav"><span></span><span></span><span></span></button>
     </div>
   </div>

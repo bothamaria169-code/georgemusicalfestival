@@ -1,7 +1,7 @@
 /* FLY FOR TWO — admin control room (dark, after the Congo Film Academy dashboard) */
 :root {
   --bg: #07080a; --panel: #0f1114; --panel-2: #15181c; --line: #1f242a; --line-2: #2a3038;
-  --text: #eef0f2; --muted: #8b939c; --orange: #ff9a00; --orange-2: #ffb74a; --teal: #1a8ea6;
+  --text: #eef0f2; --muted: #8b939c; --orange: #ff9a00; --orange-2: #ffb74a; --teal: #ea5b0c;
   --ok: #22c55e; --ok-bg: rgba(34,197,94,.12); --warn: #f59e0b; --warn-bg: rgba(245,158,11,.12);
   --bad: #ef4444; --bad-bg: rgba(239,68,68,.12); --info-bg: rgba(26,142,166,.14);
   --f-d: 'Oswald', sans-serif; --f-b: 'Manrope', sans-serif; --side: 250px;

@@ -21,9 +21,9 @@ $winners  = q("SELECT d.title, d.prize_description, p.full_name, p.town
                JOIN entrants p ON p.id = r.selected_entrant_id
                WHERE d.status = 'published' ORDER BY d.scheduled_for")->fetchAll();
 
-$page_title       = setting('comp_name') . ' — Win ' . setting('prize_headline') . ' | GMF × ACSA';
-$meta_description = 'Enter FLY FOR TWO free and win ' . setting('prize_headline') . ' — return flights, accommodation and shuttle transfers. George Music Festival × Airports Company South Africa.';
-$og_image         = url('assets/img/gallery/airport-terminal.jpg');
+$page_title       = setting('comp_name') . ' — Win ' . setting('prize_headline') . ' | GMF × Cell C';
+$meta_description = 'Enter WIN A HUAWEI free and win ' . setting('prize_headline') . ' worth ' . setting('prize_value') . '. George Music Festival × Cell C.';
+$og_image         = url('assets/img/cellc/hero-win-a-huawei.jpg');
 $nav_active       = 'fly';
 $extra_css        = ['assets/css/comp.css'];
 $extra_js         = ['assets/js/enter.js'];
@@ -33,15 +33,15 @@ require __DIR__ . '/includes/header.php';
 ?>
 
 <section class="ff-hero grain">
-  <img class="ff-hero-bg" src="<?= e(url('assets/img/gallery/airport-terminal.jpg')) ?>" alt="" fetchpriority="high">
+  <img class="ff-hero-bg" src="<?= e(url('assets/img/cellc/concert-phones-blue.jpg')) ?>" alt="" fetchpriority="high">
   <div class="wrap ff-layout">
 
     <div class="ff-intro">
       <div class="ff-badge"><?= e(setting('hero_kicker')) ?></div>
-      <h1 class="display huge">Win a ticket for <span class="serif-i">two.</span></h1>
+      <h1 class="display huge">Win a Huawei <span class="serif-i">Pura 80 Pro.</span></h1>
       <p class="lede"><?= e(setting('hero_text')) ?></p>
-      <figure class="ff-intro-photo"><img src="<?= e(url('assets/img/competition/hero-win-a-trip-for-two.jpg')) ?>" width="1536" height="1024" alt="A couple on a plane holding their boarding passes" fetchpriority="high"></figure>
-      <p style="margin-top:18px;"><a class="text-link" href="<?= e(url('flyfortwo/how-to-enter')) ?>">How to enter, step by step <i class="fa-solid fa-arrow-right"></i></a></p>
+      <figure class="ff-intro-photo"><img src="<?= e(url('assets/img/cellc/hero-win-a-huawei.jpg')) ?>" width="1800" height="1200" alt="Three smiling friends taking a selfie together outdoors" fetchpriority="high"></figure>
+      <p style="margin-top:18px;"><a class="text-link" href="<?= e(url('win/how-to-enter')) ?>">How to enter, step by step <i class="fa-solid fa-arrow-right"></i></a></p>
       <?php if ($referrer && (!$me || (int) $me['id'] !== (int) $referrer['id'])): ?>
         <p class="ff-invited"><i class="fa-solid fa-user-plus"></i> <?= e(short_name($referrer['full_name'])) ?> invited you to enter.</p>
       <?php endif; ?>
@@ -60,10 +60,10 @@ require __DIR__ . '/includes/header.php';
         <ul>
           <?php foreach ($prizes as $p): ?><li><span class="dot"></span><?= e($p) ?></li><?php endforeach; ?>
         </ul>
-        <i class="fa-solid fa-plane ff-prize-plane" aria-hidden="true"></i>
+        <i class="fa-solid fa-mobile-screen-button ff-prize-plane" aria-hidden="true"></i>
       </div>
       <?php $placesClass = ''; include __DIR__ . '/includes/prize-places.php'; ?>
-      <figure class="moyeni-render ff-moyeni"><img src="<?= e(url('assets/img/acsa/moyeni-3d.jpg')) ?>" width="1127" height="754" alt="Moyeni, the Airports Company South Africa mascot" loading="lazy"></figure>
+      <figure class="moyeni-render ff-moyeni"><img src="<?= e(url('assets/img/cellc/prize-phone-side.jpg')) ?>" width="1800" height="1200" alt="A sleek white premium smartphone" loading="lazy"></figure>
     </div>
   </div>
 </section>
@@ -72,9 +72,9 @@ require __DIR__ . '/includes/header.php';
 <section class="section on-paper">
   <div class="wrap">
     <span class="kicker reveal" style="color:var(--orange-deep)">How it works</span>
-    <h2 class="display big reveal" style="margin:18px 0 50px;">Three steps to <span class="serif-i" style="color:var(--orange-deep)">take-off</span></h2>
+    <h2 class="display big reveal" style="margin:18px 0 50px;">Three steps to <span class="serif-i" style="color:var(--orange-deep)">win</span></h2>
     <div class="ff-steps">
-      <div class="ff-step reveal"><span class="n">01</span><h3>Enter</h3><p>Your name, cellphone, email and one quick travel question. Scan a GMF QR code or enter right here.</p></div>
+      <div class="ff-step reveal"><span class="n">01</span><h3>Enter</h3><p>Your name, cellphone, email, age group and one quick question. Scan a GMF QR code or enter right here.</p></div>
       <div class="ff-step reveal reveal-d1"><span class="n">02</span><h3>Verify</h3><p>We email you a 6-digit code. Your entry only counts once it's confirmed — one per phone number.</p></div>
       <div class="ff-step reveal reveal-d2"><span class="n">03</span><h3>Share</h3><p>Send your personal link on WhatsApp and everywhere else. Every different person who opens it adds 1 to your score. The top score wins the Grand Prize, the runner-up the Second Prize.</p></div>
     </div>
@@ -88,7 +88,7 @@ require __DIR__ . '/includes/header.php';
       <span class="kicker reveal">Leaderboard</span>
       <h2 class="display big reveal" style="margin-top:18px;">The <span class="serif-i text-orange">leaderboard</span></h2>
       <p class="muted reveal" style="margin-top:18px;max-width:440px;">Ranked by link opens — the number of different people who opened each entrant's personal link. <strong style="color:var(--text-light)">The leader is kept secret until the winners are revealed on <?= e(fmt_date($final['scheduled_for'] ?? null, 'j F')) ?>.</strong> <?= e(setting('referral_reward_text')) ?></p>
-      <?php if ($me): ?><a class="btn btn-orange reveal" style="margin-top:22px" href="<?= e(url('flyfortwo/dashboard')) ?>">Get my link</a><?php endif; ?>
+      <?php if ($me): ?><a class="btn btn-orange reveal" style="margin-top:22px" href="<?= e(url('win/dashboard')) ?>">Get my link</a><?php endif; ?>
     </div>
     <div class="reveal reveal-d2">
       <?php if ($leaders): ?>
@@ -119,12 +119,12 @@ require __DIR__ . '/includes/header.php';
       <h2 class="display big reveal" style="margin-top:18px;">Good to <span class="serif-i" style="color:var(--orange-deep)">know</span></h2>
     </div>
     <div class="ff-faq reveal">
-      <details open><summary>Who can enter?</summary><p>South African residents aged 18 and over. Entry is free. Full rules are in the <a href="<?= e(url('flyfortwo/terms')) ?>">competition terms</a>.</p></details>
+      <details open><summary>Who can enter?</summary><p>South African residents aged 18 and over. Entry is free. Full rules are in the <a href="<?= e(url('win/terms')) ?>">competition terms</a>.</p></details>
       <details><summary>How many times can I enter?</summary><p>Once per phone number and email address. After that, your score grows each time a different person opens your personal link.</p></details>
       <details><summary>Why do I need a verification code?</summary><p>The code confirms that your email is real and that the entry is yours. Unconfirmed entries aren't on the leaderboard and can't win.</p></details>
       <details><summary>When are the winners revealed?</summary><p>Entries and link opens count until <?= e(fmt_date(setting('comp_close_at'), 'j F Y, H:i')) ?>. The winners are revealed on <?= e(fmt_date($final['scheduled_for'] ?? null, 'j F Y')) ?>: 1st place wins <?= e(setting('prize_headline')) ?> and 2nd place wins the Second Prize.</p></details>
       <details><summary>How is the winner chosen?</summary><p><?= e(setting('draw_reassurance')) ?></p></details>
-      <details><summary>What happens to my information?</summary><p>Your details are used to run the competition and are owned by Airports Company South Africa. You'll only get marketing messages if you ticked the optional box. See the <a href="<?= e(url('flyfortwo/privacy')) ?>">privacy notice</a>.</p></details>
+      <details><summary>What happens to my information?</summary><p>Your details are used to run the competition and are held by Cell C and GMF. You'll only get marketing messages if you ticked the optional box. See the <a href="<?= e(url('win/privacy')) ?>">privacy notice</a>.</p></details>
     </div>
   </div>
 </section>

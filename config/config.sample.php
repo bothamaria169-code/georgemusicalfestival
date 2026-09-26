@@ -1,6 +1,6 @@
 <?php
 /**
- * GMF × ACSA — FLY FOR TWO platform configuration.
+ * GMF × Cell C — WIN A HUAWEI platform configuration.
  *
  * Copy this file to config/config.php and fill in the values for the
  * server you are deploying to. config.php is never overwritten by updates.
@@ -20,7 +20,7 @@ return [
     'db' => [
         'host' => 'localhost',
         'port' => 3306,
-        'name' => 'gmf_flyfortwo',
+        'name' => 'gmf_cellc',
         'user' => 'root',
         'pass' => '',
     ],
@@ -46,11 +46,11 @@ return [
     ],
 
     // ── Partner API ────────────────────────────────────────────────────
-    // Key ACSA's systems send as the X-Api-Key header (or ?key=) for the
+    // Key Cell C's systems send as the X-Api-Key header (or ?key=) for the
     // entry API and the read-only reporting API. Generate a long random value.
     'partner_api_key' => '',
-    // Origins allowed to call the entry API from a browser (ACSA website).
-    'cors_origins'    => ['https://www.airports.co.za'],
+    // Origins allowed to call the entry API from a browser (Cell C website).
+    'cors_origins'    => ['https://www.cellc.co.za'],
 
     // Shared secret your USSD gateway sends (?secret=) — leave empty to disable the USSD endpoint.
     'ussd_secret' => '',

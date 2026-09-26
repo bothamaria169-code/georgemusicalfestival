@@ -1,9 +1,10 @@
-# GMF × ACSA — FLY FOR TWO
+# GMF × Cell C — WIN A HUAWEI (served from /cellc/)
 Options -Indexes
 DirectoryIndex index.php
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  RewriteBase /cellc/
   # Uncomment to force HTTPS once the SSL certificate is active on the subdomain
   # RewriteCond %{HTTPS} !=on
   # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
@@ -11,10 +12,10 @@ DirectoryIndex index.php
   # Short share links: /r/ABC1234 → r.php?c=ABC1234
   RewriteRule ^r/([A-Za-z0-9]{4,12})/?$ r.php?c=$1 [L,QSA]
 
-  # Competition folder: /flyfortwo/…  (the festival website stays at the root)
-  RewriteRule ^flyfortwo/?$ fly-for-two.php [L,QSA]
-  RewriteRule ^flyfortwo/(dashboard|login|logout|embed|terms|privacy|verify)/?$ $1.php [L,QSA]
-  RewriteRule ^flyfortwo/how-to-enter/?$ how-to-enter.php [L,QSA]
+  # Competition folder: /win/…  (the festival website stays at the root)
+  RewriteRule ^win/?$ fly-for-two.php [L,QSA]
+  RewriteRule ^win/(dashboard|login|logout|embed|terms|privacy|verify)/?$ $1.php [L,QSA]
+  RewriteRule ^win/how-to-enter/?$ how-to-enter.php [L,QSA]
 
   # Never serve internals
   RewriteRule ^(config|includes|database|storage)(/|$) - [F,L]

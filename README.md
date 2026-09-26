@@ -1,4 +1,4 @@
-# GMF × ACSA — FLY FOR TWO platform
+# GMF × Cell C — WIN A HUAWEI platform (a clone of FLY FOR TWO, served from /cellc/)
 
 PHP 8.1+ / MySQL (MariaDB) platform for the George Music Festival website and the
 FLY FOR TWO competition. There's no framework and no Composer, so it uploads to any cPanel host as-is.

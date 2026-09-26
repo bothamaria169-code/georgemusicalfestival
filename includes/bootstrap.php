@@ -32,7 +32,7 @@ if (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https') {
 }
 
 if (session_status() === PHP_SESSION_NONE && PHP_SAPI !== 'cli') {
-    session_name('gmf_sess');
+    session_name('cellc_sess');
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
@@ -296,9 +296,9 @@ function setting_defaults(): array
 {
     return [
         // Homepage hero (competition-first)
-        'hero_kicker'       => 'ACSA × GMF: Getting the Unflown Flying',
-        'hero_headline'     => 'Win a ticket for two',
-        'hero_text'         => 'In partnership with Airports Company South Africa (ACSA), GMF is making air travel more accessible and inspiring new journeys across South Africa. Enter for your chance to win a Weekend Getaway for Two and experience the journey for yourself.',
+        'hero_kicker'       => 'Cell C × GMF: Change your world',
+        'hero_headline'     => 'Win a Huawei Pura 80 Pro',
+        'hero_text'         => 'In partnership with Cell C, George Music Festival is giving away a brand-new Huawei Pura 80 Pro worth R18 000. Enter free in under a minute, share your personal link, and climb the leaderboard to win.',
 
         // Event
         'event_name'        => 'Eden Soul & Jazz Reimagined',
@@ -309,7 +309,7 @@ function setting_defaults(): array
         'ticket_url'        => '',
         'ticket_note'       => 'Tickets on sale soon',
         'hero_video_url'    => '',
-        'announcement'      => 'FLY FOR TWO is live — enter free and win a weekend getaway for two.',
+        'announcement'      => 'WIN A HUAWEI is live — enter free and win a brand-new Huawei Pura 80 Pro worth R18 000.',
         'contact_email'     => 'info@georgemusicalfestival.co.za',
         'contact_phone'     => '',
         'social_facebook'   => '',
@@ -318,19 +318,24 @@ function setting_defaults(): array
         'upcoming_events'   => "12 Dec 2026|Fill Up Thembalethu Stadium — 2nd Annual|Thembalethu Stadium, George\n1 Jan 2027|Garden Route New Year's Day Picnic|Garden Route",
 
         // Competition
-        'comp_name'         => 'FLY FOR TWO',
+        'comp_name'         => 'WIN A HUAWEI',
         'comp_open_at'      => '2026-09-24 00:00:00',
         'comp_close_at'     => '2026-10-31 23:59:59',
-        'prize_headline'    => 'A Weekend Getaway for Two',
-        'travel_question'   => 'Have you flown before?',
-        'travel_options'    => "No, I haven't flown yet\nOccasionally — once or twice a year\nFrequently — three or more times a year",
+        'prize_headline'    => 'A brand-new Huawei Pura 80 Pro',
+        'travel_question'   => 'Which network are you on?',
+        'travel_options'    => "Cell C
+Vodacom
+MTN
+Telkom
+Other",
         'age_groups'        => "Under 18
 18–24
 25–34
 35–44
 45–54
 55+",
-        'popia_consent_text'=> 'I consent to Airports Company South Africa (ACSA) collecting and processing my personal information for the purposes of the Passenger Mobilisation Programme.',
+        'prize_value'       => 'R18 000',
+        'popia_consent_text'=> 'I consent to Cell C Limited and George Music Festival collecting and processing my personal information for the purposes of the WIN A HUAWEI competition.',
         'towns'             => "George\nThembalethu\nMossel Bay\nOudtshoorn\nPlettenberg Bay\nKnysna\nOther",
         'draw_reassurance'  => 'The winners are the two entrants whose personal links are opened by the most different people. The leaderboard is frozen when entries close, checked for fair play and recorded before the winners are revealed.',
         'share_bonus_cap'   => '0',
@@ -443,7 +448,7 @@ function current_admin(): ?array
     return $cached;
 }
 
-/** Viewers (ACSA read access) may see reports; only admins may change anything. */
+/** Viewers (Cell C read access) may see reports; only admins may change anything. */
 function require_admin(string $role = 'viewer'): array
 {
     $admin = current_admin();

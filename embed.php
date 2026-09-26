@@ -1,7 +1,7 @@
 <?php
 /**
- * FLY FOR TWO entry form for embedding on ACSA's website:
- *   <iframe src="https://georgemusicalfestival.co.za/flyfortwo/embed" style="width:100%;max-width:480px;height:980px;border:0" title="FLY FOR TWO"></iframe>
+ * WIN A HUAWEI entry form for embedding on Cell C's website:
+ *   <iframe src="https://georgemusicalfestival.co.za/win/embed" style="width:100%;max-width:480px;height:980px;border:0" title="WIN A HUAWEI"></iframe>
  * Same validation, consent and database as every other channel; entries are tagged channel = acsa_embed.
  */
 require __DIR__ . '/includes/bootstrap.php';
@@ -9,7 +9,7 @@ require __DIR__ . '/includes/bootstrap.php';
 $ancestors = implode(' ', array_map('trim', (array) config('cors_origins', [])));
 header("Content-Security-Policy: frame-ancestors 'self' {$ancestors}");
 
-$src = ['channel' => 'acsa_embed', 'activation_point' => mb_substr((string) ($_GET['pt'] ?? 'airports.co.za'), 0, 120), 'source_town' => null, 'time_slot' => null,
+$src = ['channel' => 'acsa_embed', 'activation_point' => mb_substr((string) ($_GET['pt'] ?? 'cellc.co.za'), 0, 120), 'source_town' => null, 'time_slot' => null,
         'utm_source' => $_GET['utm_source'] ?? null, 'utm_medium' => $_GET['utm_medium'] ?? null, 'utm_campaign' => $_GET['utm_campaign'] ?? null];
 $refCode  = '';
 $towns    = lines((string) setting('towns'));
@@ -40,10 +40,10 @@ $state    = comp_state();
     <?php include __DIR__ . '/includes/entry-flow.php'; ?>
   <?php else: ?>
     <div class="ff-body ff-center"><h2 class="ff-h"><?= $state === 'upcoming' ? 'Entries open soon' : 'The competition has closed' ?></h2>
-      <p class="ff-sub"><a href="<?= e(url('flyfortwo/')) ?>" target="_blank" rel="noopener" style="text-decoration:underline">Visit the competition page</a></p></div>
+      <p class="ff-sub"><a href="<?= e(url('win/')) ?>" target="_blank" rel="noopener" style="text-decoration:underline">Visit the competition page</a></p></div>
   <?php endif; ?>
 </div>
-<script>window.FF = { api: <?= json_encode(url('api/entry.php')) ?>, cooldown: <?= (int) setting('otp_cooldown') ?>, login: <?= json_encode(url('flyfortwo/login')) ?> };</script>
+<script>window.FF = { api: <?= json_encode(url('api/entry.php')) ?>, cooldown: <?= (int) setting('otp_cooldown') ?>, login: <?= json_encode(url('win/login')) ?> };</script>
 <script src="<?= e(asset('assets/js/enter.js')) ?>"></script>
 </body>
 </html>

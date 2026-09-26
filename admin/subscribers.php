@@ -26,7 +26,7 @@ admin_head('Mailing list', 'subscribers');
 </div>
 <div class="card">
   <h2>Sign-ups <a class="btn btn-sm" href="?export=1"><i class="fa-solid fa-file-csv"></i> Export CSV</a></h2>
-  <p class="muted" style="margin-top:0">Competition entries are ACSA-owned data and are kept separate. This list is GMF's own, collected with explicit consent on the website.</p>
+  <p class="muted" style="margin-top:0">Competition entries are Cell C-owned data and are kept separate. This list is GMF's own, collected with explicit consent on the website.</p>
   <div class="t-wrap"><table class="t">
     <thead><tr><th>Email</th><th>Phone</th><th>Source</th><th>Joined</th></tr></thead>
     <tbody>

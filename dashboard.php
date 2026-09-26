@@ -5,7 +5,7 @@ require __DIR__ . '/includes/bootstrap.php';
 $me = current_entrant();
 if (!$me) {
     flash('info', 'Sign in with your email to open your dashboard.');
-    redirect('flyfortwo/login');
+    redirect('win/login');
 }
 $id = (int) $me['id'];
 
@@ -13,7 +13,7 @@ $id = (int) $me['id'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_ok() && ($_POST['action'] ?? '') === 'marketing') {
     q('UPDATE entrants SET consent_marketing = ?, consent_at = ? WHERE id = ?', [!empty($_POST['consent_marketing']) ? 1 : 0, now(), $id]);
     flash('success', 'Your communication preferences were updated.');
-    redirect('flyfortwo/dashboard');
+    redirect('win/dashboard');
 }
 
 // Winner photo (shown on the live reveal screen and winner announcement if this entrant wins).
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_ok() && ($_POST['action'] ?? '
         $saved = save_entrant_photo($_FILES['photo'] ?? [], $id);
         flash($saved ? 'success' : 'error', $saved ? 'Your photo is saved.' : 'That file could not be used. Please upload a JPG, PNG or WebP photo.');
     }
-    redirect('flyfortwo/dashboard');
+    redirect('win/dashboard');
 }
 
 $count    = entry_count($id);
@@ -51,12 +51,12 @@ $first   = explode(' ', $me['full_name'])[0];
 $prize   = (string) setting('prize_headline');
 
 $scripts = [
-    'WhatsApp status' => "✈️ I just entered FLY FOR TWO — you could win {$prize} with George Music Festival × ACSA. Free to enter, takes a minute 👉 {$link}",
-    'Group chat'      => "Guys, GMF and Airports Company SA are giving away {$prize} — return flights, accommodation and transfers. Enter free here before " . fmt_date(setting('comp_close_at'), 'j F') . ": {$link}",
-    'Short & sweet'   => "Win a weekend away for two ✈️ {$link}",
+    'WhatsApp status' => "📱 I just entered WIN A HUAWEI — you could win {$prize} worth " . setting('prize_value') . " with George Music Festival × Cell C. Free to enter, takes a minute 👉 {$link}",
+    'Group chat'      => "Guys, GMF and Cell C are giving away {$prize} worth " . setting('prize_value') . ". Enter free here before " . fmt_date(setting('comp_close_at'), 'j F') . ": {$link}",
+    'Short & sweet'   => "Win a brand-new Huawei Pura 80 Pro 📱 {$link}",
 ];
 
-$page_title = 'My dashboard — FLY FOR TWO';
+$page_title = 'My dashboard — WIN A HUAWEI';
 $nav_active = 'fly';
 $extra_css  = ['assets/css/comp.css'];
 require __DIR__ . '/includes/header.php';
@@ -70,14 +70,14 @@ require __DIR__ . '/includes/header.php';
       <p class="lede" style="margin:16px 0 0;max-width:620px;color:var(--text-light-muted);">Your score: <strong style="color:var(--text-light)"><?= $stats['clicks'] ?> link open<?= $stats['clicks'] === 1 ? '' : 's' ?></strong>. The person whose link is opened by the most people wins <?= e($prize) ?>, and the runner-up wins the second prize. Keep sharing!</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;">
         <a class="btn btn-orange" href="https://wa.me/?text=<?= rawurlencode($scripts['WhatsApp status']) ?>" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Share now</a>
-        <a class="btn btn-ghost" href="<?= e(url('flyfortwo/logout')) ?>">Sign out</a>
+        <a class="btn btn-ghost" href="<?= e(url('win/logout')) ?>">Sign out</a>
       </div>
     </div>
     <figure class="dash-plane">
-      <img src="<?= e(url('assets/img/acsa/plane-at-the-gate.jpg')) ?>" width="1800" height="1201" alt="A South African Airways plane at the gate, ready to board">
+      <img src="<?= e(url('assets/img/cellc/prize-phone-side.jpg')) ?>" width="1800" height="1200" alt="A sleek white premium smartphone">
       <figcaption>
-        <span class="dash-logos"><img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival"><span>×</span><img src="<?= e(url('assets/img/brand/acsa-white.png')) ?>" alt="Airports Company South Africa"></span>
-        <strong>Your seat is waiting.</strong>
+        <span class="dash-logos"><img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival"><span>×</span><img src="<?= e(url('assets/img/brand/cellc-white.png')) ?>" alt="Cell C"></span>
+        <strong>Your new phone is waiting.</strong>
       </figcaption>
     </figure>
   </div>
@@ -106,9 +106,9 @@ require __DIR__ . '/includes/header.php';
             <a class="share-btn wa" href="https://wa.me/?text=<?= rawurlencode($scripts['WhatsApp status']) ?>" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
             <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=<?= rawurlencode($link) ?>" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
             <a class="share-btn" href="https://twitter.com/intent/tweet?text=<?= rawurlencode($scripts['Short & sweet']) ?>" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter"></i> X</a>
-            <a class="share-btn" href="https://t.me/share/url?url=<?= rawurlencode($link) ?>&text=<?= rawurlencode('Win a weekend away for two ✈️') ?>" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i> Telegram</a>
+            <a class="share-btn" href="https://t.me/share/url?url=<?= rawurlencode($link) ?>&text=<?= rawurlencode('Win a brand-new Huawei Pura 80 Pro 📱') ?>" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i> Telegram</a>
             <a class="share-btn" href="sms:?&body=<?= rawurlencode($scripts['Short & sweet']) ?>"><i class="fa-solid fa-comment-sms"></i> SMS</a>
-            <a class="share-btn" href="mailto:?subject=<?= rawurlencode('Win a weekend away for two') ?>&body=<?= rawurlencode($scripts['Group chat']) ?>"><i class="fa-regular fa-envelope"></i> Email</a>
+            <a class="share-btn" href="mailto:?subject=<?= rawurlencode('Win a brand-new Huawei Pura 80 Pro') ?>&body=<?= rawurlencode($scripts['Group chat']) ?>"><i class="fa-regular fa-envelope"></i> Email</a>
             <button class="share-btn dark" type="button" data-native-share data-url="<?= e($link) ?>" data-text="<?= e($scripts['Short & sweet']) ?>"><i class="fa-solid fa-share-nodes"></i> More</button>
           </div>
           <div class="qr-wrap">
@@ -201,7 +201,7 @@ require __DIR__ . '/includes/header.php';
           </ul>
           <form method="post" style="margin-top:14px;">
             <?= csrf_field() ?><input type="hidden" name="action" value="marketing">
-            <label class="check"><input type="checkbox" name="consent_marketing" value="1" <?= $me['consent_marketing'] ? 'checked' : '' ?> onchange="this.form.submit()"> Keep me updated on future GMF × ACSA events and travel offers.</label>
+            <label class="check"><input type="checkbox" name="consent_marketing" value="1" <?= $me['consent_marketing'] ? 'checked' : '' ?> onchange="this.form.submit()"> Keep me updated on future GMF × Cell C events and offers.</label>
           </form>
           <p class="muted" style="font-size:.8rem;margin:8px 0 0;">Need to change or delete your details? Email <a href="mailto:<?= e(setting('contact_email')) ?>" style="text-decoration:underline"><?= e(setting('contact_email')) ?></a>.</p>
         </div>
@@ -242,7 +242,7 @@ require __DIR__ . '/includes/header.php';
   });
   var ns = document.querySelector('[data-native-share]');
   if (ns) ns.addEventListener('click', function () {
-    if (navigator.share) navigator.share({ title: 'FLY FOR TWO', text: ns.dataset.text, url: ns.dataset.url }).catch(function () {});
+    if (navigator.share) navigator.share({ title: 'WIN A HUAWEI', text: ns.dataset.text, url: ns.dataset.url }).catch(function () {});
     else copyText(ns.dataset.text).then(function () { toast('Message copied — paste it anywhere'); });
   });
   // Shrink big phone photos in the browser before upload (max 1400px, JPEG).
@@ -260,10 +260,10 @@ require __DIR__ . '/includes/header.php';
   });
   var box = document.getElementById('qr');
   if (box && window.QRCode) {
-    new QRCode(box, { text: box.dataset.url, width: 240, height: 240, colorDark: '#00485a', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+    new QRCode(box, { text: box.dataset.url, width: 240, height: 240, colorDark: '#1f1f1f', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
     document.getElementById('qrDownload').addEventListener('click', function () {
       var c = box.querySelector('canvas'); if (!c) return;
-      var a = document.createElement('a'); a.download = 'fly-for-two-qr.png'; a.href = c.toDataURL('image/png'); a.click();
+      var a = document.createElement('a'); a.download = 'win-a-huawei-qr.png'; a.href = c.toDataURL('image/png'); a.click();
     });
   }
 })();

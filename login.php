@@ -3,7 +3,7 @@
 require __DIR__ . '/includes/bootstrap.php';
 
 if (current_entrant()) {
-    redirect('flyfortwo/dashboard');
+    redirect('win/dashboard');
 }
 
 $step  = 'email';
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             unset($_SESSION['login_entrant_id']);
             login_entrant((int) $pending['id']);
             mark_owner_device($pending);
-            redirect('flyfortwo/dashboard');
+            redirect('win/dashboard');
         }
         $error = otp_error_message($check);
     } elseif (($_POST['step'] ?? '') === 'resend' && $pending) {
@@ -70,14 +70,14 @@ if ($pending) {
     $step = 'code';
 }
 
-$page_title = 'Sign in — FLY FOR TWO dashboard';
+$page_title = 'Sign in — WIN A HUAWEI dashboard';
 $nav_active = 'fly';
 $extra_css  = ['assets/css/comp.css'];
 require __DIR__ . '/includes/header.php';
 ?>
 <section class="auth-wrap">
   <div class="auth-media">
-    <img src="<?= e(url('assets/img/gallery/activation-23.jpg')) ?>" alt="GMF street team handing out FLY FOR TWO flyers">
+    <img src="<?= e(url('assets/img/gallery/activation-23.jpg')) ?>" alt="GMF street team handing out WIN A HUAWEI flyers">
     <div class="cap">
       <span class="kicker">Your dashboard</span>
       <p class="display big" style="margin-top:14px;">Share it. <span class="serif-i text-orange">Own it.</span></p>
@@ -90,7 +90,7 @@ require __DIR__ . '/includes/header.php';
         <?php if ($step === 'email'): ?>
           <div class="ff-center"><div class="ff-icon"><i class="fa-regular fa-user"></i></div>
             <h1 class="ff-h">Sign in</h1>
-            <p class="ff-sub">Use the email address you entered FLY FOR TWO with. We'll send you a one-time code — no password needed.</p>
+            <p class="ff-sub">Use the email address you entered WIN A HUAWEI with. We'll send you a one-time code — no password needed.</p>
           </div>
           <form method="post" novalidate>
             <?= csrf_field() ?><input type="hidden" name="step" value="email">
@@ -98,7 +98,7 @@ require __DIR__ . '/includes/header.php';
             <?php if ($error): ?><div class="ff-alert"><?= e($error) ?></div><?php endif; ?>
             <button class="ff-btn ff-btn-primary" type="submit">Send my code</button>
           </form>
-          <p class="ff-fine">Not entered yet? <a href="<?= e(url('flyfortwo/')) ?>">Enter the competition</a></p>
+          <p class="ff-fine">Not entered yet? <a href="<?= e(url('win/')) ?>">Enter the competition</a></p>
         <?php else: ?>
           <div class="ff-center"><div class="ff-icon"><i class="fa-regular fa-envelope-open"></i></div>
             <h1 class="ff-h">Enter your code</h1>
@@ -117,7 +117,7 @@ require __DIR__ . '/includes/header.php';
           <form method="post"><?= csrf_field() ?><input type="hidden" name="step" value="resend">
             <button class="ff-btn ff-btn-ghost" type="submit">Resend code</button>
           </form>
-          <a class="ff-btn ff-btn-ghost ff-small" href="<?= e(url('flyfortwo/login?restart=1')) ?>">Use a different email</a>
+          <a class="ff-btn ff-btn-ghost ff-small" href="<?= e(url('win/login?restart=1')) ?>">Use a different email</a>
         <?php endif; ?>
       </div>
     </div>

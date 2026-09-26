@@ -30,24 +30,24 @@ $socials = array_filter([
         <a href="<?= e(url('index.php#calendar')) ?>">Upcoming events</a>
       </div>
       <div>
-        <h4>Fly For Two</h4>
-        <a href="<?= e(url('flyfortwo/')) ?>">Enter the competition</a>
-        <a href="<?= e(url('flyfortwo/login')) ?>">My dashboard</a>
-        <a href="<?= e(url('flyfortwo/#leaderboard')) ?>">Referral leaderboard</a>
-        <a href="<?= e(url('flyfortwo/terms')) ?>">Competition terms</a>
-        <a href="<?= e(url('flyfortwo/privacy')) ?>">Privacy (POPIA)</a>
+        <h4>Win a Huawei</h4>
+        <a href="<?= e(url('win/')) ?>">Enter the competition</a>
+        <a href="<?= e(url('win/login')) ?>">My dashboard</a>
+        <a href="<?= e(url('win/#leaderboard')) ?>">Referral leaderboard</a>
+        <a href="<?= e(url('win/terms')) ?>">Competition terms</a>
+        <a href="<?= e(url('win/privacy')) ?>">Privacy (POPIA)</a>
       </div>
       <div>
         <h4>Contact</h4>
         <?php if (setting('contact_email')): ?><a href="mailto:<?= e(setting('contact_email')) ?>"><?= e(setting('contact_email')) ?></a><?php endif; ?>
         <?php if (setting('contact_phone')): ?><a href="tel:<?= e(preg_replace('/\s+/', '', (string) setting('contact_phone'))) ?>"><?= e(setting('contact_phone')) ?></a><?php endif; ?>
         <p class="footer-partner">In partnership with</p>
-        <img class="footer-acsa" src="<?= e(url('assets/img/brand/acsa-white.png')) ?>" alt="Airports Company South Africa" width="170" height="83" loading="lazy">
+        <img class="footer-acsa" src="<?= e(url('assets/img/brand/cellc-white.png')) ?>" alt="Cell C" width="170" height="83" loading="lazy">
       </div>
     </div>
     <div class="footer-bottom">
       <span>&copy; <?= date('Y') ?> George Music Festival. All rights reserved. Your personal information is protected under POPIA.</span>
-      <span><a href="<?= e(url('flyfortwo/terms')) ?>">Terms</a> · <a href="<?= e(url('flyfortwo/privacy')) ?>">Privacy</a></span>
+      <span><a href="<?= e(url('win/terms')) ?>">Terms</a> · <a href="<?= e(url('win/privacy')) ?>">Privacy</a></span>
     </div>
   </div>
 </footer>

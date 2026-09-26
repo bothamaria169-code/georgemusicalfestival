@@ -1,14 +1,14 @@
 <?php
 /**
  * The four-step entry journey (Entry → Verify → Share → Confirmed), shared by
- * fly-for-two.php (/flyfortwo/) and embed.php (/flyfortwo/embed). Expects: $src, $refCode, $towns, $flyOpts, $shareCap.
+ * fly-for-two.php (/win/) and embed.php (/win/embed). Expects: $src, $refCode, $towns, $flyOpts, $shareCap.
  * Optional $embed = true opens links in a new tab (the page is inside an iframe).
  */
 $embed  = $embed ?? false;
 $target = $embed ? ' target="_blank" rel="noopener"' : '';
 ?>
 <div class="ff-progress" id="ffProgress" style="--progress:0%">
-  <div class="ff-track"><span class="ff-plane"><i class="fa-solid fa-plane"></i></span></div>
+  <div class="ff-track"><span class="ff-plane"><i class="fa-solid fa-mobile-screen-button"></i></span></div>
   <div class="ff-labels"><span class="is-on">Enter</span><span>Verify</span><span>Share</span><span>Confirmed</span></div>
 </div>
 
@@ -47,7 +47,7 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
 
     <div class="ff-consent is-required" data-field="consent_terms">
       <input type="checkbox" id="c-terms" name="consent_terms" value="1">
-      <label for="c-terms"><span class="ff-tag">Required</span> I agree to the <?= e(setting('comp_name')) ?> <a href="<?= e(url('flyfortwo/terms')) ?>" target="_blank">competition terms &amp; conditions</a> and the <a href="<?= e(url('flyfortwo/privacy')) ?>" target="_blank">privacy notice</a>. My information is processed in line with POPIA, and my first name, surname initial and town may appear on the public leaderboard.</label>
+      <label for="c-terms"><span class="ff-tag">Required</span> I agree to the <?= e(setting('comp_name')) ?> <a href="<?= e(url('win/terms')) ?>" target="_blank">competition terms &amp; conditions</a> and the <a href="<?= e(url('win/privacy')) ?>" target="_blank">privacy notice</a>. My information is processed in line with POPIA, and my first name, surname initial and town may appear on the public leaderboard.</label>
     </div>
     <div class="ff-consent is-required" data-field="consent_popia">
       <input type="checkbox" id="c-popia" name="consent_popia" value="1">
@@ -55,13 +55,13 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
     </div>
     <div class="ff-consent is-optional">
       <input type="checkbox" id="c-mkt" name="consent_marketing" value="1">
-      <label for="c-mkt"><span class="ff-tag ff-tag-soft">Optional</span> Keep me updated on future GMF × ACSA events and travel offers.</label>
+      <label for="c-mkt"><span class="ff-tag ff-tag-soft">Optional</span> Keep me updated on future GMF × Cell C events and offers.</label>
     </div>
 
     <?php if (turnstile_enabled()): ?><div class="cf-turnstile" data-sitekey="<?= e(config('turnstile.site_key')) ?>" data-appearance="interaction-only" style="margin:6px 0"></div><?php endif; ?>
     <div class="ff-alert" role="alert" hidden></div>
     <button class="ff-btn ff-btn-primary" type="submit">Enter now <i class="fa-solid fa-arrow-right"></i></button>
-    <p class="ff-fine">One entry per phone number and email. Already entered? <a href="<?= e(url('flyfortwo/login')) ?>"<?= $target ?>>Sign in</a></p>
+    <p class="ff-fine">One entry per phone number and email. Already entered? <a href="<?= e(url('win/login')) ?>"<?= $target ?>>Sign in</a></p>
   </form>
 
   <!-- STEP 2 · VERIFY -->
@@ -108,14 +108,14 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
       <div class="ff-shared-note" hidden><span class="ff-pill"><i class="fa-solid fa-share"></i> Link shared — every open adds to your score</span></div>
     </div>
     <div class="pass">
-      <div class="pass-top"><span class="pass-brand"><?= e(setting('comp_name')) ?></span><span class="pass-tag">GMF × ACSA</span></div>
+      <div class="pass-top"><span class="pass-brand"><?= e(setting('comp_name')) ?></span><span class="pass-tag">GMF × Cell C</span></div>
       <div class="pass-mid">
         <div><small>Entrant</small><strong data-bind="name"></strong></div>
         <div><small>Event</small><strong><?= e(mb_strimwidth((string) setting('event_name'), 0, 18, '…')) ?></strong></div>
       </div>
       <div class="pass-mid">
         <div><small>From</small><strong>Your town</strong></div>
-        <div style="text-align:right"><small>To</small><strong>A weekend away</strong></div>
+        <div style="text-align:right"><small>To</small><strong>A new Huawei</strong></div>
       </div>
       <div class="pass-divider"></div>
       <div class="pass-bottom">
@@ -124,6 +124,6 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
       </div>
     </div>
     <p class="ff-sub ff-center"><?= e(setting('draw_reassurance')) ?></p>
-    <a class="ff-btn ff-btn-primary" data-bind-href="dashboard" href="<?= e(url('flyfortwo/dashboard')) ?>"<?= $target ?>>Open my dashboard <i class="fa-solid fa-arrow-right"></i></a>
+    <a class="ff-btn ff-btn-primary" data-bind-href="dashboard" href="<?= e(url('win/dashboard')) ?>"<?= $target ?>>Open my dashboard <i class="fa-solid fa-arrow-right"></i></a>
   </div>
 </div>

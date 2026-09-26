@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // 4. Draws
         $st = $pdo->prepare('INSERT IGNORE INTO draws (draw_key, title, prize_description, scheduled_for, created_at) VALUES (?, ?, ?, ?, ?)');
         $st->execute(['event_day', 'Second Prize — Runner-up', '', '2026-10-31', $now]);
-        $st->execute(['final', 'Grand Prize — Top Referrer', "Return flights for two\nWeekend accommodation\nShuttle transfers included", '2026-10-31', $now]);
+        $st->execute(['final', 'Grand Prize — Top Referrer', "Brand-new Huawei Pura 80 Pro\nRetail value R18 000\nSponsored by Cell C", '2026-10-31', $now]);
 
         // 5. Gallery seed from the partnership proposal imagery
         if (!(int) $pdo->query('SELECT COUNT(*) FROM media')->fetchColumn()) {
@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="grid g-2" style="gap:0 12px">
         <div class="fg"><label class="f">Host</label><input class="in" name="db_host" value="<?= e($v('db_host', 'localhost')) ?>"></div>
         <div class="fg"><label class="f">Port</label><input class="in" name="db_port" value="<?= e($v('db_port', '3306')) ?>"></div>
-        <div class="fg"><label class="f">Database name</label><input class="in" name="db_name" value="<?= e($v('db_name', 'gmf_flyfortwo')) ?>" required></div>
+        <div class="fg"><label class="f">Database name</label><input class="in" name="db_name" value="<?= e($v('db_name', 'gmf_cellc')) ?>" required></div>
         <div class="fg"><label class="f">User</label><input class="in" name="db_user" value="<?= e($v('db_user', 'root')) ?>" required></div>
         <div class="fg" style="grid-column:1/-1"><label class="f">Password</label><input class="in" type="password" name="db_pass" value="<?= e($v('db_pass')) ?>"></div>
       </div>

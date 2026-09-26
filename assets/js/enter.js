@@ -1,4 +1,4 @@
-/* FLY FOR TWO — four-step entry journey: Enter → Verify → Share → Confirmed */
+/* WIN A HUAWEI — four-step entry journey: Enter → Verify → Share → Confirmed */
 (function () {
   'use strict';
   var card = document.getElementById('entryCard');
@@ -57,7 +57,7 @@
     try {
       var c = document.createElement('canvas'), x = c.getContext('2d');
       x.textBaseline = 'top'; x.font = '14px Arial'; x.fillStyle = '#f60'; x.fillRect(0, 0, 80, 20);
-      x.fillStyle = '#069'; x.fillText('GMF✈ACSA', 2, 2); parts.push(c.toDataURL().slice(-64));
+      x.fillStyle = '#069'; x.fillText('GMF-CellC', 2, 2); parts.push(c.toDataURL().slice(-64));
     } catch (e) {}
     var s = parts.join('|');
     if (window.crypto && crypto.subtle && window.TextEncoder) {
@@ -70,7 +70,7 @@
   fingerprint().then(function (fp) { form1.elements.fp.value = fp; });
 
   /* ── memory: survive leaving the page to check email (mobile browsers often reload it) ── */
-  var PENDING = 'ff_pending_v1', DRAFT = 'ff_draft_v1', MAX_AGE = 30 * 60 * 1000;
+  var PENDING = 'cc_pending_v1', DRAFT = 'cc_draft_v1', MAX_AGE = 30 * 60 * 1000;
   function store(key, val) { try { val === null ? localStorage.removeItem(key) : localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
   function load(key) { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) { return null; } }
   var draftFields = ['full_name', 'email', 'phone', 'town', 'age_group', 'fly_frequency', 'consent_terms', 'consent_popia', 'consent_marketing'];
@@ -116,7 +116,7 @@
     if (f.phone.value.replace(/\D/g, '').length < 9) e.phone = 'Please enter a valid cellphone number.';
     if (!f.age_group.value) e.age_group = 'Please choose your age group.';
     else if (/^\s*(under|<)\s*18/i.test(f.age_group.value)) e.age_group = 'Sorry — you must be 18 or older to enter.';
-    if (!f.fly_frequency.value) e.fly_frequency = 'Please answer the travel question.';
+    if (!f.fly_frequency.value) e.fly_frequency = 'Please answer the network question.';
     if (!f.consent_popia.checked) e.consent_popia = 'POPIA consent is required to enter.';
     if (!f.consent_terms.checked) e.consent_terms = 'You need to accept the competition terms to enter.';
     return e;
@@ -258,7 +258,7 @@
     var native = $('[data-share="native"]');
     native.addEventListener('click', function () {
       if (navigator.share) {
-        navigator.share({ title: 'FLY FOR TWO', text: text, url: link }).then(function () { markShared(native); }).catch(function () {});
+        navigator.share({ title: 'WIN A HUAWEI', text: text, url: link }).then(function () { markShared(native); }).catch(function () {});
       } else {
         copy(text).then(function () { markShared(native); toast('Message copied — paste it in any app'); });
       }

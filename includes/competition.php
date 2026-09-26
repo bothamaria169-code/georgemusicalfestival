@@ -1,6 +1,6 @@
 <?php
 /**
- * FLY FOR TWO domain logic: entrants, verification codes, entries,
+ * WIN A HUAWEI domain logic: entrants, verification codes, entries,
  * share bonus / referrals and source attribution.
  */
 declare(strict_types=1);
@@ -10,7 +10,7 @@ const CHANNELS = [
     'qr_ground'  => 'QR — ground activation',
     'qr_event'   => 'QR — event day',
     'ussd'       => 'USSD',
-    'acsa_embed' => 'ACSA website embed',
+    'acsa_embed' => 'Cell C website embed',
     'referral'   => 'Referral link',
 ];
 
@@ -91,7 +91,7 @@ function channel_label(string $channel): string
 
 /**
  * Store attribution from the landing URL in the session, e.g.
- *   /flyfortwo/?src=qr_ground&pt=Garden+Route+Mall&town=George&slot=sat-am
+ *   /win/?src=qr_ground&pt=Garden+Route+Mall&town=George&slot=sat-am
  * The first tagged visit wins, so a later untagged visit doesn't erase it.
  */
 function capture_source(): array
@@ -198,7 +198,7 @@ function validate_entry(array $in, bool $requireEmail = true): array
         $errors['phone'] = 'Please enter a valid cellphone number, e.g. 082 123 4567.';
     }
     if ($options && !in_array($fly, $options, true)) {
-        $errors['fly_frequency'] = 'Please answer the travel question.';
+        $errors['fly_frequency'] = 'Please answer the network question.';
     }
     if ($towns && $town !== '' && !in_array($town, $towns, true)) {
         $errors['town'] = 'Please choose your town from the list.';
@@ -340,18 +340,18 @@ function otp_issue(array $entrant, string $purpose): array
     ]);
 
     $first = e(explode(' ', $entrant['full_name'])[0]);
-    $link = e(url('flyfortwo/verify') . '?' . http_build_query(['t' => pending_token($entrant), 'c' => $code, 'p' => $purpose]));
+    $link = e(url('win/verify') . '?' . http_build_query(['t' => pending_token($entrant), 'c' => $code, 'p' => $purpose]));
     $intro = $purpose === 'login'
-        ? 'Tap the button to sign in to your FLY FOR TWO dashboard, or type the code on the sign-in page.'
-        : 'Tap the button to confirm your FLY FOR TWO entry, or type the code on the entry page. Your entry only counts once it is confirmed.';
+        ? 'Tap the button to sign in to your WIN A HUAWEI dashboard, or type the code on the sign-in page.'
+        : 'Tap the button to confirm your WIN A HUAWEI entry, or type the code on the entry page. Your entry only counts once it is confirmed.';
     $button = $purpose === 'login' ? 'Sign in to my dashboard' : 'Confirm my entry';
     $html = mail_template("Your code: {$code}", "<p style=\"margin:0 0 14px;font-size:15px;line-height:1.6;\">Hi {$first},</p>"
         . "<p style=\"margin:0 0 20px;font-size:15px;line-height:1.6;\">{$intro}</p>"
-        . "<p style=\"margin:0 0 22px;\"><a href=\"{$link}\" style=\"display:inline-block;background:#f7801a;color:#2a1402;text-decoration:none;font-weight:bold;font-size:16px;padding:14px 26px;border-radius:10px;\">{$button}</a></p>"
-        . "<p style=\"margin:0 0 6px;font-size:13px;color:#55707a;\">Or enter this code:</p>"
-        . "<p style=\"margin:0 0 18px;font-size:32px;letter-spacing:10px;font-weight:bold;color:#00485a;\">{$code}</p>"
-        . "<p style=\"margin:0 0 8px;font-size:13px;color:#55707a;\">The code and button expire in {$ttl} minutes. If you didn't request this, you can ignore this email.</p>");
-    $sent = send_mail($entrant['email'], "{$code} is your FLY FOR TWO code", $html);
+        . "<p style=\"margin:0 0 22px;\"><a href=\"{$link}\" style=\"display:inline-block;background:#ea5b0c;color:#2a1402;text-decoration:none;font-weight:bold;font-size:16px;padding:14px 26px;border-radius:10px;\">{$button}</a></p>"
+        . "<p style=\"margin:0 0 6px;font-size:13px;color:#6b645e;\">Or enter this code:</p>"
+        . "<p style=\"margin:0 0 18px;font-size:32px;letter-spacing:10px;font-weight:bold;color:#1f1f1f;\">{$code}</p>"
+        . "<p style=\"margin:0 0 8px;font-size:13px;color:#6b645e;\">The code and button expire in {$ttl} minutes. If you didn't request this, you can ignore this email.</p>");
+    $sent = send_mail($entrant['email'], "{$code} is your WIN A HUAWEI code", $html);
     if (!$sent) {
         return ['ok' => false, 'error' => "We couldn't send the email right now. Please check the address and try again.", 'cooldown' => 0];
     }
@@ -442,13 +442,13 @@ function send_welcome_email(array $entrant): void
     }
     $first = e(explode(' ', $entrant['full_name'])[0]);
     $link = e(ref_link($entrant));
-    $dash = e(url('flyfortwo/dashboard'));
-    $html = mail_template("You're in, {$first}.", '<p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Your FLY FOR TWO entry is confirmed. You could win <strong>' . e((string) setting('prize_headline')) . '</strong>.</p>'
+    $dash = e(url('win/dashboard'));
+    $html = mail_template("You're in, {$first}.", '<p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Your WIN A HUAWEI entry is confirmed. You could win <strong>' . e((string) setting('prize_headline')) . '</strong>.</p>'
         . '<p style="margin:0 0 10px;font-size:15px;line-height:1.6;">Now share your personal link. Every different person who opens it adds 1 to your leaderboard score — the top score wins the Grand Prize and the runner-up wins the Second Prize:</p>'
-        . "<p style=\"margin:0 0 18px;\"><a href=\"{$link}\" style=\"font-size:16px;font-weight:bold;color:#c9620a;\">{$link}</a></p>"
-        . "<p style=\"margin:0 0 18px;\"><a href=\"{$dash}\" style=\"display:inline-block;background:#f7801a;color:#2a1402;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:10px;\">Open my dashboard</a></p>"
-        . '<p style="margin:0;font-size:13px;color:#55707a;">' . e((string) setting('draw_reassurance')) . '</p>');
-    send_mail($entrant['email'], "You're entered — FLY FOR TWO", $html);
+        . "<p style=\"margin:0 0 18px;\"><a href=\"{$link}\" style=\"font-size:16px;font-weight:bold;color:#c44a06;\">{$link}</a></p>"
+        . "<p style=\"margin:0 0 18px;\"><a href=\"{$dash}\" style=\"display:inline-block;background:#ea5b0c;color:#2a1402;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:10px;\">Open my dashboard</a></p>"
+        . '<p style="margin:0;font-size:13px;color:#6b645e;">' . e((string) setting('draw_reassurance')) . '</p>');
+    send_mail($entrant['email'], "You're entered — WIN A HUAWEI", $html);
 }
 
 /* ──────────────────────────── Sharing & referrals ──────────────────────────── */
@@ -460,11 +460,11 @@ function ref_link(array $entrant): string
 
 function visitor_id(): string
 {
-    $v = $_COOKIE['gmf_vid'] ?? '';
+    $v = $_COOKIE['cellc_vid'] ?? '';
     if (!preg_match('/^[a-f0-9]{32}$/', $v)) {
         $v = bin2hex(random_bytes(16));
-        setcookie('gmf_vid', $v, ['expires' => time() + 31536000, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax', 'secure' => !empty($_SERVER['HTTPS'])]);
-        $_COOKIE['gmf_vid'] = $v;
+        setcookie('cellc_vid', $v, ['expires' => time() + 31536000, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax', 'secure' => !empty($_SERVER['HTTPS'])]);
+        $_COOKIE['cellc_vid'] = $v;
     }
     return $v;
 }
@@ -472,12 +472,12 @@ function visitor_id(): string
 /** Remember on this device that it belongs to an entrant, so opening your own link never counts. */
 function mark_owner_device(array $entrant): void
 {
-    $owned = array_filter(explode(',', $_COOKIE['gmf_own'] ?? ''));
+    $owned = array_filter(explode(',', $_COOKIE['cellc_own'] ?? ''));
     if (!in_array($entrant['ref_code'], $owned, true)) {
         $owned[] = $entrant['ref_code'];
         $value = implode(',', array_slice($owned, -5));
-        setcookie('gmf_own', $value, ['expires' => time() + 31536000, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax', 'secure' => !empty($_SERVER['HTTPS'])]);
-        $_COOKIE['gmf_own'] = $value;
+        setcookie('cellc_own', $value, ['expires' => time() + 31536000, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax', 'secure' => !empty($_SERVER['HTTPS'])]);
+        $_COOKIE['cellc_own'] = $value;
     }
 }
 
@@ -491,7 +491,7 @@ function record_referral_click(array $referrer): void
 {
     $vid = visitor_id();
     $isOwner = (int) (current_entrant()['id'] ?? 0) === (int) $referrer['id']
-        || in_array($referrer['ref_code'], explode(',', $_COOKIE['gmf_own'] ?? ''), true);
+        || in_array($referrer['ref_code'], explode(',', $_COOKIE['cellc_own'] ?? ''), true);
     if ($isOwner) {
         return;
     }

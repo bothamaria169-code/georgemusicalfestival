@@ -1,5 +1,5 @@
 <?php
-/** Reporting queries shared by the admin dashboard and the ACSA reporting API. */
+/** Reporting queries shared by the admin dashboard and the Cell C reporting API. */
 declare(strict_types=1);
 
 function report_summary(): array

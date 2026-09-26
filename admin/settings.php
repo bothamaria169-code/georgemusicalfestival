@@ -14,7 +14,8 @@ $groups = [
         'comp_open_at'     => ['Entries open', 'datetime'],
         'comp_close_at'    => ['Entries close (configurable — the Final Draw pool cuts off here)', 'datetime'],
         'prize_headline'   => ['Prize headline', 'text'],
-        'travel_question'  => ['Travel-profile question', 'text'],
+        'prize_value'      => ['Prize value (e.g. R18 000)', 'text'],
+        'travel_question'  => ['Profile question (e.g. network)', 'text'],
         'travel_options'   => ['Answer options (one per line)', 'lines'],
         'age_groups'       => ['Age groups (one per line — "Under 18" is shown but cannot enter)', 'lines'],
         'popia_consent_text' => ['POPIA consent wording (required tick box)', 'textarea'],
@@ -133,12 +134,12 @@ admin_head('Settings', 'settings');
     </div>
   </div>
   <div class="card">
-    <h2>Partner integration (ACSA)</h2>
-    <p class="muted" style="margin-top:0">Embed the entry form on ACSA's website. Their domain must be listed in <code>cors_origins</code> in config.php.</p>
-    <div class="code">&lt;iframe src="<?= e(url('flyfortwo/embed')) ?>" style="width:100%;max-width:480px;height:1000px;border:0" title="FLY FOR TWO"&gt;&lt;/iframe&gt;</div>
+    <h2>Partner integration (Cell C)</h2>
+    <p class="muted" style="margin-top:0">Embed the entry form on Cell C's website. Their domain must be listed in <code>cors_origins</code> in config.php.</p>
+    <div class="code">&lt;iframe src="<?= e(url('win/embed')) ?>" style="width:100%;max-width:480px;height:1000px;border:0" title="WIN A HUAWEI"&gt;&lt;/iframe&gt;</div>
     <p class="muted">Read-only reporting API (live access, not a one-off export). Send the partner key as the <code>X-Api-Key</code> header:</p>
     <div class="code">GET <?= e(url('api/report.php')) ?><br>GET <?= e(url('api/report.php?view=entrants&page=1&per_page=500')) ?></div>
-    <p class="muted">Partner key configured: <strong><?= config('partner_api_key') ? 'yes' : 'no — set partner_api_key in config.php' ?></strong>. Give ACSA staff a <em>Read-only</em> login under Team &amp; access for the dashboard.</p>
+    <p class="muted">Partner key configured: <strong><?= config('partner_api_key') ? 'yes' : 'no — set partner_api_key in config.php' ?></strong>. Give Cell C staff a <em>Read-only</em> login under Team &amp; access for the dashboard.</p>
     <p class="muted">USSD gateway callback: <strong><?= config('ussd_secret') ? 'enabled' : 'disabled — set ussd_secret in config.php' ?></strong></p>
     <div class="code"><?= e(url('api/ussd.php?secret=…')) ?></div>
     <p class="muted">Email delivery: <strong><?= e(config('mail.driver')) ?></strong><?= config('mail.driver') === 'log' ? ' — codes are written to storage/logs/mail.log. Switch to smtp before launch.' : '' ?></p>
@@ -148,7 +149,7 @@ admin_head('Settings', 'settings');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 (function () {
-  var base = <?= json_encode(url('flyfortwo/')) ?>, qr;
+  var base = <?= json_encode(url('win/')) ?>, qr;
   var ids = ['qb-src', 'qb-town', 'qb-pt', 'qb-slot'];
   function build() {
     var p = new URLSearchParams();

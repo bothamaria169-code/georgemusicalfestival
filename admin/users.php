@@ -69,10 +69,10 @@ admin_head('Team & access', 'users');
       <div class="fg"><label class="f">Name</label><input class="in" name="name" required></div>
       <div class="fg"><label class="f">Email</label><input class="in" type="email" name="email" required></div>
       <div class="fg"><label class="f">Password</label><input class="in" type="text" name="password" minlength="10" required></div>
-      <div class="fg"><label class="f">Role</label><select class="in" name="role"><option value="viewer">Read-only (ACSA reporting & audit access)</option><option value="admin">GMF admin (full control)</option></select></div>
+      <div class="fg"><label class="f">Role</label><select class="in" name="role"><option value="viewer">Read-only (Cell C reporting & audit access)</option><option value="admin">GMF admin (full control)</option></select></div>
       <button class="btn btn-primary" type="submit">Create access</button>
     </form>
-    <p class="help">Read-only users see the overview, all entrant records with exports, and the draw logs — the standing read access ACSA requires. They cannot change anything.</p>
+    <p class="help">Read-only users see the overview, all entrant records with exports, and the draw logs — the standing read access Cell C requires. They cannot change anything.</p>
   </div>
 </div>
 <?php admin_foot(); ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Read-only reporting API for ACSA (standing access to the database, not a one-off dump).
+ * Read-only reporting API for Cell C (standing access to the database, not a one-off dump).
  * Auth: X-Api-Key header or ?key=  (config: partner_api_key)
  *
  *   GET api/report.php                     → summary counts (by channel, day, town, activation point, hour)

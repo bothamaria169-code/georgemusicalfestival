@@ -21,9 +21,9 @@ $shareCap   = (int) setting('share_bonus_cap');
 $headWords  = preg_split('/\s+/', trim((string) setting('hero_headline'))) ?: [];
 $headAccent = count($headWords) > 1 ? array_pop($headWords) : '';
 
-$page_title       = 'Win a trip for two — FLY FOR TWO · George Music Festival × ACSA';
+$page_title       = 'Win a Huawei Pura 80 Pro — WIN A HUAWEI · George Music Festival × Cell C';
 $meta_description = (string) setting('hero_text');
-$og_image         = url('assets/img/competition/hero-win-a-trip-for-two.jpg');
+$og_image         = url('assets/img/cellc/hero-win-a-huawei.jpg');
 $nav_active       = 'home';
 $extra_css        = ['assets/css/comp.css'];
 $extra_js         = ['assets/js/enter.js'];
@@ -36,41 +36,41 @@ require __DIR__ . '/includes/header.php';
 <section class="win-hero grain">
   <div class="wrap win-hero-grid">
     <div class="win-hero-text">
-      <span class="win-kicker"><i class="fa-solid fa-plane-up"></i> <?= e(setting('hero_kicker')) ?></span>
+      <span class="win-kicker"><i class="fa-solid fa-mobile-screen-button"></i> <?= e(setting('hero_kicker')) ?></span>
       <h1 class="display huge"><?= e(implode(' ', $headWords)) ?><?php if ($headAccent): ?> <span class="serif-i"><?= e($headAccent) ?>.</span><?php endif; ?></h1>
       <p class="lede"><?= e(setting('hero_text')) ?></p>
       <div class="cover-actions">
         <a class="btn btn-orange btn-lg" href="#enter"><i class="fa-solid fa-ticket"></i> Enter now — it's free</a>
-        <a class="btn btn-ghost btn-lg" href="<?= e(url('flyfortwo/how-to-enter')) ?>">How to enter</a>
+        <a class="btn btn-ghost btn-lg" href="<?= e(url('win/how-to-enter')) ?>">How to enter</a>
       </div>
       <ul class="win-points">
-        <li><i class="fa-solid fa-plane"></i> Return flights for two</li>
-        <li><i class="fa-solid fa-hotel"></i> Weekend accommodation</li>
-        <li><i class="fa-solid fa-van-shuttle"></i> Shuttle transfers</li>
+        <li><i class="fa-solid fa-mobile-screen-button"></i> Brand-new Huawei Pura 80 Pro</li>
+        <li><i class="fa-solid fa-tag"></i> Worth <?= e(setting('prize_value')) ?></li>
+        <li><i class="fa-solid fa-circle-check"></i> Free to enter</li>
       </ul>
     </div>
     <figure class="win-hero-photo">
-      <img src="<?= e(url('assets/img/competition/hero-win-a-trip-for-two.jpg')) ?>" width="1536" height="1024" alt="A smiling couple on a plane holding their boarding passes from Johannesburg to Cape Town" fetchpriority="high">
-      <figcaption><span class="win-stamp">Win a ticket<br>for two</span></figcaption>
+      <img src="<?= e(url('assets/img/cellc/hero-win-a-huawei.jpg')) ?>" width="1800" height="1200" alt="Three smiling friends taking a selfie together outdoors" fetchpriority="high">
+      <figcaption><span class="win-stamp">Win a Huawei<br>Pura 80 Pro</span></figcaption>
     </figure>
   </div>
 </section>
 
-<!-- ═══════════════ MEET MOYENI (ACSA) ═══════════════ -->
+<!-- ═══════════════ THE PRIZE (Cell C) ═══════════════ -->
 <section class="moyeni-band">
   <div class="wrap moyeni-grid">
     <figure class="moyeni-render reveal">
-      <img src="<?= e(url('assets/img/acsa/moyeni-3d.jpg')) ?>" width="1127" height="754" alt="Moyeni, the Airports Company South Africa mascot, with wings spread" loading="lazy">
+      <img src="<?= e(url('assets/img/cellc/prize-phone-side.jpg')) ?>" width="1800" height="1200" alt="A sleek white premium smartphone with a large round camera module" loading="lazy">
     </figure>
     <div class="moyeni-copy">
-      <img class="moyeni-logo reveal" src="<?= e(url('assets/img/brand/acsa-teal-lg.png')) ?>" width="900" height="439" alt="Airports Company South Africa" loading="lazy">
-      <span class="kicker reveal" style="color:var(--orange-deep);margin-top:18px;">Meet Moyeni</span>
-      <h2 class="display big reveal" style="margin-top:12px;color:var(--navy-2);">ACSA's mascot is flying <span class="serif-i" style="color:var(--orange-deep)">to George.</span></h2>
-      <p class="reveal" style="color:var(--text-muted);margin:14px 0 0;">Find Moyeni and the Airports Company South Africa team at the ACSA Experience at <?= e($eventName) ?> — enter FLY FOR TWO on the spot and get sharing.</p>
+      <img class="moyeni-logo reveal" src="<?= e(url('assets/img/brand/cellc-orange.png')) ?>" width="684" height="265" alt="Cell C" loading="lazy">
+      <span class="kicker reveal" style="color:var(--orange-deep);margin-top:18px;">The prize</span>
+      <h2 class="display big reveal" style="margin-top:12px;color:var(--navy-2);">Huawei Pura 80 Pro, <span class="serif-i" style="color:var(--orange-deep)">worth <?= e(setting('prize_value')) ?>.</span></h2>
+      <p class="reveal" style="color:var(--text-muted);margin:14px 0 0;">A brand-new flagship smartphone with a pro-grade camera, sponsored by Cell C. Enter <?= e(setting('comp_name')) ?> free, share your personal link, and the entrant whose link is opened by the most people wins it.</p>
       <div class="moyeni-photos reveal">
-        <img src="<?= e(url('assets/img/acsa/moyeni-with-young-fan.jpg')) ?>" alt="A young fan with Moyeni at an ACSA stand" loading="lazy">
-        <img src="<?= e(url('assets/img/acsa/moyeni-dancing.jpg')) ?>" alt="Moyeni dancing at an ACSA event" loading="lazy">
-        <img src="<?= e(url('assets/img/acsa/acsa-team-departures.jpg')) ?>" alt="The ACSA airport team at the departures board" loading="lazy">
+        <img src="<?= e(url('assets/img/cellc/fans-phones.jpg')) ?>" alt="Two friends laughing at their phones" loading="lazy">
+        <img src="<?= e(url('assets/img/cellc/caller-braids.jpg')) ?>" alt="A young woman smiling while talking on her phone" loading="lazy">
+        <img src="<?= e(url('assets/img/cellc/man-phone-smile.jpg')) ?>" alt="A man smiling at his phone outdoors" loading="lazy">
       </div>
     </div>
   </div>
@@ -80,7 +80,7 @@ require __DIR__ . '/includes/header.php';
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
     <?php for ($i = 0; $i < 2; $i++): ?>
-      <span>Win a trip for two</span><?php if (!empty($artists[0]['title'])): ?><span>Headlining: <?= e($artists[0]['title']) ?> + many more</span><?php endif; ?><span>Enter free</span><span>Most link opens wins</span><span>Winners revealed <?= e(fmt_date($finalDraw['scheduled_for'] ?? null, 'j M')) ?></span><span><?= e($eventName) ?></span>
+      <span>Win a Huawei Pura 80 Pro</span><span>Worth <?= e(setting('prize_value')) ?></span><?php if (!empty($artists[0]['title'])): ?><span>Headlining: <?= e($artists[0]['title']) ?> + many more</span><?php endif; ?><span>Enter free</span><span>Most link opens wins</span><span>Winners revealed <?= e(fmt_date($finalDraw['scheduled_for'] ?? null, 'j M')) ?></span><span><?= e($eventName) ?></span>
     <?php endfor; ?>
   </div>
 </div>
@@ -89,7 +89,7 @@ require __DIR__ . '/includes/header.php';
 <section class="section enter-section" id="enter">
   <div class="wrap enter-grid">
     <div class="enter-copy">
-      <span class="kicker reveal">FLY FOR TWO · Enter here</span>
+      <span class="kicker reveal"><?= e(setting('comp_name')) ?> · Enter here</span>
       <h2 class="display big reveal" style="margin-top:18px;">Enter in under a <span class="serif-i text-orange">minute.</span></h2>
       <p class="lede reveal" style="margin-top:18px;">Fill in your details and tap the button in the email we send you. Then share your personal link: <strong>the person whose link is opened by the most people wins</strong>, and the runner-up wins the second prize.</p>
       <div class="ff-prize reveal" style="margin-top:26px;">
@@ -98,12 +98,12 @@ require __DIR__ . '/includes/header.php';
         <ul>
           <?php foreach (prize_lines($finalDraw) as $p): ?><li><span class="dot"></span><?= e($p) ?></li><?php endforeach; ?>
         </ul>
-        <i class="fa-solid fa-plane ff-prize-plane" aria-hidden="true"></i>
+        <i class="fa-solid fa-mobile-screen-button ff-prize-plane" aria-hidden="true"></i>
       </div>
       <?php $placesClass = 'reveal'; include __DIR__ . '/includes/prize-places.php'; ?>
       <p class="reveal" style="margin-top:22px;display:flex;gap:18px;flex-wrap:wrap;">
-        <a class="text-link" href="<?= e(url('flyfortwo/how-to-enter')) ?>">How to enter, step by step <i class="fa-solid fa-arrow-right"></i></a>
-        <a class="text-link" href="<?= e(url('flyfortwo/')) ?>">Full competition page <i class="fa-solid fa-arrow-right"></i></a>
+        <a class="text-link" href="<?= e(url('win/how-to-enter')) ?>">How to enter, step by step <i class="fa-solid fa-arrow-right"></i></a>
+        <a class="text-link" href="<?= e(url('win/')) ?>">Full competition page <i class="fa-solid fa-arrow-right"></i></a>
       </p>
     </div>
     <div class="enter-card reveal">
@@ -116,28 +116,28 @@ require __DIR__ . '/includes/header.php';
 <section class="section-sm on-paper">
   <div class="wrap">
     <div class="ff-steps">
-      <div class="ff-step reveal"><span class="n">01</span><h3>Enter</h3><p>Name, cellphone, email and one quick travel question. Free, and one entry per person.</p></div>
+      <div class="ff-step reveal"><span class="n">01</span><h3>Enter</h3><p>Name, cellphone, email, age group and one quick question. Free, and one entry per person.</p></div>
       <div class="ff-step reveal reveal-d1"><span class="n">02</span><h3>Confirm</h3><p>Tap <strong>Confirm my entry</strong> in the email we send, or type the 6-digit code. Only confirmed entries go into the draw.</p></div>
       <div class="ff-step reveal reveal-d2"><span class="n">03</span><h3>Share</h3><p>Send your personal link on WhatsApp and everywhere else. Every different person who opens it adds 1 to your score — the top two scores win.</p></div>
     </div>
-    <p class="reveal" style="text-align:center;margin:34px 0 0;"><a class="btn btn-outline-dark" href="<?= e(url('flyfortwo/how-to-enter')) ?>">Read the full how-to-enter guide</a></p>
+    <p class="reveal" style="text-align:center;margin:34px 0 0;"><a class="btn btn-outline-dark" href="<?= e(url('win/how-to-enter')) ?>">Read the full how-to-enter guide</a></p>
   </div>
 </section>
 
-<!-- ═══════════════ ACSA × GMF ═══════════════ -->
+<!-- ═══════════════ CELL C × GMF ═══════════════ -->
 <section class="section acsa-feature">
   <div class="wrap acsa-grid">
     <div class="acsa-copy">
-      <img class="acsa-logo reveal" src="<?= e(url('assets/img/brand/acsa-white.png')) ?>" alt="Airports Company South Africa" loading="lazy">
-      <span class="kicker reveal" style="margin-top:26px;">ACSA × GMF</span>
-      <h2 class="display big reveal" style="margin-top:16px;">Getting the <span class="serif-i text-orange">unflown</span> flying.</h2>
-      <p class="lede reveal" style="margin-top:18px;">For many people on the Garden Route, flying still feels out of reach. Together with Airports Company South Africa, George Music Festival is changing that — one weekend getaway, one first flight, one new journey at a time.</p>
-      <p class="muted reveal">At <?= e($eventName) ?>, the ACSA Experience brings airports closer: meet Moyeni, the ACSA mascot, talk to the airport team about travel and careers, and find out how to climb the FLY FOR TWO leaderboard.</p>
+      <img class="acsa-logo reveal" src="<?= e(url('assets/img/brand/cellc-white.png')) ?>" alt="Cell C" loading="lazy">
+      <span class="kicker reveal" style="margin-top:26px;">Cell C × GMF</span>
+      <h2 class="display big reveal" style="margin-top:16px;">Change your <span class="serif-i text-orange">world.</span></h2>
+      <p class="lede reveal" style="margin-top:18px;">Music brings the Garden Route together, and your phone keeps you connected to it. Cell C and George Music Festival are celebrating both, with a brand-new Huawei Pura 80 Pro for one lucky entrant.</p>
+      <p class="muted reveal">Enter online or at any GMF activation point, then share your personal link with friends and family. Every different person who opens it moves you up the <?= e(setting('comp_name')) ?> leaderboard.</p>
     </div>
     <div class="acsa-collage acsa-collage--wide reveal reveal-d2">
-      <img class="c-a" src="<?= e(url('assets/img/acsa/acsa-team-group.jpg')) ?>" alt="The ACSA airport team in the terminal" loading="lazy">
-      <img class="c-b" src="<?= e(url('assets/img/acsa/or-tambo-building.jpg')) ?>" alt="Airports Company South Africa building at O.R. Tambo" loading="lazy">
-      <img class="c-c" src="<?= e(url('assets/img/acsa/plane-at-the-gate.jpg')) ?>" alt="A plane at the gate" loading="lazy">
+      <img class="c-a" src="<?= e(url('assets/img/cellc/friends-phones.jpg')) ?>" alt="Young friends sharing something on their phones" loading="lazy">
+      <img class="c-b" src="<?= e(url('assets/img/cellc/selfie-night.jpg')) ?>" alt="Three friends in colourful dresses taking a selfie at night" loading="lazy">
+      <img class="c-c" src="<?= e(url('assets/img/cellc/concert-phones.jpg')) ?>" alt="A concert crowd holding up their phones" loading="lazy">
     </div>
   </div>
 </section>
@@ -150,7 +150,7 @@ require __DIR__ . '/includes/header.php';
         <span class="kicker reveal"><span class="num">01</span> The Event</span>
         <h2 class="display huge reveal" style="margin:22px 0 34px;">Music is the <span class="serif-i text-orange">reason</span> to travel.</h2>
         <p class="lede dropcap reveal"><?= e($eventName) ?> brings soul, jazz and the sound of the Garden Route to <?= e($venue) ?> — a full day of live music, food, culture and community under the George sky.</p>
-        <p class="reveal muted">George Music Festival is a regional platform connecting music, culture, community, lifestyle and tourism. Local talent gives it authenticity; the Garden Route gives it a destination worth flying to. This year, with Airports Company South Africa, we're turning the festival into a journey — from the first flyer on the street to the final note on stage.</p>
+        <p class="reveal muted">George Music Festival is a regional platform connecting music, culture, community, lifestyle and tourism. Local talent gives it authenticity; the Garden Route gives it a destination worth the trip. This year, with Cell C, we're keeping everyone connected — from the first flyer on the street to the final note on stage.</p>
 
         <div class="fact-grid reveal">
           <div><small>Date</small><strong><?= e(fmt_date($eventDate, 'l, j F Y')) ?></strong></div>
@@ -201,12 +201,12 @@ require __DIR__ . '/includes/header.php';
         <div class="exp-body"><span class="exp-n">02</span><h3>Food, culture &amp; community</h3><p>Garden Route food, fashion and friends. A day out built for the whole community, not just the front row.</p></div>
       </article>
       <article class="exp-card reveal reveal-d2">
-        <img src="<?= e(url('assets/img/acsa/moyeni-with-young-fan.jpg')) ?>" alt="A young fan with Moyeni, the ACSA mascot" loading="lazy">
-        <div class="exp-body"><span class="exp-n">03</span><h3>The ACSA Experience</h3><p>Meet Moyeni, discover what flying is really like, enter FLY FOR TWO on the spot and share your link for a place on the leaderboard.</p></div>
+        <img src="<?= e(url('assets/img/cellc/concert-phones-blue.jpg')) ?>" alt="A festival crowd lighting up the night with their phones" loading="lazy">
+        <div class="exp-body"><span class="exp-n">03</span><h3>Capture every moment</h3><p>Film the headliners and share the night, then share your <?= e(setting('comp_name')) ?> link for a place on the leaderboard.</p></div>
       </article>
       <article class="exp-card reveal reveal-d3">
-        <img src="<?= e(url('assets/img/acsa/acsa-team-group.jpg')) ?>" alt="The ACSA airport team in the terminal" loading="lazy">
-        <div class="exp-body"><span class="exp-n">04</span><h3>Youth &amp; careers</h3><p>The airport team shares what goes on behind the scenes — from customer service to operations and tourism.</p></div>
+        <img src="<?= e(url('assets/img/cellc/selfie-kids.jpg')) ?>" alt="A man and a group of children smiling for a selfie" loading="lazy">
+        <div class="exp-body"><span class="exp-n">04</span><h3>Bring the whole crew</h3><p>A day out for the whole community. Every friend who opens your link moves you closer to the phone.</p></div>
       </article>
     </div>
   </div>
@@ -216,20 +216,20 @@ require __DIR__ . '/includes/header.php';
 <section class="section on-paper" id="plan">
   <div class="wrap plan-grid">
     <figure class="plan-photo reveal">
-      <img src="<?= e(url('assets/img/acsa/plane-window-view.jpg')) ?>" alt="A plane waiting on the apron, seen through a shuttle window" loading="lazy">
+      <img src="<?= e(url('assets/img/cellc/george-pass-road.jpg')) ?>" alt="A winding mountain road through green forest near George" loading="lazy">
     </figure>
     <div class="plan-copy">
       <span class="kicker reveal" style="color:var(--orange-deep)"><span class="num">03</span> Plan your trip</span>
       <h2 class="display big reveal" style="margin:18px 0 26px;color:var(--text-dark);">Make it a <span class="serif-i" style="color:var(--orange-deep)">weekend</span> away.</h2>
       <ol class="plan-steps">
-        <li class="reveal"><i class="fa-solid fa-plane-arrival"></i><div><strong>Fly into George Airport</strong><span>The Garden Route's gateway, operated by Airports Company South Africa, with daily domestic flights.</span></div></li>
+        <li class="reveal"><i class="fa-solid fa-route"></i><div><strong>Getting to George</strong><span>Drive in over the Outeniqua Pass or along the N2, or fly into George Airport with daily domestic flights.</span></div></li>
         <li class="reveal"><i class="fa-solid fa-location-dot"></i><div><strong><?= e($venue) ?></strong><span><?= e(fmt_date($eventDate, 'l, j F Y')) ?> · <?= e(setting('event_time')) ?></span></div></li>
         <li class="reveal"><i class="fa-solid fa-bed"></i><div><strong>Stay on the Garden Route</strong><span>George, Mossel Bay, Knysna, Oudtshoorn and Plettenberg Bay are all within reach — turn one festival day into a full weekend.</span></div></li>
         <li class="reveal"><i class="fa-solid fa-ticket"></i><div><strong><?= $ticketUrl !== '' ? 'Tickets on sale now' : e(setting('ticket_note')) ?></strong><span><?= $ticketUrl !== '' ? '<a class="text-link" href="' . e($ticketUrl) . '" target="_blank" rel="noopener">Buy tickets <i class="fa-solid fa-arrow-right"></i></a>' : 'Join the GMF list at the bottom of this page to hear first.' ?></span></div></li>
       </ol>
       <div class="plan-cta reveal">
-        <p>Or let us fly you: <strong>win return flights, accommodation and transfers for two.</strong></p>
-        <a class="btn btn-dark" href="#enter"><i class="fa-solid fa-plane-departure"></i> Enter FLY FOR TWO</a>
+        <p>And capture it all on a new phone: <strong>win a brand-new Huawei Pura 80 Pro worth <?= e(setting('prize_value')) ?>.</strong></p>
+        <a class="btn btn-dark" href="#enter"><i class="fa-solid fa-mobile-screen-button"></i> Enter <?= e(setting('comp_name')) ?></a>
       </div>
     </div>
   </div>
@@ -237,11 +237,11 @@ require __DIR__ . '/includes/header.php';
 
 <!-- ═══════════════ PULL QUOTE ═══════════════ -->
 <section class="bleed">
-  <img src="<?= e(url('assets/img/acsa/plane-on-apron.jpg')) ?>" alt="" data-parallax loading="lazy">
+  <img src="<?= e(url('assets/img/cellc/concert-phones-blue.jpg')) ?>" alt="" data-parallax loading="lazy">
   <div class="wrap">
     <blockquote class="pullquote reveal">
-      <p>GMF creates the <em>reason</em> to travel. ACSA helps define the <em>journey</em>.</p>
-      <cite>George Music Festival × Airports Company South Africa</cite>
+      <p>GMF brings the <em>music</em>. Cell C keeps you <em>connected</em>.</p>
+      <cite>George Music Festival × Cell C</cite>
     </blockquote>
   </div>
 </section>
@@ -278,7 +278,7 @@ $hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, fals
           <?php endif; ?>
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px;">
             <a class="btn btn-orange" href="<?= e($ticketUrl !== '' ? $ticketUrl : '#tickets') ?>" <?= $ticketUrl !== '' ? 'target="_blank" rel="noopener"' : '' ?>><i class="fa-solid fa-ticket"></i> Get tickets</a>
-            <a class="btn btn-ghost" href="#enter"><i class="fa-solid fa-plane-departure"></i> Win a trip for two</a>
+            <a class="btn btn-ghost" href="#enter"><i class="fa-solid fa-mobile-screen-button"></i> Win a Huawei Pura 80 Pro</a>
           </div>
         </div>
       </div>
@@ -408,7 +408,7 @@ $hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, fals
       <?php else: ?>
         <a class="btn btn-dark btn-lg" href="#join"><i class="fa-regular fa-bell"></i> Notify me</a>
       <?php endif; ?>
-      <a class="btn btn-outline-dark btn-lg" href="<?= e(url('flyfortwo/')) ?>">Enter Fly For Two</a>
+      <a class="btn btn-outline-dark btn-lg" href="<?= e(url('win/')) ?>">Enter Win a Huawei</a>
     </div>
   </div>
 </section>
@@ -419,7 +419,7 @@ $hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, fals
     <div class="partners reveal" style="margin-top:26px;">
       <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Music Festival" loading="lazy">
       <span class="x">×</span>
-      <img src="<?= e(url('assets/img/brand/acsa-teal.png')) ?>" alt="Airports Company South Africa" loading="lazy">
+      <img src="<?= e(url('assets/img/brand/cellc-orange.png')) ?>" alt="Cell C" loading="lazy">
     </div>
   </div>
 </section>

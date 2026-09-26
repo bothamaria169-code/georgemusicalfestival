@@ -23,7 +23,7 @@ function admin_head(string $title, string $active = ''): void
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title><?= e($title) ?> — FLY FOR TWO admin</title>
+<title><?= e($title) ?> — WIN A HUAWEI admin</title>
 <link rel="icon" type="image/png" href="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
@@ -35,7 +35,7 @@ function admin_head(string $title, string $active = ''): void
   <aside class="a-side" id="aSide">
     <a class="a-brand" href="<?= e(url('admin/index.php')) ?>">
       <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="GMF">
-      <span>Fly For Two<small>Control room</small></span>
+      <span>Win a Huawei<small>Control room</small></span>
     </a>
     <nav>
       <?php foreach ($items as $key => [$href, $icon, $label, $role]):
@@ -44,7 +44,7 @@ function admin_head(string $title, string $active = ''): void
       <?php endforeach; ?>
     </nav>
     <div class="a-side-foot">
-      <a href="<?= e(url('flyfortwo/')) ?>" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i>Competition page</a>
+      <a href="<?= e(url('win/')) ?>" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i>Competition page</a>
       <a href="<?= e(url('index.php')) ?>" target="_blank"><i class="fa-solid fa-globe"></i>Website</a>
     </div>
   </aside>
