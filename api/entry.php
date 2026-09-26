@@ -82,9 +82,18 @@ try {
 
         $result = upsert_pending_entrant($data, $source, $referrer ? (int) $referrer['id'] : null, $in['fp'] ?? null);
         if (isset($result['error'])) {
-            $msg = $result['error'] === 'already_entered'
-                ? "You're already in the draw with these details — one entry per phone number and email. Sign in to see your dashboard and share link."
-                : 'This entry cannot be accepted. Please contact us if you think this is a mistake.';
+            $existing = $result['entrant'];
+            $samePerson = $existing['email'] && $existing['email'] === $data['email'];
+            if ($result['error'] !== 'already_entered') {
+                $msg = 'This entry cannot be accepted. Please contact us if you think this is a mistake.';
+            } elseif ($samePerson || !$existing['email']) {
+                $msg = "You're already entered with this email. Sign in to see your dashboard and share link.";
+            } else {
+                // The phone number matched an entry that uses a different email: say which one, so they can sign in.
+                $msg = 'This cellphone number is already entered with the email ' . mask_email($existing['email'])
+                    . '. Sign in with that email or with your cellphone number. If that email is wrong, contact '
+                    . setting('contact_email') . ' and we will correct it.';
+            }
             json_out(['ok' => false, 'code' => $result['error'], 'error' => $msg, 'login_url' => url('flyfortwo/login')], 409);
         }
 

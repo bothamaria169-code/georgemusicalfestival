@@ -17,6 +17,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAdmin && csrf_ok()) {
         audit('entrant.reinstate', ['id' => $id]);
         flash('success', 'Entrant reinstated.');
     }
+    if (($_POST['action'] ?? '') === 'email') {
+        $new = mb_strtolower(trim((string) ($_POST['email'] ?? '')));
+        $old = q('SELECT email FROM entrants WHERE id = ?', [$id])->fetchColumn();
+        if (!filter_var($new, FILTER_VALIDATE_EMAIL)) {
+            flash('error', 'That is not a valid email address.');
+        } elseif (q('SELECT COUNT(*) FROM entrants WHERE email = ? AND id <> ?', [$new, $id])->fetchColumn()) {
+            flash('error', 'Another entry already uses that email address.');
+        } else {
+            q('UPDATE entrants SET email = ? WHERE id = ?', [$new, $id]);
+            clear_email_problem($id);
+            audit('entrant.email_fixed', ['id' => $id, 'from' => mask_email((string) $old), 'to' => mask_email($new)]);
+            flash('success', 'Email updated. The entrant can now sign in with it (or with their cellphone number).');
+        }
+    }
     if (($_POST['action'] ?? '') === 'photo') {
         $saved = save_entrant_photo($_FILES['photo'] ?? [], $id);
         audit('entrant.photo', ['id' => $id, 'ok' => (bool) $saved]);
@@ -28,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isAdmin && csrf_ok()) {
 $status  = $_GET['status'] ?? 'verified';
 $channel = $_GET['channel'] ?? '';
 $mkt     = $_GET['mkt'] ?? '';
+$mailq   = $_GET['mail'] ?? '';
 $search  = trim((string) ($_GET['q'] ?? ''));
 
 $where = [];
@@ -43,6 +58,9 @@ if (isset(CHANNELS[$channel])) {
 if ($mkt === '1' || $mkt === '0') {
     $where[] = 'p.consent_marketing = ?';
     $params[] = (int) $mkt;
+}
+if ($mailq === 'problem') {
+    $where[] = 'p.email_status IS NOT NULL';
 }
 if ($search !== '') {
     $digits = preg_replace('/\D/', '', $search);
@@ -64,12 +82,12 @@ if (isset($_GET['export'])) {
     audit('entrants.export', ['filters' => $_GET]);
     $rows = q($select . ' ORDER BY p.id', $params);
     csv_download('flyfortwo-entrants-' . date('Ymd-His') . '.csv',
-        ['ID', 'Full name', 'Email', 'Phone', 'Town', 'Age group', 'Travel profile', 'Terms consent', 'POPIA consent', 'Marketing consent', 'Consent at', 'Status', 'Verified at', 'Verified via',
+        ['ID', 'Full name', 'Email', 'Phone', 'Town', 'Age group', 'Travel profile', 'Terms consent', 'POPIA consent', 'Marketing consent', 'Email problem', 'Consent at', 'Status', 'Verified at', 'Verified via',
          'Channel', 'Activation point', 'Source town', 'Time slot', 'UTM source', 'UTM medium', 'UTM campaign', 'Referral code', 'Referred by', 'Link opens', 'Friends referred', 'Created at'],
         (function () use ($rows) {
             foreach ($rows as $p) {
                 yield [$p['id'], $p['full_name'], $p['email'], display_phone($p['phone']), $p['town'], $p['age_group'], $p['fly_frequency'], $p['consent_terms'] ? 'yes' : 'no', $p['consent_popia'] ? 'yes' : 'no',
-                    $p['consent_marketing'] ? 'yes' : 'no', $p['consent_at'], $p['status'], $p['verified_at'], $p['verified_via'], $p['channel'], $p['activation_point'],
+                    $p['consent_marketing'] ? 'yes' : 'no', $p['email_status'] ? $p['email_issue'] : '', $p['consent_at'], $p['status'], $p['verified_at'], $p['verified_via'], $p['channel'], $p['activation_point'],
                     $p['source_town'], $p['time_slot'], $p['utm_source'], $p['utm_medium'], $p['utm_campaign'], $p['ref_code'], $p['referrer_name'], $p['entries'], $p['referrals'], $p['created_at']];
             }
         })());
@@ -92,6 +110,7 @@ admin_head('Entrants', 'entrants');
     <?php foreach (CHANNELS as $k => $v): ?><option value="<?= $k ?>" <?= $channel === $k ? 'selected' : '' ?>><?= e($v) ?></option><?php endforeach; ?>
   </select></div>
   <div><label class="f">Marketing</label><select class="in" name="mkt"><option value="">Any</option><option value="1" <?= $mkt === '1' ? 'selected' : '' ?>>Opted in</option><option value="0" <?= $mkt === '0' ? 'selected' : '' ?>>Not opted in</option></select></div>
+  <div><label class="f">Email</label><select class="in" name="mail"><option value="">Any</option><option value="problem" <?= $mailq === 'problem' ? 'selected' : '' ?>>Bounced / problem</option></select></div>
   <button class="btn btn-primary" type="submit"><i class="fa-solid fa-filter"></i> Filter</button>
   <a class="btn" href="?<?= e(http_build_query(array_merge($_GET, ['export' => 1]))) ?>"><i class="fa-solid fa-file-csv"></i> Export <?= number_format($total) ?></a>
 </form>
@@ -104,7 +123,7 @@ admin_head('Entrants', 'entrants');
       <tr>
         <td class="muted"><?= (int) $p['id'] ?></td>
         <td><?php if ($p['photo']): ?><img src="<?= e(media_url($p['photo'])) ?>" alt="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;float:left;margin-right:8px"><?php endif; ?><strong><?= e($p['full_name']) ?></strong><br><small class="muted"><?= e($p['ref_code']) ?><?= $p['referrer_name'] ? ' · via ' . e(short_name($p['referrer_name'])) : '' ?></small></td>
-        <td><?= e($p['email'] ?: '—') ?><br><small class="muted"><?= e(display_phone($p['phone'])) ?></small></td>
+        <td><?= e($p['email'] ?: '—') ?><?php if ($p['email_status']): ?><br><span class="pill pill-bad" title="<?= e($p['email_issue'] . ' · ' . fmt_date($p['email_issue_at'], 'j M H:i')) ?>"><i class="fa-solid fa-triangle-exclamation"></i> <?= e(email_problem_label($p['email_status'])) ?></span> <small class="muted"><?= e($p['email_issue']) ?></small><?php endif; ?><br><small class="muted"><?= e(display_phone($p['phone'])) ?></small></td>
         <td><?= e($p['town'] ?: '—') ?><br><small class="muted"><?= e(trim(($p['age_group'] ? $p['age_group'] . ' · ' : '') . $p['fly_frequency'])) ?></small></td>
         <td><span class="pill pill-info"><?= e($p['channel']) ?></span><br><small class="muted"><?= e(trim(($p['activation_point'] ?? '') . ' ' . ($p['time_slot'] ? '· ' . $p['time_slot'] : ''))) ?></small></td>
         <td><span class="pill pill-ok">Terms</span> <?= $p['consent_popia'] ? '<span class="pill pill-ok">POPIA</span>' : '' ?><?= $p['consent_marketing'] ? '<span class="pill pill-ok">Mkt</span>' : '<span class="pill pill-muted">No mkt</span>' ?></td>
@@ -117,6 +136,7 @@ admin_head('Entrants', 'entrants');
         </td>
         <?php if ($isAdmin): ?>
         <td>
+          <form method="post" style="margin-bottom:6px" onsubmit="var n=prompt('Correct email address for this entrant:', this.email.value);if(!n)return false;this.email.value=n;"><?= csrf_field() ?><input type="hidden" name="id" value="<?= (int) $p['id'] ?>"><input type="hidden" name="action" value="email"><input type="hidden" name="email" value="<?= e($p['email']) ?>"><button class="btn btn-sm" type="submit" title="Fix this entrant's email address"><i class="fa-solid fa-at"></i></button></form>
           <?php if ($p['status'] === 'verified'): ?>
             <form method="post" onsubmit="var n=prompt('Reason for disqualification (logged):');if(!n)return false;this.note.value=n;"><?= csrf_field() ?><input type="hidden" name="id" value="<?= (int) $p['id'] ?>"><input type="hidden" name="action" value="disqualify"><input type="hidden" name="note"><button class="btn btn-sm btn-danger" type="submit" title="Disqualify"><i class="fa-solid fa-ban"></i></button></form>
             <form method="post" enctype="multipart/form-data" style="margin-top:6px"><?= csrf_field() ?><input type="hidden" name="id" value="<?= (int) $p['id'] ?>"><input type="hidden" name="action" value="photo"><label class="btn btn-sm" title="Upload a winner photo for this entrant" style="cursor:pointer"><i class="fa-solid fa-camera"></i><input type="file" name="photo" accept="image/jpeg,image/png,image/webp" hidden onchange="this.form.submit()"></label></form>

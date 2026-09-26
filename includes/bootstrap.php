@@ -45,6 +45,7 @@ if (session_status() === PHP_SESSION_NONE && PHP_SAPI !== 'cli') {
 
 require_once __DIR__ . '/mailer.php';
 require_once __DIR__ . '/competition.php';
+require_once __DIR__ . '/email-health.php';
 require_once __DIR__ . '/legal-defaults.php';
 
 /* ──────────────────────────── Config & DB ──────────────────────────── */

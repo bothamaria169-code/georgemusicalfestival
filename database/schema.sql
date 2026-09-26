@@ -5,6 +5,9 @@ CREATE TABLE IF NOT EXISTS entrants (
   id                INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   full_name         VARCHAR(120) NOT NULL,
   email             VARCHAR(190) NULL,
+  email_status      VARCHAR(16)  NULL,                -- bounced | invalid | send_failed
+  email_issue       VARCHAR(255) NULL,                -- plain-language reason shown in the admin
+  email_issue_at    DATETIME     NULL,
   phone             VARCHAR(20)  NOT NULL,            -- normalised: 27XXXXXXXXX
   town              VARCHAR(80)  NULL,
   fly_frequency     VARCHAR(60)  NULL,                -- travel-profile answer

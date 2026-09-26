@@ -17,7 +17,7 @@ DirectoryIndex index.php
   RewriteRule ^flyfortwo/how-to-enter/?$ how-to-enter.php [L,QSA]
 
   # Never serve internals
-  RewriteRule ^(config|includes|database|storage)(/|$) - [F,L]
+  RewriteRule ^(config|includes|database|storage|cron)(/|$) - [F,L]
   RewriteRule (^|/)\.(?!well-known) - [F,L]
   RewriteRule \.(sql|log|md|lock)$ - [F,L]
 </IfModule>
