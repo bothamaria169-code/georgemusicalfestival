@@ -7,7 +7,7 @@ $gmfLogo  = url('assets/img/brand/gmf-logo-orange.png');
   <div class="logo-ticker-track" aria-hidden="true">
     <?php for ($i = 0; $i < 4; $i++): ?>
       <img class="lt-acsa" src="<?= e($acsaLogo) ?>" alt="" width="684" height="265">
-      <span class="lt-text">Change your world</span>
+      <span class="lt-text">The Unstoppables</span>
       <img class="lt-gmf" src="<?= e($gmfLogo) ?>" alt="" width="620" height="424">
       <span class="lt-text">Win a Huawei Pura 80 Pro</span>
     <?php endfor; ?>
