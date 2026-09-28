@@ -130,7 +130,7 @@ require __DIR__ . '/includes/header.php';
     <div class="acsa-copy">
       <img class="acsa-logo reveal" src="<?= e(url('assets/img/brand/cellc-white.png')) ?>" alt="Cell C" loading="lazy">
       <span class="kicker reveal" style="margin-top:26px;">Cell C × George Musical Festival</span>
-      <h2 class="display big reveal" style="margin-top:16px;">The <span class="serif-i text-orange">Unstoppables.</span></h2>
+      <h2 class="display big reveal" style="margin-top:16px;">Nothing should <span class="serif-i text-orange">stop you.</span></h2>
       <p class="lede reveal" style="margin-top:18px;">Music brings the Garden Route together, and your phone keeps you connected to it. Cell C and George Musical Festival are celebrating both, with a brand-new Huawei Pura 80 Pro for one lucky entrant.</p>
       <p class="muted reveal">Enter online or at any George Musical Festival activation point, then share your personal link with friends and family. Every different person who opens it moves you up the <?= e(setting('comp_name')) ?> leaderboard.</p>
     </div>

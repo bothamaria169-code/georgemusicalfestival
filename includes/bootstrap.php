@@ -297,7 +297,7 @@ function setting_defaults(): array
 {
     return [
         // Homepage hero (competition-first)
-        'hero_kicker'       => 'Cell C × George Musical Festival: The Unstoppables',
+        'hero_kicker'       => 'Cell C × George Musical Festival: Nothing should stop you',
         'hero_headline'     => 'Win a Huawei Pura 80 Pro',
         'hero_text'         => 'In partnership with Cell C, George Musical Festival is giving away a brand-new Huawei Pura 80 Pro worth R18 000. Enter free in under a minute, share your personal link, and climb the leaderboard to win.',
 
