@@ -298,8 +298,8 @@ function setting_defaults(): array
     return [
         // Homepage hero (competition-first)
         'hero_kicker'       => 'Cell C × George Musical Festival: Nothing should stop you',
-        'hero_headline'     => 'Win a Samsung Galaxy A50',
-        'hero_text'         => 'In partnership with Cell C, George Musical Festival is giving away a Samsung Galaxy A50, bundled with accessories to the value of R10,000. Enter free in under a minute, share your personal link, and climb the leaderboard to win.',
+        'hero_headline'     => 'Win a Samsung Galaxy A56',
+        'hero_text'         => 'In partnership with Cell C, George Musical Festival is giving away a Samsung Galaxy A56, bundled with accessories to the value of R10,000. Enter free in under a minute, share your personal link, and climb the leaderboard to win.',
 
         // Event
         'event_name'        => 'Eden Soul & Jazz Reimagined',
@@ -310,7 +310,7 @@ function setting_defaults(): array
         'ticket_url'        => '',
         'ticket_note'       => 'Tickets on sale soon',
         'hero_video_url'    => '',
-        'announcement'      => 'WIN A SAMSUNG is live — enter free and win a Samsung Galaxy A50 with accessories to the value of R10,000.',
+        'announcement'      => 'WIN A SAMSUNG is live — enter free and win a Samsung Galaxy A56 with accessories to the value of R10,000.',
         'contact_email'     => 'info@georgemusicalfestival.co.za',
         'contact_phone'     => '',
         'social_facebook'   => '',
@@ -322,7 +322,7 @@ function setting_defaults(): array
         'comp_name'         => 'WIN A SAMSUNG',
         'comp_open_at'      => '2026-09-24 00:00:00',
         'comp_close_at'     => '2026-10-31 23:59:59',
-        'prize_headline'    => 'Samsung Galaxy A50 + Accessory Bundle',
+        'prize_headline'    => 'Samsung Galaxy A56 + Accessory Bundle',
         'travel_question'   => 'Which network are you on?',
         'travel_options'    => "Cell C
 Vodacom
@@ -336,7 +336,7 @@ Other",
 45–54
 55+",
         'prize_value'       => 'R10,000',
-        'collection_note'   => "If you win, you'll be notified and asked to collect your Samsung Galaxy A50 and accessory bundle at a Cell C store — bring your ID and this confirmation.",
+        'collection_note'   => "If you win, you'll be notified and asked to collect your Samsung Galaxy A56 and accessory bundle at a Cell C store — bring your ID and this confirmation.",
         'popia_consent_text'=> 'I consent to Cell C Limited and George Musical Festival collecting and processing my personal information for the purposes of the WIN A SAMSUNG competition.',
         'towns'             => "George\nThembalethu\nMossel Bay\nOudtshoorn\nPlettenberg Bay\nKnysna\nOther",
         'draw_reassurance'  => 'The winners are the two entrants whose personal links are opened by the most different people. The leaderboard is frozen when entries close, checked for fair play and recorded before the winners are revealed.',

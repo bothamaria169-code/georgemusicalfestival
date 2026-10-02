@@ -53,7 +53,7 @@ $prize   = (string) setting('prize_headline');
 $scripts = [
     'WhatsApp status' => "📱 I just entered WIN A SAMSUNG — you could win a {$prize} (accessories worth " . setting('prize_value') . ") with George Musical Festival × Cell C. Free to enter, takes a minute 👉 {$link}",
     'Group chat'      => "Guys, George Musical Festival and Cell C are giving away a {$prize} (accessories worth " . setting('prize_value') . "). Enter free here before " . fmt_date(setting('comp_close_at'), 'j F') . ": {$link}",
-    'Short & sweet'   => "Win a Samsung Galaxy A50 + accessory bundle 📱 {$link}",
+    'Short & sweet'   => "Win a Samsung Galaxy A56 + accessory bundle 📱 {$link}",
 ];
 
 $page_title = 'My dashboard — WIN A SAMSUNG';
@@ -106,9 +106,9 @@ require __DIR__ . '/includes/header.php';
             <a class="share-btn wa" href="https://wa.me/?text=<?= rawurlencode($scripts['WhatsApp status']) ?>" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
             <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=<?= rawurlencode($link) ?>" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
             <a class="share-btn" href="https://twitter.com/intent/tweet?text=<?= rawurlencode($scripts['Short & sweet']) ?>" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter"></i> X</a>
-            <a class="share-btn" href="https://t.me/share/url?url=<?= rawurlencode($link) ?>&text=<?= rawurlencode('Win a Samsung Galaxy A50 + accessory bundle 📱') ?>" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i> Telegram</a>
+            <a class="share-btn" href="https://t.me/share/url?url=<?= rawurlencode($link) ?>&text=<?= rawurlencode('Win a Samsung Galaxy A56 + accessory bundle 📱') ?>" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i> Telegram</a>
             <a class="share-btn" href="sms:?&body=<?= rawurlencode($scripts['Short & sweet']) ?>"><i class="fa-solid fa-comment-sms"></i> SMS</a>
-            <a class="share-btn" href="mailto:?subject=<?= rawurlencode('Win a Samsung Galaxy A50 + accessory bundle') ?>&body=<?= rawurlencode($scripts['Group chat']) ?>"><i class="fa-regular fa-envelope"></i> Email</a>
+            <a class="share-btn" href="mailto:?subject=<?= rawurlencode('Win a Samsung Galaxy A56 + accessory bundle') ?>&body=<?= rawurlencode($scripts['Group chat']) ?>"><i class="fa-regular fa-envelope"></i> Email</a>
             <button class="share-btn dark" type="button" data-native-share data-url="<?= e($link) ?>" data-text="<?= e($scripts['Short & sweet']) ?>"><i class="fa-solid fa-share-nodes"></i> More</button>
           </div>
           <div class="qr-wrap">

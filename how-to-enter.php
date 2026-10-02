@@ -10,9 +10,9 @@ $cooldown  = (int) setting('otp_cooldown');
 $state     = comp_state();
 $enterUrl  = url('win/');
 
-$page_title       = 'How to enter WIN A SAMSUNG — win a Samsung Galaxy A50';
+$page_title       = 'How to enter WIN A SAMSUNG — win a Samsung Galaxy A56';
 $meta_description = 'Four steps and about a minute: how to enter WIN A SAMSUNG, confirm your entry by email, climb the leaderboard by sharing your link, and how the winners are decided.';
-$og_image         = url('assets/img/cellc/hero-friends-selfie.jpg');
+$og_image         = url('assets/img/cellc/hero-galaxy-a56.jpg');
 $nav_active       = 'howto';
 $extra_css        = ['assets/css/comp.css'];
 $show_logo_ticker = true;
@@ -31,7 +31,7 @@ require __DIR__ . '/includes/header.php';
       </div>
     </div>
     <figure class="win-hero-photo">
-      <img src="<?= e(url('assets/img/cellc/hero-friends-selfie.jpg')) ?>" width="1800" height="1200" alt="Three smiling friends taking a selfie together outdoors" fetchpriority="high">
+      <img src="<?= e(url('assets/img/cellc/hero-galaxy-a56.jpg')) ?>" width="1536" height="1024" alt="A smiling young woman holding up a boxed Samsung Galaxy A56 5G, with Samsung accessories in front of her at a George Musical Festival and Cell C stand" fetchpriority="high">
       <figcaption><span class="win-stamp">Free<br>to enter</span></figcaption>
     </figure>
   </div>

@@ -115,7 +115,7 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
       </div>
       <div class="pass-mid">
         <div><small>From</small><strong>Your town</strong></div>
-        <div style="text-align:right"><small>To</small><strong>A Galaxy A50</strong></div>
+        <div style="text-align:right"><small>To</small><strong>A Galaxy A56</strong></div>
       </div>
       <div class="pass-divider"></div>
       <div class="pass-bottom">
