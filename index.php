@@ -23,7 +23,7 @@ $headAccent = count($headWords) > 1 ? array_pop($headWords) : '';
 
 $page_title       = 'Win a Samsung Galaxy A56 — WIN A SAMSUNG · George Musical Festival × Cell C';
 $meta_description = (string) setting('hero_text');
-$og_image         = url('assets/img/cellc/hero-galaxy-a56-v2.jpg');
+$og_image         = url('assets/img/cellc/hero-galaxy-a56-v3.jpg');
 $nav_active       = 'home';
 $extra_css        = ['assets/css/comp.css'];
 $extra_js         = ['assets/js/enter.js'];
@@ -50,7 +50,7 @@ require __DIR__ . '/includes/header.php';
       </ul>
     </div>
     <figure class="win-hero-photo">
-      <img src="<?= e(url('assets/img/cellc/hero-galaxy-a56-v2.jpg')) ?>" width="1536" height="1024" alt="A smiling young woman holding up a Samsung phone, with a boxed Galaxy A56 5G and Samsung accessories in front of her at a George Musical Festival and Cell C stand" fetchpriority="high">
+      <img src="<?= e(url('assets/img/cellc/hero-galaxy-a56-v3.jpg')) ?>" width="1536" height="1024" alt="A smiling young woman holding up a Samsung phone, with a boxed Galaxy A56 5G and Samsung accessories in front of her at a George Musical Festival and Cell C stand" fetchpriority="high">
       <figcaption><span class="win-stamp">Win a Galaxy<br>A56 bundle</span></figcaption>
     </figure>
   </div>
