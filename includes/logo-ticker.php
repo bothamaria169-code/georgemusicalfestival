@@ -9,7 +9,7 @@ $gmfLogo  = url('assets/img/brand/gmf-logo-orange.png');
       <img class="lt-acsa" src="<?= e($acsaLogo) ?>" alt="" width="684" height="265">
       <span class="lt-text">Nothing should stop you</span>
       <img class="lt-gmf" src="<?= e($gmfLogo) ?>" alt="" width="620" height="424">
-      <span class="lt-text">Win a Huawei Pura 80 Pro</span>
+      <span class="lt-text">Win a Samsung Galaxy A50</span>
     <?php endfor; ?>
   </div>
 </div>

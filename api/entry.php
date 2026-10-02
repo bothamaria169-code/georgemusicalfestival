@@ -1,6 +1,6 @@
 <?php
 /**
- * WIN A HUAWEI entry API — used by the landing page, the Cell C embed, and
+ * WIN A SAMSUNG entry API — used by the landing page, the Cell C embed, and
  * Cell C's own systems (with X-Api-Key). Every channel writes to the same tables.
  *
  * POST action=start   full_name, email, phone, town, age_group, fly_frequency, consent_terms, consent_popia, consent_marketing,
@@ -167,7 +167,7 @@ try {
             'name'       => short_name($entrant['full_name']),
             'entries'    => entry_count((int) $entrant['id']),
             'ref_link'   => $link,
-            'share_text' => "I just entered WIN A HUAWEI — win a brand-new Huawei Pura 80 Pro with George Musical Festival × Cell C. Enter free here: {$link}",
+            'share_text' => "I just entered WIN A SAMSUNG — win a Samsung Galaxy A50 + accessory bundle with George Musical Festival × Cell C. Enter free here: {$link}",
             'dashboard'  => url('win/dashboard'),
         ]);
     }

@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // 4. Draws
         $st = $pdo->prepare('INSERT IGNORE INTO draws (draw_key, title, prize_description, scheduled_for, created_at) VALUES (?, ?, ?, ?, ?)');
         $st->execute(['event_day', 'Second Prize — Runner-up', '', '2026-10-31', $now]);
-        $st->execute(['final', 'Grand Prize — Top Referrer', "Brand-new Huawei Pura 80 Pro\nRetail value R18 000\nSponsored by Cell C", '2026-10-31', $now]);
+        $st->execute(['final', 'Grand Prize — Top Referrer', "Samsung Galaxy A50 smartphone\nAccessories to the value of R10,000\nCollect at a Cell C store — bring your ID", '2026-10-31', $now]);
 
         // 5. Gallery seed from the partnership proposal imagery
         if (!(int) $pdo->query('SELECT COUNT(*) FROM media')->fetchColumn()) {

@@ -1,5 +1,5 @@
 <?php
-/** Step-by-step guide to entering WIN A HUAWEI: /win/how-to-enter */
+/** Step-by-step guide to entering WIN A SAMSUNG: /win/how-to-enter */
 require __DIR__ . '/includes/bootstrap.php';
 
 $final     = draw_by_key('final');
@@ -10,9 +10,9 @@ $cooldown  = (int) setting('otp_cooldown');
 $state     = comp_state();
 $enterUrl  = url('win/');
 
-$page_title       = 'How to enter WIN A HUAWEI — win a Huawei Pura 80 Pro';
-$meta_description = 'Four steps and about a minute: how to enter WIN A HUAWEI, confirm your entry by email, climb the leaderboard by sharing your link, and how the winners are decided.';
-$og_image         = url('assets/img/cellc/hero-win-a-huawei.jpg');
+$page_title       = 'How to enter WIN A SAMSUNG — win a Samsung Galaxy A50';
+$meta_description = 'Four steps and about a minute: how to enter WIN A SAMSUNG, confirm your entry by email, climb the leaderboard by sharing your link, and how the winners are decided.';
+$og_image         = url('assets/img/cellc/hero-friends-selfie.jpg');
 $nav_active       = 'howto';
 $extra_css        = ['assets/css/comp.css'];
 $show_logo_ticker = true;
@@ -22,7 +22,7 @@ require __DIR__ . '/includes/header.php';
 <section class="win-hero grain">
   <div class="wrap win-hero-grid">
     <div class="win-hero-text">
-      <span class="win-kicker"><i class="fa-solid fa-circle-info"></i> WIN A HUAWEI · How to enter</span>
+      <span class="win-kicker"><i class="fa-solid fa-circle-info"></i> WIN A SAMSUNG · How to enter</span>
       <h1 class="display huge">How to <span class="serif-i">enter.</span></h1>
       <p class="lede">Four steps, about a minute, and it's free. Here's exactly what happens — from the form to the draw.</p>
       <div class="cover-actions">
@@ -31,7 +31,7 @@ require __DIR__ . '/includes/header.php';
       </div>
     </div>
     <figure class="win-hero-photo">
-      <img src="<?= e(url('assets/img/cellc/hero-win-a-huawei.jpg')) ?>" width="1800" height="1200" alt="Three smiling friends taking a selfie together outdoors" fetchpriority="high">
+      <img src="<?= e(url('assets/img/cellc/hero-friends-selfie.jpg')) ?>" width="1800" height="1200" alt="Three smiling friends taking a selfie together outdoors" fetchpriority="high">
       <figcaption><span class="win-stamp">Free<br>to enter</span></figcaption>
     </figure>
   </div>
@@ -51,7 +51,7 @@ require __DIR__ . '/includes/header.php';
           <p>Use whichever is easiest:</p>
           <ul>
             <li>The form at the top of <a href="<?= e(url('index.php#enter')) ?>">georgemusicalfestival.co.za</a> or on the <a href="<?= e($enterUrl) ?>">competition page</a></li>
-            <li>Scan a WIN A HUAWEI QR code on a George Musical Festival flyer, poster or event screen</li>
+            <li>Scan a WIN A SAMSUNG QR code on a George Musical Festival flyer, poster or event screen</li>
             <li>A friend's personal share link</li>
           </ul>
         </div>
@@ -148,7 +148,7 @@ require __DIR__ . '/includes/header.php';
 <section class="section-sm win-hero">
   <div class="wrap" style="text-align:center">
     <h2 class="display big reveal">Ready? <span class="serif-i text-orange">Let's go.</span></h2>
-    <p class="reveal" style="margin-top:22px;"><a class="btn btn-orange btn-lg" href="<?= e($enterUrl) ?>"><i class="fa-solid fa-mobile-screen-button"></i> Enter WIN A HUAWEI</a></p>
+    <p class="reveal" style="margin-top:22px;"><a class="btn btn-orange btn-lg" href="<?= e($enterUrl) ?>"><i class="fa-solid fa-mobile-screen-button"></i> Enter WIN A SAMSUNG</a></p>
   </div>
 </section>
 

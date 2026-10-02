@@ -9,7 +9,7 @@ $activity = recent_activity(15);
       <?php if ($activity): foreach ([0, 1] as $copy): foreach ($activity as $a): ?>
         <span class="live-item is-<?= e($a['type']) ?>"><i class="fa-solid <?= $a['type'] === 'referral' ? 'fa-user-plus' : 'fa-mobile-screen-button' ?>"></i><?= e($a['text']) ?></span>
       <?php endforeach; endforeach; else: ?>
-        <span class="live-item"><i class="fa-solid fa-mobile-screen-button"></i>Be the first to enter WIN A HUAWEI — new entries appear here live</span>
+        <span class="live-item"><i class="fa-solid fa-mobile-screen-button"></i>Be the first to enter WIN A SAMSUNG — new entries appear here live</span>
       <?php endif; ?>
     </div>
   </div>

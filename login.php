@@ -79,14 +79,14 @@ if ($pending) {
     $step = 'code';
 }
 
-$page_title = 'Sign in — WIN A HUAWEI dashboard';
+$page_title = 'Sign in — WIN A SAMSUNG dashboard';
 $nav_active = 'fly';
 $extra_css  = ['assets/css/comp.css'];
 require __DIR__ . '/includes/header.php';
 ?>
 <section class="auth-wrap">
   <div class="auth-media">
-    <img src="<?= e(url('assets/img/gallery/activation-23.jpg')) ?>" alt="George Musical Festival street team handing out WIN A HUAWEI flyers">
+    <img src="<?= e(url('assets/img/gallery/activation-23.jpg')) ?>" alt="George Musical Festival street team handing out WIN A SAMSUNG flyers">
     <div class="cap">
       <span class="kicker">Your dashboard</span>
       <p class="display big" style="margin-top:14px;">Share it. <span class="serif-i text-orange">Own it.</span></p>
@@ -99,7 +99,7 @@ require __DIR__ . '/includes/header.php';
         <?php if ($step === 'email'): ?>
           <div class="ff-center"><div class="ff-icon"><i class="fa-regular fa-user"></i></div>
             <h1 class="ff-h">Sign in</h1>
-            <p class="ff-sub">Use the email address or cellphone number you entered WIN A HUAWEI with. We'll send you a one-time code — no password needed.</p>
+            <p class="ff-sub">Use the email address or cellphone number you entered WIN A SAMSUNG with. We'll send you a one-time code — no password needed.</p>
           </div>
           <form method="post" novalidate>
             <?= csrf_field() ?><input type="hidden" name="step" value="email">

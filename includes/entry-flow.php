@@ -115,7 +115,7 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
       </div>
       <div class="pass-mid">
         <div><small>From</small><strong>Your town</strong></div>
-        <div style="text-align:right"><small>To</small><strong>A new Huawei</strong></div>
+        <div style="text-align:right"><small>To</small><strong>A Galaxy A50</strong></div>
       </div>
       <div class="pass-divider"></div>
       <div class="pass-bottom">
@@ -124,6 +124,7 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
       </div>
     </div>
     <p class="ff-sub ff-center"><?= e(setting('draw_reassurance')) ?></p>
+    <?php if (setting('collection_note')): ?><p class="ff-sub ff-center"><i class="fa-solid fa-store"></i> <?= e(setting('collection_note')) ?></p><?php endif; ?>
     <a class="ff-btn ff-btn-primary" data-bind-href="dashboard" href="<?= e(url('win/dashboard')) ?>"<?= $target ?>>Open my dashboard <i class="fa-solid fa-arrow-right"></i></a>
   </div>
 </div>

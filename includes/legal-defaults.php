@@ -8,10 +8,10 @@ declare(strict_types=1);
 function default_terms_html(): string
 {
     return <<<'HTML'
-<p><strong>WIN A HUAWEI — Competition terms and conditions.</strong> By entering you agree to these terms. Please also read the <a href="/cellc/win/privacy">privacy notice</a>, which explains how your personal information is protected under the Protection of Personal Information Act 4 of 2013 (POPIA).</p>
+<p><strong>WIN A SAMSUNG — Competition terms and conditions.</strong> By entering you agree to these terms. Please also read the <a href="/cellc/win/privacy">privacy notice</a>, which explains how your personal information is protected under the Protection of Personal Information Act 4 of 2013 (POPIA).</p>
 
 <h2>1. The promoter</h2>
-<p>WIN A HUAWEI is run by George Musical Festival ("GMF") in partnership with Cell C Limited ("Cell C"), together "the Promoter". Contact: info@georgemusicalfestival.co.za.</p>
+<p>WIN A SAMSUNG is run by George Musical Festival ("GMF") in partnership with Cell C Limited ("Cell C"), together "the Promoter". Contact: info@georgemusicalfestival.co.za.</p>
 
 <h2>2. Competition period</h2>
 <p>Entries open on 24 September 2026 and close on 31 October 2026 at 23:59 (South African time). Entries and link opens received outside this period do not count.</p>
@@ -24,7 +24,7 @@ function default_terms_html(): string
 
 <h2>4. How to enter</h2>
 <ol>
-<li>Entry is free. Complete the entry form on georgemusicalfestival.co.za, through a WIN A HUAWEI QR code, on a Cell C channel or by any other official channel, then confirm your entry using the link or 6-digit code emailed to you. Only confirmed entries count.</li>
+<li>Entry is free. Complete the entry form on georgemusicalfestival.co.za, through a WIN A SAMSUNG QR code, on a Cell C channel or by any other official channel, then confirm your entry using the link or 6-digit code emailed to you. Only confirmed entries count.</li>
 <li>One entry per person, per cellphone number and per email address. Duplicate entries are removed.</li>
 <li>After confirming, you receive a personal share link and a dashboard showing your score.</li>
 </ol>
@@ -40,7 +40,7 @@ function default_terms_html(): string
 
 <h2>6. Prizes</h2>
 <ol>
-<li><strong>Grand Prize:</strong> one brand-new Huawei Pura 80 Pro smartphone with a recommended retail value of R18 000. The model, colour and storage are as supplied by the Promoter. The phone is delivered to, or collected by, the winner in South Africa as arranged with the Promoter. No airtime, data or contract is included unless the Promoter states otherwise.</li>
+<li><strong>Grand Prize:</strong> one Samsung Galaxy A50 smartphone, bundled with accessories to the value of R10,000. The colour, storage and accessories are as supplied by the Promoter. The winner collects the prize at a Cell C store arranged with the Promoter and must bring their ID and their entry confirmation. No airtime, data or contract is included unless the Promoter states otherwise.</li>
 <li><strong>Second Prize:</strong> as announced on the competition page.</li>
 <li>Prizes are not transferable and cannot be exchanged for cash. The Promoter may replace a prize with one of similar value if it becomes unavailable. Costs not listed as part of a prize (such as airtime, data, accessories or insurance) are the winner's responsibility. The manufacturer's warranty applies to the phone.</li>
 </ol>
@@ -77,7 +77,7 @@ HTML;
 function default_privacy_html(): string
 {
     return <<<'HTML'
-<p><strong>This notice explains how WIN A HUAWEI collects and protects your personal information under the Protection of Personal Information Act 4 of 2013 (POPIA).</strong></p>
+<p><strong>This notice explains how WIN A SAMSUNG collects and protects your personal information under the Protection of Personal Information Act 4 of 2013 (POPIA).</strong></p>
 
 <h2>Who is responsible</h2>
 <p>Cell C Limited (Cell C) and George Musical Festival (GMF) are responsible for the personal information collected through the competition. GMF operates this website and platform, and competition data is not used for any other purpose. Contact for privacy requests: info@georgemusicalfestival.co.za.</p>

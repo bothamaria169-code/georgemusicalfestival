@@ -1,6 +1,6 @@
 <?php
 /**
- * WIN A HUAWEI domain logic: entrants, verification codes, entries,
+ * WIN A SAMSUNG domain logic: entrants, verification codes, entries,
  * share bonus / referrals and source attribution.
  */
 declare(strict_types=1);
@@ -344,8 +344,8 @@ function otp_issue(array $entrant, string $purpose): array
     $first = e(explode(' ', $entrant['full_name'])[0]);
     $link = e(url('win/verify') . '?' . http_build_query(['t' => pending_token($entrant), 'c' => $code, 'p' => $purpose]));
     $intro = $purpose === 'login'
-        ? 'Tap the button to sign in to your WIN A HUAWEI dashboard, or type the code on the sign-in page.'
-        : 'Tap the button to confirm your WIN A HUAWEI entry, or type the code on the entry page. Your entry only counts once it is confirmed.';
+        ? 'Tap the button to sign in to your WIN A SAMSUNG dashboard, or type the code on the sign-in page.'
+        : 'Tap the button to confirm your WIN A SAMSUNG entry, or type the code on the entry page. Your entry only counts once it is confirmed.';
     $button = $purpose === 'login' ? 'Sign in to my dashboard' : 'Confirm my entry';
     $html = mail_template("Your code: {$code}", "<p style=\"margin:0 0 14px;font-size:15px;line-height:1.6;\">Hi {$first},</p>"
         . "<p style=\"margin:0 0 20px;font-size:15px;line-height:1.6;\">{$intro}</p>"
@@ -353,7 +353,7 @@ function otp_issue(array $entrant, string $purpose): array
         . "<p style=\"margin:0 0 6px;font-size:13px;color:#6b645e;\">Or enter this code:</p>"
         . "<p style=\"margin:0 0 18px;font-size:32px;letter-spacing:10px;font-weight:bold;color:#1f1f1f;\">{$code}</p>"
         . "<p style=\"margin:0 0 8px;font-size:13px;color:#6b645e;\">The code and button expire in {$ttl} minutes. If you didn't request this, you can ignore this email.</p>");
-    $sent = send_mail($entrant['email'], "{$code} is your WIN A HUAWEI code", $html);
+    $sent = send_mail($entrant['email'], "{$code} is your WIN A SAMSUNG code", $html);
     if (!$sent) {
         mark_email_problem((string) $entrant['email'], 'send_failed', 'The code email could not be sent (' . date('j M H:i') . ')');
         return ['ok' => false, 'error' => "We couldn't send the email right now. Please check the address and try again.", 'cooldown' => 0];
@@ -446,12 +446,13 @@ function send_welcome_email(array $entrant): void
     $first = e(explode(' ', $entrant['full_name'])[0]);
     $link = e(ref_link($entrant));
     $dash = e(url('win/dashboard'));
-    $html = mail_template("You're in, {$first}.", '<p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Your WIN A HUAWEI entry is confirmed. You could win <strong>' . e((string) setting('prize_headline')) . '</strong>.</p>'
+    $html = mail_template("You're in, {$first}.", '<p style="margin:0 0 14px;font-size:15px;line-height:1.6;">Your WIN A SAMSUNG entry is confirmed. You could win <strong>' . e((string) setting('prize_headline')) . '</strong>.</p>'
         . '<p style="margin:0 0 10px;font-size:15px;line-height:1.6;">Now share your personal link. Every different person who opens it adds 1 to your leaderboard score — the top score wins the Grand Prize and the runner-up wins the Second Prize:</p>'
         . "<p style=\"margin:0 0 18px;\"><a href=\"{$link}\" style=\"font-size:16px;font-weight:bold;color:#c44a06;\">{$link}</a></p>"
         . "<p style=\"margin:0 0 18px;\"><a href=\"{$dash}\" style=\"display:inline-block;background:#ea5b0c;color:#2a1402;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:10px;\">Open my dashboard</a></p>"
+        . (setting('collection_note') ? '<p style="margin:0 0 12px;font-size:14px;line-height:1.6;">' . e((string) setting('collection_note')) . '</p>' : '')
         . '<p style="margin:0;font-size:13px;color:#6b645e;">' . e((string) setting('draw_reassurance')) . '</p>');
-    send_mail($entrant['email'], "You're entered — WIN A HUAWEI", $html);
+    send_mail($entrant['email'], "You're entered — WIN A SAMSUNG", $html);
 }
 
 /* ──────────────────────────── Sharing & referrals ──────────────────────────── */

@@ -1,7 +1,7 @@
 <?php
 /**
- * WIN A HUAWEI entry form for embedding on Cell C's website:
- *   <iframe src="https://georgemusicalfestival.co.za/win/embed" style="width:100%;max-width:480px;height:980px;border:0" title="WIN A HUAWEI"></iframe>
+ * WIN A SAMSUNG entry form for embedding on Cell C's website:
+ *   <iframe src="https://georgemusicalfestival.co.za/win/embed" style="width:100%;max-width:480px;height:980px;border:0" title="WIN A SAMSUNG"></iframe>
  * Same validation, consent and database as every other channel; entries are tagged channel = acsa_embed.
  */
 require __DIR__ . '/includes/bootstrap.php';

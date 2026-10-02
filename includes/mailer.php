@@ -151,7 +151,7 @@ function mail_template(string $heading, string $bodyHtml): string
 <td align="left"><img src="{$logo}" alt="George Musical Festival" height="44" style="display:block;height:44px;"></td>
 <td align="right"><img src="{$acsa}" alt="Cell C" height="40" style="display:inline-block;height:40px;"></td></tr></table></td></tr>
 <tr><td style="padding:30px 28px 10px;"><h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#1f1f1f;">{$heading}</h1>{$bodyHtml}</td></tr>
-<tr><td style="padding:18px 28px 26px;font-size:12px;color:#6b645e;border-top:1px solid #ebe4dd;">WIN A HUAWEI · George Musical Festival × Cell C<br>&copy; {$year} George Musical Festival</td></tr>
+<tr><td style="padding:18px 28px 26px;font-size:12px;color:#6b645e;border-top:1px solid #ebe4dd;">WIN A SAMSUNG · George Musical Festival × Cell C<br>&copy; {$year} George Musical Festival</td></tr>
 </table></td></tr></table></body></html>
 HTML;
 }

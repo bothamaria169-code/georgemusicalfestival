@@ -22,8 +22,8 @@ $winners  = q("SELECT d.title, d.prize_description, p.full_name, p.town
                WHERE d.status = 'published' ORDER BY d.scheduled_for")->fetchAll();
 
 $page_title       = setting('comp_name') . ' — Win ' . setting('prize_headline') . ' | George Musical Festival × Cell C';
-$meta_description = 'Enter WIN A HUAWEI free and win ' . setting('prize_headline') . ' worth ' . setting('prize_value') . '. George Musical Festival × Cell C.';
-$og_image         = url('assets/img/cellc/hero-win-a-huawei.jpg');
+$meta_description = 'Enter WIN A SAMSUNG free and win ' . setting('prize_headline') . ' — accessories to the value of ' . setting('prize_value') . '. George Musical Festival × Cell C.';
+$og_image         = url('assets/img/cellc/hero-friends-selfie.jpg');
 $nav_active       = 'fly';
 $extra_css        = ['assets/css/comp.css'];
 $extra_js         = ['assets/js/enter.js'];
@@ -38,9 +38,9 @@ require __DIR__ . '/includes/header.php';
 
     <div class="ff-intro">
       <div class="ff-badge"><?= e(setting('hero_kicker')) ?></div>
-      <h1 class="display huge">Win a Huawei <span class="serif-i">Pura 80 Pro.</span></h1>
+      <h1 class="display huge">Win a Samsung <span class="serif-i">Galaxy A50.</span></h1>
       <p class="lede"><?= e(setting('hero_text')) ?></p>
-      <figure class="ff-intro-photo"><img src="<?= e(url('assets/img/cellc/hero-win-a-huawei.jpg')) ?>" width="1800" height="1200" alt="Three smiling friends taking a selfie together outdoors" fetchpriority="high"></figure>
+      <figure class="ff-intro-photo"><img src="<?= e(url('assets/img/cellc/hero-friends-selfie.jpg')) ?>" width="1800" height="1200" alt="Three smiling friends taking a selfie together outdoors" fetchpriority="high"></figure>
       <p style="margin-top:18px;"><a class="text-link" href="<?= e(url('win/how-to-enter')) ?>">How to enter, step by step <i class="fa-solid fa-arrow-right"></i></a></p>
       <?php if ($referrer && (!$me || (int) $me['id'] !== (int) $referrer['id'])): ?>
         <p class="ff-invited"><i class="fa-solid fa-user-plus"></i> <?= e(short_name($referrer['full_name'])) ?> invited you to enter.</p>
@@ -63,7 +63,7 @@ require __DIR__ . '/includes/header.php';
         <i class="fa-solid fa-mobile-screen-button ff-prize-plane" aria-hidden="true"></i>
       </div>
       <?php $placesClass = ''; include __DIR__ . '/includes/prize-places.php'; ?>
-      <figure class="moyeni-render ff-moyeni"><img src="<?= e(url('assets/img/cellc/prize-phone-side.jpg')) ?>" width="1800" height="1200" alt="A sleek white premium smartphone" loading="lazy"></figure>
+      <figure class="moyeni-render ff-moyeni"><img src="<?= e(url('assets/img/cellc/prize-phone-bundle.jpg')) ?>" width="1800" height="1200" alt="A Samsung smartphone with wireless earbuds" loading="lazy"></figure>
     </div>
   </div>
 </section>

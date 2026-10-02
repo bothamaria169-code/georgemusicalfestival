@@ -1,6 +1,6 @@
 <?php
 /**
- * GMF × Cell C — WIN A HUAWEI platform configuration.
+ * GMF × Cell C — WIN A SAMSUNG platform configuration.
  *
  * Copy this file to config/config.php and fill in the values for the
  * server you are deploying to. config.php is never overwritten by updates.

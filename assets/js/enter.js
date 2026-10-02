@@ -1,4 +1,4 @@
-/* WIN A HUAWEI — four-step entry journey: Enter → Verify → Share → Confirmed */
+/* WIN A SAMSUNG — four-step entry journey: Enter → Verify → Share → Confirmed */
 (function () {
   'use strict';
   var card = document.getElementById('entryCard');
@@ -258,7 +258,7 @@
     var native = $('[data-share="native"]');
     native.addEventListener('click', function () {
       if (navigator.share) {
-        navigator.share({ title: 'WIN A HUAWEI', text: text, url: link }).then(function () { markShared(native); }).catch(function () {});
+        navigator.share({ title: 'WIN A SAMSUNG', text: text, url: link }).then(function () { markShared(native); }).catch(function () {});
       } else {
         copy(text).then(function () { markShared(native); toast('Message copied — paste it in any app'); });
       }

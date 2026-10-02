@@ -30,7 +30,7 @@ $socials = array_filter([
         <a href="<?= e(url('index.php#calendar')) ?>">Upcoming events</a>
       </div>
       <div>
-        <h4>Win a Huawei</h4>
+        <h4>Win a Samsung</h4>
         <a href="<?= e(url('win/')) ?>">Enter the competition</a>
         <a href="<?= e(url('win/login')) ?>">My dashboard</a>
         <a href="<?= e(url('win/#leaderboard')) ?>">Referral leaderboard</a>

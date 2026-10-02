@@ -14,7 +14,8 @@ $groups = [
         'comp_open_at'     => ['Entries open', 'datetime'],
         'comp_close_at'    => ['Entries close (configurable — the Final Draw pool cuts off here)', 'datetime'],
         'prize_headline'   => ['Prize headline', 'text'],
-        'prize_value'      => ['Prize value (e.g. R18 000)', 'text'],
+        'prize_value'      => ['Accessory bundle value (e.g. R10,000)', 'text'],
+        'collection_note'  => ['Prize collection line (confirmation screen and email)', 'textarea'],
         'travel_question'  => ['Profile question (e.g. network)', 'text'],
         'travel_options'   => ['Answer options (one per line)', 'lines'],
         'age_groups'       => ['Age groups (one per line — "Under 18" is shown but cannot enter)', 'lines'],
@@ -136,7 +137,7 @@ admin_head('Settings', 'settings');
   <div class="card">
     <h2>Partner integration (Cell C)</h2>
     <p class="muted" style="margin-top:0">Embed the entry form on Cell C's website. Their domain must be listed in <code>cors_origins</code> in config.php.</p>
-    <div class="code">&lt;iframe src="<?= e(url('win/embed')) ?>" style="width:100%;max-width:480px;height:1000px;border:0" title="WIN A HUAWEI"&gt;&lt;/iframe&gt;</div>
+    <div class="code">&lt;iframe src="<?= e(url('win/embed')) ?>" style="width:100%;max-width:480px;height:1000px;border:0" title="WIN A SAMSUNG"&gt;&lt;/iframe&gt;</div>
     <p class="muted">Read-only reporting API (live access, not a one-off export). Send the partner key as the <code>X-Api-Key</code> header:</p>
     <div class="code">GET <?= e(url('api/report.php')) ?><br>GET <?= e(url('api/report.php?view=entrants&page=1&per_page=500')) ?></div>
     <p class="muted">Partner key configured: <strong><?= config('partner_api_key') ? 'yes' : 'no — set partner_api_key in config.php' ?></strong>. Give Cell C staff a <em>Read-only</em> login under Team &amp; access for the dashboard.</p>

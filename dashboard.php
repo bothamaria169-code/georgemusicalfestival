@@ -51,12 +51,12 @@ $first   = explode(' ', $me['full_name'])[0];
 $prize   = (string) setting('prize_headline');
 
 $scripts = [
-    'WhatsApp status' => "📱 I just entered WIN A HUAWEI — you could win {$prize} worth " . setting('prize_value') . " with George Musical Festival × Cell C. Free to enter, takes a minute 👉 {$link}",
-    'Group chat'      => "Guys, George Musical Festival and Cell C are giving away {$prize} worth " . setting('prize_value') . ". Enter free here before " . fmt_date(setting('comp_close_at'), 'j F') . ": {$link}",
-    'Short & sweet'   => "Win a brand-new Huawei Pura 80 Pro 📱 {$link}",
+    'WhatsApp status' => "📱 I just entered WIN A SAMSUNG — you could win a {$prize} (accessories worth " . setting('prize_value') . ") with George Musical Festival × Cell C. Free to enter, takes a minute 👉 {$link}",
+    'Group chat'      => "Guys, George Musical Festival and Cell C are giving away a {$prize} (accessories worth " . setting('prize_value') . "). Enter free here before " . fmt_date(setting('comp_close_at'), 'j F') . ": {$link}",
+    'Short & sweet'   => "Win a Samsung Galaxy A50 + accessory bundle 📱 {$link}",
 ];
 
-$page_title = 'My dashboard — WIN A HUAWEI';
+$page_title = 'My dashboard — WIN A SAMSUNG';
 $nav_active = 'fly';
 $extra_css  = ['assets/css/comp.css'];
 require __DIR__ . '/includes/header.php';
@@ -74,7 +74,7 @@ require __DIR__ . '/includes/header.php';
       </div>
     </div>
     <figure class="dash-plane">
-      <img src="<?= e(url('assets/img/cellc/prize-phone-side.jpg')) ?>" width="1800" height="1200" alt="A sleek white premium smartphone">
+      <img src="<?= e(url('assets/img/cellc/prize-phone-bundle.jpg')) ?>" width="1800" height="1200" alt="A Samsung smartphone with wireless earbuds">
       <figcaption>
         <span class="dash-logos"><img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="George Musical Festival"><span>×</span><img src="<?= e(url('assets/img/brand/cellc-white.png')) ?>" alt="Cell C"></span>
         <strong>Your new phone is waiting.</strong>
@@ -106,9 +106,9 @@ require __DIR__ . '/includes/header.php';
             <a class="share-btn wa" href="https://wa.me/?text=<?= rawurlencode($scripts['WhatsApp status']) ?>" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
             <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=<?= rawurlencode($link) ?>" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
             <a class="share-btn" href="https://twitter.com/intent/tweet?text=<?= rawurlencode($scripts['Short & sweet']) ?>" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter"></i> X</a>
-            <a class="share-btn" href="https://t.me/share/url?url=<?= rawurlencode($link) ?>&text=<?= rawurlencode('Win a brand-new Huawei Pura 80 Pro 📱') ?>" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i> Telegram</a>
+            <a class="share-btn" href="https://t.me/share/url?url=<?= rawurlencode($link) ?>&text=<?= rawurlencode('Win a Samsung Galaxy A50 + accessory bundle 📱') ?>" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i> Telegram</a>
             <a class="share-btn" href="sms:?&body=<?= rawurlencode($scripts['Short & sweet']) ?>"><i class="fa-solid fa-comment-sms"></i> SMS</a>
-            <a class="share-btn" href="mailto:?subject=<?= rawurlencode('Win a brand-new Huawei Pura 80 Pro') ?>&body=<?= rawurlencode($scripts['Group chat']) ?>"><i class="fa-regular fa-envelope"></i> Email</a>
+            <a class="share-btn" href="mailto:?subject=<?= rawurlencode('Win a Samsung Galaxy A50 + accessory bundle') ?>&body=<?= rawurlencode($scripts['Group chat']) ?>"><i class="fa-regular fa-envelope"></i> Email</a>
             <button class="share-btn dark" type="button" data-native-share data-url="<?= e($link) ?>" data-text="<?= e($scripts['Short & sweet']) ?>"><i class="fa-solid fa-share-nodes"></i> More</button>
           </div>
           <div class="qr-wrap">
@@ -242,7 +242,7 @@ require __DIR__ . '/includes/header.php';
   });
   var ns = document.querySelector('[data-native-share]');
   if (ns) ns.addEventListener('click', function () {
-    if (navigator.share) navigator.share({ title: 'WIN A HUAWEI', text: ns.dataset.text, url: ns.dataset.url }).catch(function () {});
+    if (navigator.share) navigator.share({ title: 'WIN A SAMSUNG', text: ns.dataset.text, url: ns.dataset.url }).catch(function () {});
     else copyText(ns.dataset.text).then(function () { toast('Message copied — paste it anywhere'); });
   });
   // Shrink big phone photos in the browser before upload (max 1400px, JPEG).
@@ -263,7 +263,7 @@ require __DIR__ . '/includes/header.php';
     new QRCode(box, { text: box.dataset.url, width: 240, height: 240, colorDark: '#1f1f1f', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
     document.getElementById('qrDownload').addEventListener('click', function () {
       var c = box.querySelector('canvas'); if (!c) return;
-      var a = document.createElement('a'); a.download = 'win-a-huawei-qr.png'; a.href = c.toDataURL('image/png'); a.click();
+      var a = document.createElement('a'); a.download = 'win-a-samsung-qr.png'; a.href = c.toDataURL('image/png'); a.click();
     });
   }
 })();

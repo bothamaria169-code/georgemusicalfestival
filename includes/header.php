@@ -66,7 +66,7 @@ $enterHref = $nav_active === 'home' ? '#enter' : url('win/');
       <img class="brand-acsa" src="<?= e(url('assets/img/brand/cellc-white.png')) ?>" alt="Cell C" width="160" height="78">
     </a>
     <nav class="main-nav" id="mainNav" aria-label="Main">
-      <a href="<?= e(url('win/')) ?>" class="nav-fly <?= $nav_active === 'fly' ? 'is-active' : '' ?>"><i class="fa-solid fa-mobile-screen-button"></i> Win a Huawei</a>
+      <a href="<?= e(url('win/')) ?>" class="nav-fly <?= $nav_active === 'fly' ? 'is-active' : '' ?>"><i class="fa-solid fa-mobile-screen-button"></i> Win a Samsung</a>
       <?php foreach ($nav as $key => [$href, $label]): ?>
         <a href="<?= e(preg_match('#^https?://#', $href) ? $href : url($href)) ?>" class="<?= $nav_active === $key ? 'is-active' : '' ?>"><?= e($label) ?></a>
       <?php endforeach; ?>
