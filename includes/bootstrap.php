@@ -324,11 +324,9 @@ function setting_defaults(): array
         'comp_close_at'     => '2026-10-31 23:59:59',
         'prize_headline'    => 'Samsung Galaxy A56 + Accessory Bundle',
         'travel_question'   => 'Which network are you on?',
-        'travel_options'    => "Cell C
-Vodacom
-MTN
-Telkom
-Other",
+        'travel_options'    => '',   // network question switched off; Cell C product tick-boxes are used instead
+        'product_question'  => 'Cell C Products — Select all that apply',
+        'product_options'   => "Prepaid\nFibre\nPostpaid\nOther/Not a Cell C Customer",
         'age_groups'        => "Under 18
 18–24
 25–34

@@ -78,7 +78,13 @@ admin_head('Overview', 'overview');
     </div>
   </div>
   <div class="card">
-    <h2>Network</h2>
+    <h2>Cell C products</h2>
+    <div class="hbar">
+      <?php $maxProd = max(array_column($r['products'], 'verified') ?: [1]) ?: 1; foreach ($r['products'] as $row): ?>
+        <div><em><?= e($row['answer']) ?></em><i style="width:<?= round($row['verified'] / $maxProd * 100) ?>%"></i><b><?= (int) $row['verified'] ?></b></div>
+      <?php endforeach; ?>
+    </div>
+    <h2 style="margin-top:22px">Network</h2>
     <div class="hbar">
       <?php foreach ($r['travel_profile'] as $row): ?>
         <div><em title="<?= e($row['answer']) ?>"><?= e($row['answer'] ?: '—') ?></em><i style="width:<?= round($row['verified'] / $maxFly * 100) ?>%"></i><b><?= (int) $row['verified'] ?></b></div>

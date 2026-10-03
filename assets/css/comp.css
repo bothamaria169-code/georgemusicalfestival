@@ -285,3 +285,14 @@ body.embed .ff-card { box-shadow: none; border: 1px solid var(--card-line); max-
 .ff-leaders li.is-hidden .who { font-style: italic; }
 .ff-leaders li.is-hidden .rank { color: var(--orange) !important; font-size: 1.6rem !important; }
 .ff-leaders li.is-hidden .score { color: var(--orange); }
+
+/* Cell C product tick-boxes (multi-select chips) */
+.ff-multi { border: 0; padding: 0; margin: 0 0 14px; min-width: 0; }
+.ff-multi legend { font-weight: 700; font-size: .86rem; margin-bottom: 8px; padding: 0; }
+.ff-chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.ff-chip { position: relative; display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 10px 12px; border: 1.5px solid var(--card-line, #e4dbd2); border-radius: 12px; background: #fff; cursor: pointer; font-weight: 600; font-size: .9rem; line-height: 1.25; transition: border-color .15s, background .15s; }
+.ff-chip input { flex: 0 0 auto; width: 18px; height: 18px; accent-color: var(--orange, #ea5b0c); margin: 0; }
+.ff-chip:has(input:checked) { border-color: var(--orange, #ea5b0c); background: rgba(234,91,12,.07); }
+.ff-chip:has(input:focus-visible) { outline: 2px solid var(--orange, #ea5b0c); outline-offset: 2px; }
+.ff-multi.has-error .ff-chip { border-color: #c2412d; }
+@media (max-width: 360px) { .ff-chips { grid-template-columns: 1fr; } }

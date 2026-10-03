@@ -77,6 +77,7 @@
   function saveDraft() {
     var d = { t: Date.now() };
     draftFields.forEach(function (n) { var el = form1.elements[n]; if (el) d[n] = el.type === 'checkbox' ? el.checked : el.value; });
+    d.products = [].map.call(form1.querySelectorAll('input[name="cellc_products[]"]:checked'), function (c) { return c.value; });
     store(DRAFT, d);
   }
   (function restoreDraft() {
@@ -86,6 +87,9 @@
       var el = form1.elements[n];
       if (!el || d[n] === undefined) return;
       if (el.type === 'checkbox') el.checked = !!d[n]; else if (!el.value || n !== 'town') el.value = d[n];
+    });
+    (d.products || []).forEach(function (v) {
+      [].forEach.call(form1.querySelectorAll('input[name="cellc_products[]"]'), function (c) { if (c.value === v) c.checked = true; });
     });
   })();
   form1.addEventListener('input', saveDraft);
@@ -98,7 +102,8 @@
   }
   function showErrors(errors) {
     Object.keys(errors).forEach(function (name) {
-      var input = form1.elements[name];
+      var input = form1.elements[name] || form1.elements[name + '[]'];
+      if (input && !input.closest && input.length) input = input[0];
       var wrap = input ? (input.closest('.field') || input.closest('.ff-consent')) : null;
       if (!wrap) return;
       wrap.classList.add('has-error');
@@ -116,7 +121,9 @@
     if (f.phone.value.replace(/\D/g, '').length < 9) e.phone = 'Please enter a valid cellphone number.';
     if (!f.age_group.value) e.age_group = 'Please choose your age group.';
     else if (/^\s*(under|<)\s*18/i.test(f.age_group.value)) e.age_group = 'Sorry — you must be 18 or older to enter.';
-    if (!f.fly_frequency.value) e.fly_frequency = 'Please answer the network question.';
+    if (f.fly_frequency && !f.fly_frequency.value) e.fly_frequency = 'Please answer the network question.';
+    var prods = form1.querySelectorAll('input[name="cellc_products[]"]');
+    if (prods.length && !form1.querySelector('input[name="cellc_products[]"]:checked')) e['cellc_products[]'] = 'Please tick at least one option.';
     if (!f.consent_popia.checked) e.consent_popia = 'POPIA consent is required to enter.';
     if (!f.consent_terms.checked) e.consent_terms = 'You need to accept the competition terms to enter.';
     return e;
@@ -130,7 +137,9 @@
     var btn = form1.querySelector('[type=submit]');
     loading(btn, true);
     var data = {};
-    new FormData(form1).forEach(function (v, k) { data[k] = v; });
+    new FormData(form1).forEach(function (v, k) {
+      if (k.slice(-2) === '[]') { k = k.slice(0, -2); (data[k] = data[k] || []).push(v); } else data[k] = v;
+    });
     post(data).then(function (res) {
       loading(btn, false);
       if (res.refresh_timer) form1.elements.timer.value = res.refresh_timer;

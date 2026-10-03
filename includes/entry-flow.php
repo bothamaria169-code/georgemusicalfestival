@@ -41,9 +41,18 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
       <select id="f-age" name="age_group" required><option value="">Choose…</option><?php foreach (lines((string) setting('age_groups')) as $a): ?><option><?= e($a) ?></option><?php endforeach; ?></select>
       <small class="ff-hint">Entrants must be 18 or older.</small>
     </div>
+    <?php $productOpts = lines((string) setting('product_options')); if ($productOpts): ?>
+    <fieldset class="field ff-multi" data-field="cellc_products"><legend><?= e(setting('product_question')) ?></legend>
+      <div class="ff-chips">
+        <?php foreach ($productOpts as $i => $o): ?><label class="ff-chip"><input type="checkbox" name="cellc_products[]" value="<?= e($o) ?>"><span><?= e($o) ?></span></label><?php endforeach; ?>
+      </div>
+    </fieldset>
+    <?php endif; ?>
+    <?php if ($flyOpts): ?>
     <div class="field"><label for="f-fly"><?= e(setting('travel_question')) ?></label>
       <select id="f-fly" name="fly_frequency" required><option value="">Choose an answer…</option><?php foreach ($flyOpts as $o): ?><option><?= e($o) ?></option><?php endforeach; ?></select>
     </div>
+    <?php endif; ?>
 
     <div class="ff-consent is-required" data-field="consent_terms">
       <input type="checkbox" id="c-terms" name="consent_terms" value="1">

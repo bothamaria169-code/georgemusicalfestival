@@ -41,6 +41,8 @@ function report_summary(): array
                                   FROM entrants WHERE status = 'verified' AND DATE(verified_at) = ?
                                   GROUP BY HOUR(verified_at), channel ORDER BY hour", [setting('event_date')])->fetchAll(),
         'age_profile' => q("SELECT COALESCE(age_group, 'Not asked') AS answer, COUNT(*) AS verified FROM entrants WHERE status = 'verified' GROUP BY age_group ORDER BY answer")->fetchAll(),
+        'products' => array_map(fn ($o) => ['answer' => $o, 'verified' => (int) q("SELECT COUNT(*) FROM entrants WHERE status = 'verified' AND FIND_IN_SET(?, REPLACE(cellc_products, ', ', ','))", [$o])->fetchColumn()],
+            lines((string) setting('product_options'))),
         'travel_profile' => q("SELECT fly_frequency AS answer, COUNT(*) AS verified FROM entrants WHERE status = 'verified' GROUP BY fly_frequency ORDER BY verified DESC")->fetchAll(),
     ];
 }

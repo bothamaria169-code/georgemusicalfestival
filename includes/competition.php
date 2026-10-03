@@ -183,6 +183,9 @@ function validate_entry(array $in, bool $requireEmail = true): array
     $towns = lines((string) setting('towns'));
     $fly = trim((string) ($in['fly_frequency'] ?? ''));
     $town = trim((string) ($in['town'] ?? ''));
+    $productOpts = lines((string) setting('product_options'));
+    $picked = $in['cellc_products'] ?? $in['cellc_products[]'] ?? [];
+    $picked = array_values(array_intersect($productOpts, is_array($picked) ? $picked : explode(',', (string) $picked)));
     $ages = lines((string) setting('age_groups'));
     $age = trim((string) ($in['age_group'] ?? ''));
 
@@ -205,6 +208,9 @@ function validate_entry(array $in, bool $requireEmail = true): array
     if ($towns && $town !== '' && !in_array($town, $towns, true)) {
         $errors['town'] = 'Please choose your town from the list.';
     }
+    if ($requireEmail && $productOpts && !$picked) {
+        $errors['cellc_products'] = 'Please tick at least one option.';
+    }
     if ($ages && !in_array($age, $ages, true)) {
         $errors['age_group'] = 'Please choose your age group.';
     } elseif (is_under_18_group($age)) {
@@ -222,7 +228,8 @@ function validate_entry(array $in, bool $requireEmail = true): array
         'email'             => $email !== '' ? $email : null,
         'phone'             => $phone,
         'town'              => $town !== '' ? $town : null,
-        'fly_frequency'     => $fly,
+        'fly_frequency'     => $fly !== '' ? $fly : null,
+        'cellc_products'    => $picked ? implode(', ', $picked) : null,
         'age_group'         => $age !== '' ? $age : null,
         'consent_terms'     => 1,
         'consent_popia'     => 1,
