@@ -116,7 +116,7 @@ require __DIR__ . '/includes/header.php';
 <section class="section-sm on-paper">
   <div class="wrap">
     <div class="ff-steps">
-      <div class="ff-step reveal"><span class="n">01</span><h3>Enter</h3><p>Name, cellphone, email, age group and one quick question. Free, and one entry per person.</p></div>
+      <div class="ff-step reveal"><span class="n">01</span><h3>Enter</h3><p>Name, cellphone, email, age group and which Cell C products you use. Free, and one entry per person.</p></div>
       <div class="ff-step reveal reveal-d1"><span class="n">02</span><h3>Confirm</h3><p>Tap <strong>Confirm my entry</strong> in the email we send, or type the 6-digit code. Only confirmed entries go into the draw.</p></div>
       <div class="ff-step reveal reveal-d2"><span class="n">03</span><h3>Share</h3><p>Send your personal link on WhatsApp and everywhere else. Every different person who opens it adds 1 to your score — the top two scores win.</p></div>
     </div>

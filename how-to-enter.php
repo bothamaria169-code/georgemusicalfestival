@@ -60,7 +60,7 @@ require __DIR__ . '/includes/header.php';
         <span class="howto-n">2</span>
         <div>
           <h3>Fill in your details</h3>
-          <p>Your full name, cellphone number, email address, town, age group and one quick question about your network. Tick the POPIA consent box and the box to accept the <a href="<?= e(url('win/terms')) ?>">competition terms</a> — both are required. The box for news and offers is optional and separate.</p>
+          <p>Your full name, cellphone number, email address, town, age group and which Cell C products you use (tick all that apply). Tick the POPIA consent box and the box to accept the <a href="<?= e(url('win/terms')) ?>">competition terms</a> — both are required. The box for news and offers is optional and separate.</p>
           <p class="howto-note"><i class="fa-solid fa-circle-exclamation"></i> Use an email address you can open right now — that's where your confirmation goes.</p>
         </div>
       </article>

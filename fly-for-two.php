@@ -74,7 +74,7 @@ require __DIR__ . '/includes/header.php';
     <span class="kicker reveal" style="color:var(--orange-deep)">How it works</span>
     <h2 class="display big reveal" style="margin:18px 0 50px;">Three steps to <span class="serif-i" style="color:var(--orange-deep)">win</span></h2>
     <div class="ff-steps">
-      <div class="ff-step reveal"><span class="n">01</span><h3>Enter</h3><p>Your name, cellphone, email, age group and one quick question. Scan a George Musical Festival QR code or enter right here.</p></div>
+      <div class="ff-step reveal"><span class="n">01</span><h3>Enter</h3><p>Your name, cellphone, email, age group and which Cell C products you use. Scan a George Musical Festival QR code or enter right here.</p></div>
       <div class="ff-step reveal reveal-d1"><span class="n">02</span><h3>Verify</h3><p>We email you a 6-digit code. Your entry only counts once it's confirmed — one per phone number.</p></div>
       <div class="ff-step reveal reveal-d2"><span class="n">03</span><h3>Share</h3><p>Send your personal link on WhatsApp and everywhere else. Every different person who opens it adds 1 to your score. The top score wins the Grand Prize, the runner-up the Second Prize.</p></div>
     </div>
