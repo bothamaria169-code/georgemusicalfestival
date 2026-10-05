@@ -299,7 +299,7 @@ function setting_defaults(): array
         // Homepage hero (competition-first)
         'hero_kicker'       => 'Cell C × George Musical Festival: Nothing should stop you',
         'hero_headline'     => 'Win a Samsung Galaxy A56',
-        'hero_text'         => 'In partnership with Cell C, George Musical Festival is giving away a Samsung Galaxy A56 (R7 500) and accessories (R2 500), worth R10 000 altogether. Enter free in under a minute, share your personal link, and climb the leaderboard to win.',
+        'hero_text'         => 'In partnership with Cell C, George Musical Festival is giving away a Samsung Galaxy A56 + accessories worth R10 000. Enter free in under a minute, share your personal link, and climb the leaderboard to win.',
 
         // Event
         'event_name'        => 'Eden Soul & Jazz Reimagined',
@@ -310,7 +310,7 @@ function setting_defaults(): array
         'ticket_url'        => '',
         'ticket_note'       => 'Tickets on sale soon',
         'hero_video_url'    => '',
-        'announcement'      => 'WIN A SAMSUNG is live — enter free and win a Samsung Galaxy A56 and accessories worth R10 000.',
+        'announcement'      => 'WIN A SAMSUNG is live — enter free and win a Samsung Galaxy A56 + accessories worth R10 000.',
         'contact_email'     => 'info@georgemusicalfestival.co.za',
         'contact_phone'     => '',
         'social_facebook'   => '',

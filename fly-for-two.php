@@ -22,7 +22,7 @@ $winners  = q("SELECT d.title, d.prize_description, p.full_name, p.town
                WHERE d.status = 'published' ORDER BY d.scheduled_for")->fetchAll();
 
 $page_title       = setting('comp_name') . ' — Win ' . setting('prize_headline') . ' | George Musical Festival × Cell C';
-$meta_description = 'Enter WIN A SAMSUNG free and win ' . setting('prize_headline') . ' — phone and accessories worth ' . setting('prize_value') . ' altogether. George Musical Festival × Cell C.';
+$meta_description = 'Enter WIN A SAMSUNG free and win ' . setting('prize_headline') . ' — phone + accessories worth ' . setting('prize_value') . '. George Musical Festival × Cell C.';
 $og_image         = url('assets/img/cellc/hero-galaxy-a56-v4.jpg');
 $nav_active       = 'fly';
 $extra_css        = ['assets/css/comp.css'];
