@@ -40,7 +40,7 @@ function default_terms_html(): string
 
 <h2>6. Prizes</h2>
 <ol>
-<li><strong>Grand Prize:</strong> one Samsung Galaxy A56 smartphone and an accessory bundle, with a combined value of R10 000. The colour, storage and accessories are as supplied by the Promoter. The winner collects the prize at a Cell C store arranged with the Promoter and must bring their ID and their entry confirmation. No airtime, data or contract is included unless the Promoter states otherwise.</li>
+<li><strong>Grand Prize:</strong> one Samsung Galaxy A56 smartphone (value R7 500) and an accessory bundle (value R2 500), with a combined value of R10 000. The colour, storage and accessories are as supplied by the Promoter. The winner collects the prize at a Cell C store arranged with the Promoter and must bring their ID and their entry confirmation. No airtime, data or contract is included unless the Promoter states otherwise.</li>
 <li><strong>Second Prize:</strong> as announced on the competition page.</li>
 <li>Prizes are not transferable and cannot be exchanged for cash. The Promoter may replace a prize with one of similar value if it becomes unavailable. Costs not listed as part of a prize (such as airtime, data, accessories or insurance) are the winner's responsibility. The manufacturer's warranty applies to the phone.</li>
 </ol>

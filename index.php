@@ -66,7 +66,7 @@ require __DIR__ . '/includes/header.php';
       <img class="moyeni-logo reveal" src="<?= e(url('assets/img/brand/cellc-orange.png')) ?>" width="684" height="265" alt="Cell C" loading="lazy">
       <span class="kicker reveal" style="color:var(--orange-deep);margin-top:18px;">The prize</span>
       <h2 class="display big reveal" style="margin-top:12px;color:var(--navy-2);">Samsung Galaxy A56 <span class="serif-i" style="color:var(--orange-deep)">+ accessories.</span></h2>
-      <p class="reveal" style="color:var(--text-muted);margin:14px 0 0;">A Samsung Galaxy A56 smartphone and accessories, worth <?= e(setting('prize_value')) ?> altogether, sponsored by Cell C. Enter <?= e(setting('comp_name')) ?> free, share your personal link, and the entrant whose link is opened by the most people wins it.</p>
+      <p class="reveal" style="color:var(--text-muted);margin:14px 0 0;">A Samsung Galaxy A56 smartphone (R7 500) and accessories (R2 500), worth <?= e(setting('prize_value')) ?> altogether, sponsored by Cell C. Enter <?= e(setting('comp_name')) ?> free, share your personal link, and the entrant whose link is opened by the most people wins it.</p>
       <div class="moyeni-photos reveal">
         <img src="<?= e(url('assets/img/cellc/fans-phones.jpg')) ?>" alt="Two friends laughing at their phones" loading="lazy">
         <img src="<?= e(url('assets/img/cellc/caller-braids.jpg')) ?>" alt="A young woman smiling while talking on her phone" loading="lazy">
