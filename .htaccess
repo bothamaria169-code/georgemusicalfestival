@@ -8,8 +8,28 @@ DirectoryIndex index.php
   # RewriteCond %{HTTPS} !=on
   # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+  # Entry subdomains (point their DNS and cPanel document root at this folder):
+  #   flyfortwo.georgemusicalfestival.co.za → FLY FOR TWO landing page, its /r/CODE links → share links
+  #   cellc.georgemusicalfestival.co.za     → WIN A SAMSUNG landing page (/cellc/win/), its /r/CODE → /cellc/r/CODE
+  # QR tags (?src=…&pt=…) are kept. 302 so the targets can change without browsers caching them.
+  RewriteCond %{HTTP_HOST} ^flyfortwo\.georgemusicalfestival\.co\.za$ [NC]
+  RewriteRule ^r/([A-Za-z0-9]{4,12})/?$ https://georgemusicalfestival.co.za/r/$1 [R=302,L]
+  RewriteCond %{HTTP_HOST} ^flyfortwo\.georgemusicalfestival\.co\.za$ [NC]
+  RewriteRule ^ https://georgemusicalfestival.co.za/flyfortwo/ [R=302,L,QSA]
+  RewriteCond %{HTTP_HOST} ^cellc\.georgemusicalfestival\.co\.za$ [NC]
+  RewriteRule ^r/([A-Za-z0-9]{4,12})/?$ https://georgemusicalfestival.co.za/cellc/r/$1 [R=302,L]
+  RewriteCond %{HTTP_HOST} ^cellc\.georgemusicalfestival\.co\.za$ [NC]
+  RewriteRule ^ https://georgemusicalfestival.co.za/cellc/win/ [R=302,L,QSA]
+
+  # Holding page: while the festival website isn't launched, its pages on the main domain show
+  # holding.html. The competitions, share links, restore, admin and API keep working.
+  # To launch the festival site, delete these two lines.
+  RewriteCond %{HTTP_HOST} ^(www\.)?georgemusicalfestival\.co\.za$ [NC]
+  RewriteRule ^(index\.php|gallery\.php)?$ holding.html [L]
+
   # Short share links: /r/ABC1234 → r.php?c=ABC1234
   RewriteRule ^r/([A-Za-z0-9]{4,12})/?$ r.php?c=$1 [L,QSA]
+  RewriteRule ^unsubscribe/?$ unsubscribe.php [L,QSA]
 
   # Competition folder: /flyfortwo/…  (the festival website stays at the root)
   RewriteRule ^flyfortwo/?$ fly-for-two.php [L,QSA]

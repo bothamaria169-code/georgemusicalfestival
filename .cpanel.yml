@@ -1,9 +1,14 @@
 ---
 # cPanel → Git™ Version Control → "Deploy HEAD Commit" copies the site into public_html.
-# Files that live only on the server (config/config.php, storage/, uploads/) are never deleted:
-# rsync runs without --delete, and the repo holds only placeholders for those folders.
+# -rlt copies files, links and times but NOT permissions: the repository folder is private
+# (700), and copying its permissions onto public_html makes every page "403 Forbidden".
+# Files that live only on the server (config/config.php, storage/, uploads/, cellc/) are never
+# deleted: no --delete, and the repo holds only placeholders for those folders.
 deployment:
   tasks:
     - export DEPLOYPATH=/home/georgemu/public_html/
-    - /bin/rsync -a --exclude=.git --exclude=.cpanel.yml --exclude=.gitignore ./ $DEPLOYPATH
+    - /bin/rsync -rlt --exclude=.git --exclude=.cpanel.yml --exclude=.gitignore ./ $DEPLOYPATH
+    - /bin/chmod 750 $DEPLOYPATH
+    - /bin/find $DEPLOYPATH -path ${DEPLOYPATH}cgi-bin -prune -o -type d -exec /bin/chmod 755 {} +
+    - /bin/find $DEPLOYPATH -path ${DEPLOYPATH}cgi-bin -prune -o -type f -exec /bin/chmod 644 {} +
     - /bin/mkdir -p ${DEPLOYPATH}storage/logs ${DEPLOYPATH}storage/draws ${DEPLOYPATH}uploads/media ${DEPLOYPATH}uploads/entrants
