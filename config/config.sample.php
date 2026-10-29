@@ -36,6 +36,8 @@ return [
         'password'   => '',
         'from_email' => 'noreply@georgemusicalfestival.co.za',
         'from_name'  => 'George Musical Festival',
+        // Optional: a mailbox that silently receives a copy of every email the site sends (a record that survives a server loss).
+        'archive_bcc' => '',
     ],
 
     // ── Bot protection (optional) ──────────────────────────────────────

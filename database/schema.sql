@@ -76,8 +76,11 @@ CREATE TABLE IF NOT EXISTS referral_clicks (
   visitor_id   CHAR(32)     NULL,
   user_agent   VARCHAR(255) NULL,
   counted      TINYINT(1)   NOT NULL DEFAULT 0,  -- 1 = this click earned the share bonus
+  origin       VARCHAR(10)  NOT NULL DEFAULT 'live', -- live | orphan (captured before a restore) | restored (from evidence)
+  adjustment_id INT UNSIGNED NULL,               -- score_adjustments row for origin 'restored'
   clicked_at   DATETIME     NOT NULL,
   KEY ix_referrer (referrer_id),
+  KEY ix_adjustment (adjustment_id),
   UNIQUE KEY uq_visitor (referrer_id, visitor_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -172,4 +175,60 @@ CREATE TABLE IF NOT EXISTS audit_log (
   ip_hash     CHAR(64)     NULL,
   created_at  DATETIME     NOT NULL,
   KEY ix_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Entry restoration (added 28 Oct 2026, see migrate-2026-10-28-restore.sql).
+-- Opens of share links whose owner has not restored their entry yet.
+CREATE TABLE IF NOT EXISTS orphan_clicks (
+  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  ref_code    VARCHAR(12)  NOT NULL,
+  ip_hash     CHAR(64)     NULL,
+  visitor_id  CHAR(32)     NOT NULL,
+  user_agent  VARCHAR(255) NULL,
+  clicked_at  DATETIME     NOT NULL,
+  UNIQUE KEY uq_visitor (ref_code, visitor_id),
+  KEY ix_code (ref_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Extra share codes that lead to an entrant (restored old codes, temporary codes).
+CREATE TABLE IF NOT EXISTS ref_aliases (
+  ref_code    VARCHAR(12)  NOT NULL PRIMARY KEY,
+  entrant_id  INT UNSIGNED NOT NULL,
+  created_at  DATETIME     NOT NULL,
+  KEY ix_entrant (entrant_id),
+  CONSTRAINT fk_alias_entrant FOREIGN KEY (entrant_id) REFERENCES entrants(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS restore_requests (
+  id             INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  entrant_id     INT UNSIGNED NOT NULL,
+  ref_code       VARCHAR(12)  NOT NULL,
+  new_entrant    TINYINT(1)   NOT NULL DEFAULT 0,
+  device_match   TINYINT(1)   NOT NULL DEFAULT 0,
+  claimed_opens  INT UNSIGNED NULL,
+  evidence       TEXT         NULL,
+  status         ENUM('email','review','approved','rejected') NOT NULL DEFAULT 'email',
+  admin_note     VARCHAR(255) NULL,
+  reviewed_by    INT UNSIGNED NULL,
+  reviewed_at    DATETIME     NULL,
+  ip_hash        CHAR(64)     NULL,
+  created_at     DATETIME     NOT NULL,
+  KEY ix_status (status),
+  KEY ix_code (ref_code),
+  KEY ix_entrant (entrant_id),
+  CONSTRAINT fk_restore_entrant FOREIGN KEY (entrant_id) REFERENCES entrants(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Link opens restored from evidence, each backed by referral_clicks rows with origin 'restored'.
+CREATE TABLE IF NOT EXISTS score_adjustments (
+  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  entrant_id  INT UNSIGNED NOT NULL,
+  opens       INT UNSIGNED NOT NULL,
+  as_at       DATETIME     NOT NULL,
+  reason      VARCHAR(255) NOT NULL,
+  evidence    TEXT         NULL,
+  admin_id    INT UNSIGNED NULL,
+  created_at  DATETIME     NOT NULL,
+  KEY ix_entrant (entrant_id),
+  CONSTRAINT fk_adjust_entrant FOREIGN KEY (entrant_id) REFERENCES entrants(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

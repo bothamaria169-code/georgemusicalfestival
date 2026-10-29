@@ -13,7 +13,7 @@ DirectoryIndex index.php
 
   # Competition folder: /flyfortwo/…  (the festival website stays at the root)
   RewriteRule ^flyfortwo/?$ fly-for-two.php [L,QSA]
-  RewriteRule ^flyfortwo/(dashboard|login|logout|embed|terms|privacy|verify)/?$ $1.php [L,QSA]
+  RewriteRule ^flyfortwo/(dashboard|login|logout|embed|terms|privacy|verify|restore)/?$ $1.php [L,QSA]
   RewriteRule ^flyfortwo/how-to-enter/?$ how-to-enter.php [L,QSA]
 
   # Never serve internals

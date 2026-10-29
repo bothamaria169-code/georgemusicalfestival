@@ -45,6 +45,7 @@ if (session_status() === PHP_SESSION_NONE && PHP_SAPI !== 'cli') {
 
 require_once __DIR__ . '/mailer.php';
 require_once __DIR__ . '/competition.php';
+require_once __DIR__ . '/restore.php';
 require_once __DIR__ . '/email-health.php';
 require_once __DIR__ . '/legal-defaults.php';
 
@@ -341,6 +342,7 @@ function setting_defaults(): array
         'otp_cooldown'      => '45',
         'otp_ttl_minutes'   => '10',
         'otp_max_attempts'  => '5',
+        'restore_auto_approve_device' => '1',   // restore claims from the phone that registered the code are approved without review
         'terms_html'        => default_terms_html(),
         'privacy_html'      => default_privacy_html(),
     ];

@@ -126,6 +126,11 @@ function smtp_send(string $to, string $subject, string $html, string $text): boo
     }
     $cmd('MAIL FROM:<' . config('mail.from_email') . '>', [250]);
     $cmd('RCPT TO:<' . $to . '>', [250, 251]);
+    // Silent archive copy (no Bcc header), so a record of every email sent survives outside this server.
+    $archive = (string) config('mail.archive_bcc', '');
+    if ($archive !== '' && strcasecmp($archive, $to) !== 0 && filter_var($archive, FILTER_VALIDATE_EMAIL)) {
+        $cmd('RCPT TO:<' . $archive . '>', [250, 251]);
+    }
     $cmd('DATA', [354]);
 
     [$headers, $body] = mail_build_mime($to, $subject, $html, $text, true);

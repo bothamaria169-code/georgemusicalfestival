@@ -150,17 +150,20 @@ function new_ref_code(): string
         for ($i = 0; $i < 7; $i++) {
             $code .= $alphabet[random_int(0, strlen($alphabet) - 1)];
         }
-    } while (q('SELECT 1 FROM entrants WHERE ref_code = ?', [$code])->fetchColumn());
+    } while (ref_code_in_use($code));   // never reissue a code that circulated before the server loss
     return $code;
 }
 
+/** The verified entrant a share code leads to — their own code or a restored alias. */
 function entrant_by_ref(string $code): ?array
 {
     $code = strtoupper(preg_replace('/[^A-Za-z0-9]/', '', $code) ?? '');
     if ($code === '') {
         return null;
     }
-    return q("SELECT * FROM entrants WHERE ref_code = ? AND status = 'verified'", [$code])->fetch() ?: null;
+    $row = q("SELECT * FROM entrants WHERE ref_code = ? AND status = 'verified'", [$code])->fetch()
+        ?: q("SELECT e.* FROM ref_aliases a JOIN entrants e ON e.id = a.entrant_id WHERE a.ref_code = ? AND e.status = 'verified'", [$code])->fetch();
+    return $row ?: null;
 }
 
 /** True for the "Under 18" option (or any wording that starts with "under"). */
@@ -343,10 +346,11 @@ function otp_issue(array $entrant, string $purpose): array
 
     $first = e(explode(' ', $entrant['full_name'])[0]);
     $link = e(url('flyfortwo/verify') . '?' . http_build_query(['t' => pending_token($entrant), 'c' => $code, 'p' => $purpose]));
-    $intro = $purpose === 'login'
-        ? 'Tap the button to sign in to your FLY FOR TWO dashboard, or type the code on the sign-in page.'
-        : 'Tap the button to confirm your FLY FOR TWO entry, or type the code on the entry page. Your entry only counts once it is confirmed.';
-    $button = $purpose === 'login' ? 'Sign in to my dashboard' : 'Confirm my entry';
+    $intro = [
+        'login'   => 'Tap the button to sign in to your FLY FOR TWO dashboard, or type the code on the sign-in page.',
+        'restore' => 'Tap the button to confirm your email and restore your FLY FOR TWO entry, or type the code on the restore page.',
+    ][$purpose] ?? 'Tap the button to confirm your FLY FOR TWO entry, or type the code on the entry page. Your entry only counts once it is confirmed.';
+    $button = ['login' => 'Sign in to my dashboard', 'restore' => 'Restore my entry'][$purpose] ?? 'Confirm my entry';
     $html = mail_template("Your code: {$code}", "<p style=\"margin:0 0 14px;font-size:15px;line-height:1.6;\">Hi {$first},</p>"
         . "<p style=\"margin:0 0 20px;font-size:15px;line-height:1.6;\">{$intro}</p>"
         . "<p style=\"margin:0 0 22px;\"><a href=\"{$link}\" style=\"display:inline-block;background:#f7801a;color:#2a1402;text-decoration:none;font-weight:bold;font-size:16px;padding:14px 26px;border-radius:10px;\">{$button}</a></p>"
@@ -494,7 +498,7 @@ function record_referral_click(array $referrer): void
 {
     $vid = visitor_id();
     $isOwner = (int) (current_entrant()['id'] ?? 0) === (int) $referrer['id']
-        || in_array($referrer['ref_code'], explode(',', $_COOKIE['gmf_own'] ?? ''), true);
+        || array_intersect(entrant_codes((int) $referrer['id']), device_codes());
     if ($isOwner) {
         return;
     }

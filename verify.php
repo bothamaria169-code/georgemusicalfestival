@@ -1,11 +1,11 @@
 <?php
 /**
- * One-tap confirmation from the code email: /flyfortwo/verify?t=TOKEN&c=CODE&p=entry|login
+ * One-tap confirmation from the code email: /flyfortwo/verify?t=TOKEN&c=CODE&p=entry|login|restore
  * Works in whatever browser the email app opens, so nobody has to switch back and type the code.
  */
 require __DIR__ . '/includes/bootstrap.php';
 
-$purpose = ($_GET['p'] ?? 'entry') === 'login' ? 'login' : 'entry';
+$purpose = in_array($_GET['p'] ?? '', ['login', 'restore'], true) ? $_GET['p'] : 'entry';
 $entrant = entrant_from_token((string) ($_GET['t'] ?? ''));
 $code    = (string) ($_GET['c'] ?? '');
 
@@ -33,11 +33,18 @@ if ($purpose === 'entry' && comp_state() !== 'open') {
 
 $check = otp_check((int) $entrant['id'], $purpose, $code);
 if ($check !== 'ok') {
-    flash('error', otp_error_message($check) . ($purpose === 'login' ? '' : ' Your details are saved — tap “Resend code” on the entry page.'));
-    redirect($purpose === 'login' ? 'flyfortwo/login' : 'flyfortwo/');
+    flash('error', otp_error_message($check) . ($purpose === 'login' ? '' : ' Your details are saved — tap “Resend code” on the ' . ($purpose === 'restore' ? 'restore' : 'entry') . ' page.'));
+    redirect(['login' => 'flyfortwo/login', 'restore' => 'flyfortwo/restore'][$purpose] ?? 'flyfortwo/');
 }
 
-if ($purpose === 'entry') {
+if ($purpose === 'restore') {
+    $approved = restore_email_confirmed((int) $entrant['id']);
+    $entrant = q('SELECT * FROM entrants WHERE id = ?', [$entrant['id']])->fetch();
+    unset($_SESSION['restore_entrant_id']);
+    flash('success', $approved
+        ? 'Your entry is restored. Your old link ' . implode(', ', $approved) . ' is yours again, with every open since the site came back.'
+        : "Your email is confirmed and your entry is active. We're checking your old link — keep sharing it, every open is being saved.");
+} elseif ($purpose === 'entry') {
     verify_entrant((int) $entrant['id'], 'email');
     $entrant = q('SELECT * FROM entrants WHERE id = ?', [$entrant['id']])->fetch();
     send_welcome_email($entrant);

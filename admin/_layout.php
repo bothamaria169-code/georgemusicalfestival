@@ -10,6 +10,7 @@ function admin_head(string $title, string $active = ''): void
     $items = [
         'overview'    => ['index.php', 'fa-chart-line', 'Overview', 'viewer'],
         'entrants'    => ['entrants.php', 'fa-users', 'Entrants', 'viewer'],
+        'restores'    => ['restores.php', 'fa-rotate-left', 'Restoration', 'viewer'],
         'draws'       => ['draws.php', 'fa-trophy', 'Draws', 'viewer'],
         'subscribers' => ['subscribers.php', 'fa-envelope-open-text', 'Mailing list', 'admin'],
         'media'       => ['media.php', 'fa-photo-film', 'Website media', 'admin'],
