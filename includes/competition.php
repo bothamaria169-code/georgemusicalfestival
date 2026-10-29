@@ -577,15 +577,36 @@ function leaderboard_rank(int $entrantId): ?int
 function public_leaderboard(int $limit = 10): array
 {
     $revealed = (bool) q("SELECT 1 FROM draws WHERE draw_key = 'final' AND status = 'published'")->fetchColumn();
+    $board = [];
+    foreach (leaderboard_scores(null, $limit) as $r) {
+        $board[] = ['id' => (int) $r['id'], 'name' => short_name($r['full_name']), 'town' => $r['town'] ?: '', 'clicks' => (int) $r['clicks'], 'leader' => false];
+    }
+    // Carried-over standings (display only) until each entrant's live entry is back.
+    // A row drops out once its code or its name and town appear among the live entrants.
+    $live = array_map(fn ($b) => mb_strtolower($b['name'] . '|' . $b['town']), $board);
+    try {
+        $carry = q('SELECT * FROM leaderboard_carryover ORDER BY is_leader DESC, opens DESC')->fetchAll();
+    } catch (Throwable $e) {
+        $carry = [];   // table not installed yet
+    }
+    foreach ($carry as $c) {
+        if (($c['ref_code'] && entrant_by_ref($c['ref_code'])) || in_array(mb_strtolower($c['name'] . '|' . ($c['town'] ?? '')), $live, true)) {
+            continue;
+        }
+        $board[] = ['id' => 0, 'name' => $c['name'], 'town' => $c['town'] ?? '', 'clicks' => (int) $c['opens'], 'leader' => (bool) $c['is_leader']];
+    }
+    usort($board, fn ($a, $b) => [$b['leader'], $b['clicks']] <=> [$a['leader'], $a['clicks']]);
+    $hasLeader = (bool) array_filter($board, fn ($b) => $b['leader']);
+
     $rows = [];
-    foreach (leaderboard_scores(null, $limit) as $i => $r) {
-        $hidden = $i === 0 && !$revealed;
+    foreach (array_slice($board, 0, $limit) as $i => $b) {
+        $hidden = !$revealed && ($b['leader'] || (!$hasLeader && $i === 0));
         $rows[] = [
             'rank'   => $i + 1,
-            'id'     => (int) $r['id'],
-            'name'   => $hidden ? 'Mystery leader' : short_name($r['full_name']),
-            'town'   => $hidden ? 'Revealed on draw day' : ($r['town'] ?: ''),
-            'clicks' => $hidden ? null : (int) $r['clicks'],
+            'id'     => $b['id'],
+            'name'   => $hidden ? 'Mystery leader' : $b['name'],
+            'town'   => $hidden ? 'Revealed on draw day' : $b['town'],
+            'clicks' => $hidden ? null : $b['clicks'],
             'hidden' => $hidden,
         ];
     }

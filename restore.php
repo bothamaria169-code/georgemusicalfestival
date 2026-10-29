@@ -54,11 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $isNew = false;
 
             if ($owner && $owner['status'] === 'verified' && $owner['email'] === $data['email']) {
-                $error = 'That link is already restored to your entry. Sign in to see your dashboard.';
+                $error = 'That link is already connected to your entry. Sign in to see your dashboard.';
             } elseif ($owner && $owner['status'] === 'verified') {
-                $error = 'That link has already been restored to another entry. If it is yours, email ' . setting('contact_email') . ' with your "You\'re entered" email and we will look into it.';
+                $error = 'That link is already connected to another entry. If it is yours, email ' . setting('contact_email') . ' with your "You\'re entered" email and we will look into it.';
             } elseif (($byEmail && $byEmail['status'] === 'disqualified') || ($byPhone && $byPhone['status'] === 'disqualified')) {
-                $error = 'This entry cannot be restored. Please contact us if you think this is a mistake.';
+                $error = 'This entry cannot be reconnected. Please contact us if you think this is a mistake.';
             } elseif ($byEmail && $byEmail['status'] === 'verified') {
                 $entrant = $byEmail;                       // re-entered since the loss: add the old code to that entry
             } elseif ($byPhone && $byPhone['status'] === 'verified') {
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $result = upsert_pending_entrant($data, source_data(), null, null);
                 if (isset($result['error'])) {
-                    $error = 'We could not start your restore. Please contact ' . setting('contact_email') . '.';
+                    $error = 'We could not reconnect your entry. Please contact ' . setting('contact_email') . '.';
                 } else {
                     $entrant = $result['entrant'];
                     $isNew = true;
@@ -110,8 +110,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             login_entrant((int) $entrant['id']);
             mark_owner_device($entrant);
             flash('success', $approved
-                ? 'Your entry is restored. Your old link ' . implode(', ', $approved) . ' is yours again, with every open since the site came back.'
-                : "Your email is confirmed and your entry is active. We're checking your old link — keep sharing it, every open is being saved.");
+                ? 'Your entry is connected. Your link ' . implode(', ', $approved) . ' is on your dashboard, with every open counted.'
+                : "Your email is confirmed and your entry is active. We're linking your original share link — keep sharing it, every open counts.");
             redirect('flyfortwo/dashboard');
         }
         $error = otp_error_message($check);
@@ -130,7 +130,7 @@ $stepView = $pending ? 'code' : 'details';
 $old = fn ($k) => e($_POST[$k] ?? ($me[$k] ?? ''));
 $fieldErr = fn ($k) => isset($errors[$k]) ? '<small class="ff-hint" style="color:#8f2a1a">' . e($errors[$k]) . '</small>' : '';
 
-$page_title = 'Restore my entry — FLY FOR TWO';
+$page_title = 'Reconnect my entry — FLY FOR TWO';
 $nav_active = 'fly';
 $extra_css  = ['assets/css/comp.css'];
 require __DIR__ . '/includes/header.php';
@@ -139,9 +139,9 @@ require __DIR__ . '/includes/header.php';
   <div class="auth-media">
     <img src="<?= e(url('assets/img/gallery/activation-23.jpg')) ?>" alt="GMF street team handing out FLY FOR TWO flyers">
     <div class="cap">
-      <span class="kicker">Restore my entry</span>
+      <span class="kicker">Reconnect my entry</span>
       <p class="display big" style="margin-top:14px;">Your link <span class="serif-i text-orange">still works.</span></p>
-      <p class="muted" style="max-width:440px">Our hosting provider had a serious outage and entries were lost. Every open of your personal link since the site came back is being saved. Restore your entry to get it back.</p>
+      <p class="muted" style="max-width:440px">Entered already? Reconnect your entry to see your dashboard. Your personal link keeps working and every open counts.</p>
     </div>
   </div>
   <div class="auth-form">
@@ -149,7 +149,7 @@ require __DIR__ . '/includes/header.php';
       <div class="ff-body">
         <?php if ($stepView === 'details'): ?>
           <div class="ff-center"><div class="ff-icon"><i class="fa-solid fa-rotate-left"></i></div>
-            <h1 class="ff-h">Restore my entry</h1>
+            <h1 class="ff-h">Reconnect my entry</h1>
             <p class="ff-sub">Search your email for <strong>"You're entered — FLY FOR TWO"</strong> from George Musical Festival. Copy the link in it, then fill in your details as you entered them.</p>
           </div>
           <?php if ($deviceCodes): ?><div class="ff-alert is-ok"><i class="fa-solid fa-mobile-screen"></i> Welcome back — this phone entered with the link <strong>/r/<?= e($deviceCodes[0]) ?></strong>. We've filled it in for you.</div><?php endif; ?>
@@ -171,7 +171,7 @@ require __DIR__ . '/includes/header.php';
             <div class="field"><label for="r-fly"><?= e(setting('travel_question')) ?></label>
               <select id="r-fly" name="fly_frequency" required><option value="">Choose an answer…</option><?php foreach ($flyOpts as $o): ?><option<?= ($_POST['fly_frequency'] ?? '') === $o ? ' selected' : '' ?>><?= e($o) ?></option><?php endforeach; ?></select><?= $fieldErr('fly_frequency') ?>
             </div>
-            <div class="field"><label for="r-opens">Your score before the outage <span class="muted">(optional)</span></label><input id="r-opens" name="claimed_opens" type="text" inputmode="numeric" placeholder="e.g. 120 link opens" value="<?= e($_POST['claimed_opens'] ?? '') ?>"><?= $fieldErr('claimed_opens') ?></div>
+            <div class="field"><label for="r-opens">Your score so far, if you know it <span class="muted">(optional)</span></label><input id="r-opens" name="claimed_opens" type="text" inputmode="numeric" placeholder="e.g. 120 link opens" value="<?= e($_POST['claimed_opens'] ?? '') ?>"><?= $fieldErr('claimed_opens') ?></div>
             <div class="field"><label for="r-evidence">Anything that helps us check it <span class="muted">(optional)</span></label><textarea id="r-evidence" name="evidence" rows="3" placeholder="e.g. I have a screenshot of my dashboard from 20 October — I'll email it to <?= e(setting('contact_email')) ?>"><?= e($_POST['evidence'] ?? '') ?></textarea></div>
             <div class="ff-consent is-required"><input type="checkbox" id="rc-terms" name="consent_terms" value="1"<?= !empty($_POST['consent_terms']) ? ' checked' : '' ?>><label for="rc-terms"><span class="ff-tag">Required</span> I agree to the <?= e(setting('comp_name')) ?> <a href="<?= e(url('flyfortwo/terms')) ?>" target="_blank">terms</a> and <a href="<?= e(url('flyfortwo/privacy')) ?>" target="_blank">privacy notice</a>.</label></div><?= $fieldErr('consent_terms') ?>
             <div class="ff-consent is-required"><input type="checkbox" id="rc-popia" name="consent_popia" value="1"<?= !empty($_POST['consent_popia']) ? ' checked' : '' ?>><label for="rc-popia"><span class="ff-tag">Required</span> <strong>POPIA consent:</strong> <?= e(setting('popia_consent_text')) ?></label></div><?= $fieldErr('consent_popia') ?>
@@ -193,7 +193,7 @@ require __DIR__ . '/includes/header.php';
             <?php if ($dev): ?><div class="ff-dev">Test mode (email not configured): your code is <?= e($dev) ?></div><?php endif; ?>
             <?php if ($info && !$error): ?><div class="ff-alert is-ok"><?= e($info) ?></div><?php endif; ?>
             <?php if ($error): ?><div class="ff-alert"><?= e($error) ?></div><?php endif; ?>
-            <button class="ff-btn ff-btn-primary" type="submit">Restore my entry</button>
+            <button class="ff-btn ff-btn-primary" type="submit">Reconnect my entry</button>
           </form>
           <form method="post"><?= csrf_field() ?><input type="hidden" name="step" value="resend">
             <button class="ff-btn ff-btn-ghost" type="submit">Resend code</button>

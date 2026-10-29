@@ -267,3 +267,16 @@ CREATE TABLE IF NOT EXISTS email_suppressions (
   created_at  DATETIME     NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+-- Carried-over leaderboard (added 30 Oct 2026, see migrate-2026-10-30-carryover.sql).
+CREATE TABLE IF NOT EXISTS leaderboard_carryover (
+  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name        VARCHAR(120) NOT NULL,
+  town        VARCHAR(80)  NULL,
+  opens       INT UNSIGNED NULL,
+  is_leader   TINYINT(1)   NOT NULL DEFAULT 0,
+  ref_code    VARCHAR(12)  NULL,
+  as_at       DATETIME     NULL,
+  source      VARCHAR(255) NULL,
+  created_at  DATETIME     NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

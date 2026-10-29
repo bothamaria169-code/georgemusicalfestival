@@ -42,8 +42,8 @@ if ($purpose === 'restore') {
     $entrant = q('SELECT * FROM entrants WHERE id = ?', [$entrant['id']])->fetch();
     unset($_SESSION['restore_entrant_id']);
     flash('success', $approved
-        ? 'Your entry is restored. Your old link ' . implode(', ', $approved) . ' is yours again, with every open since the site came back.'
-        : "Your email is confirmed and your entry is active. We're checking your old link — keep sharing it, every open is being saved.");
+        ? 'Your entry is connected. Your link ' . implode(', ', $approved) . ' is on your dashboard, with every open counted.'
+        : "Your email is confirmed and your entry is active. We're linking your original share link — keep sharing it, every open counts.");
 } elseif ($purpose === 'entry') {
     verify_entrant((int) $entrant['id'], 'email');
     $entrant = q('SELECT * FROM entrants WHERE id = ?', [$entrant['id']])->fetch();

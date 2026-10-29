@@ -88,9 +88,9 @@ require __DIR__ . '/includes/header.php';
   <div class="wrap">
     <?php foreach ($restores as $rr): ?>
       <div class="ff-alert is-ok" style="margin:0 0 18px;font-size:.95rem">
-        <i class="fa-solid fa-rotate-left"></i> <strong>We're restoring your old link /r/<?= e($rr['ref_code']) ?>.</strong>
-        Keep sharing that link — every open is being saved<?= ($n = orphan_open_count($rr['ref_code'])) ? ' (' . $n . ' so far)' : '' ?> and will be added to your score once GMF has checked your claim.
-        Have screenshots of your old score? Email them to <?= e(setting('contact_email')) ?>.
+        <i class="fa-solid fa-rotate-left"></i> <strong>We're linking your original share link /r/<?= e($rr['ref_code']) ?> to your dashboard.</strong>
+        Keep sharing it — every open counts<?= ($n = orphan_open_count($rr['ref_code'])) ? ' (' . $n . ' so far)' : '' ?> and shows on your score as soon as it's linked.
+        Questions? Email <?= e(setting('contact_email')) ?>.
       </div>
     <?php endforeach; ?>
     <div class="stat-row" style="margin-bottom:22px;">

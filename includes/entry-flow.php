@@ -61,7 +61,7 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
     <?php if (turnstile_enabled()): ?><div class="cf-turnstile" data-sitekey="<?= e(config('turnstile.site_key')) ?>" data-appearance="interaction-only" style="margin:6px 0"></div><?php endif; ?>
     <div class="ff-alert" role="alert" hidden></div>
     <button class="ff-btn ff-btn-primary" type="submit">Enter now <i class="fa-solid fa-arrow-right"></i></button>
-    <p class="ff-fine">One entry per phone number and email. Already entered? <a href="<?= e(url('flyfortwo/login')) ?>"<?= $target ?>>Sign in</a> · Entry lost in the outage? <a href="<?= e(url('flyfortwo/restore')) ?>"<?= $target ?>>Restore it</a></p>
+    <p class="ff-fine">One entry per phone number and email. Already entered? <a href="<?= e(url('flyfortwo/login')) ?>"<?= $target ?>>Sign in</a></p>
   </form>
 
   <!-- STEP 2 · VERIFY -->

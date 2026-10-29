@@ -34,9 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ? q('SELECT * FROM entrants WHERE phone = ?', [$byPhone])->fetch()
                 : q('SELECT * FROM entrants WHERE email = ?', [$email])->fetch();
             if (!$found && !$byPhone) {
-                $error = "We couldn't find an entry with that email. If you entered before 26 October, your entry may have been lost in our hosting outage — restore it below. Otherwise try your cellphone number, or enter the competition first.";
+                $error = "We couldn't find an entry with that email. Already entered? Try your cellphone number, or reconnect your entry with the link from your confirmation email.";
             } elseif (!$found) {
-                $error = "We couldn't find an entry with that cellphone number. If you entered before 26 October, restore your entry below. Otherwise try the email you entered with, or enter the competition first.";
+                $error = "We couldn't find an entry with that cellphone number. Already entered? Try the email you entered with, or reconnect your entry with the link from your confirmation email.";
             } elseif ($found['status'] === 'verified' && $found['email_status'] === 'bounced') {
                 $error = 'Emails to ' . mask_email($found['email']) . " can't be delivered (" . strtolower((string) $found['email_issue']) . '). Please contact '
                     . setting('contact_email') . ' from your correct email address and we will fix your entry.';
@@ -107,7 +107,7 @@ require __DIR__ . '/includes/header.php';
             <?php if ($error): ?><div class="ff-alert"><?= e($error) ?></div><?php endif; ?>
             <button class="ff-btn ff-btn-primary" type="submit">Send my code</button>
           </form>
-          <p class="ff-fine">Not entered yet? <a href="<?= e(url('flyfortwo/')) ?>">Enter the competition</a> · Entry lost in the outage? <a href="<?= e(url('flyfortwo/restore')) ?>">Restore it</a></p>
+          <p class="ff-fine">Not entered yet? <a href="<?= e(url('flyfortwo/')) ?>">Enter the competition</a> · Can't sign in? <a href="<?= e(url('flyfortwo/restore')) ?>">Reconnect your entry</a></p>
         <?php else: ?>
           <div class="ff-center"><div class="ff-icon"><i class="fa-regular fa-envelope-open"></i></div>
             <h1 class="ff-h">Enter your code</h1>

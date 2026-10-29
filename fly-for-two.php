@@ -46,9 +46,7 @@ require __DIR__ . '/includes/header.php';
         <p class="ff-invited"><i class="fa-solid fa-user-plus"></i> <?= e(short_name($referrer['full_name'])) ?> invited you to enter.</p>
       <?php endif; ?>
       <?php if (!$me && ($lost = unclaimed_device_codes())): ?>
-        <p class="ff-invited"><i class="fa-solid fa-rotate-left"></i> <span>Welcome back — this phone entered with the link /r/<?= e($lost[0]) ?>. <a href="<?= e(url('flyfortwo/restore?code=' . $lost[0])) ?>" style="color:inherit;text-decoration:underline">Restore my entry</a></span></p>
-      <?php elseif (!$me): ?>
-        <p class="ff-invited" style="background:rgba(255,255,255,.08);color:inherit;font-weight:600"><i class="fa-solid fa-circle-info"></i> <span>Entered before 26 October? Our hosting provider lost recent entries. <a href="<?= e(url('flyfortwo/restore')) ?>" style="color:var(--orange-2);text-decoration:underline">Restore your entry</a> — your link still works.</span></p>
+        <p class="ff-invited"><i class="fa-solid fa-user-check"></i> <span>Welcome back — this phone entered with the link /r/<?= e($lost[0]) ?>. <a href="<?= e(url('flyfortwo/restore?code=' . $lost[0])) ?>" style="color:inherit;text-decoration:underline">Open my dashboard</a></span></p>
       <?php endif; ?>
     </div>
 
