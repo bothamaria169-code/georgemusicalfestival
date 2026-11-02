@@ -29,12 +29,12 @@ return [
     // driver: 'smtp' (recommended — use the cPanel mailbox), 'mail' (PHP mail()), or 'log' (write to storage/logs/mail.log)
     'mail' => [
         'driver'     => 'log',
-        'host'       => 'mail.georgemusicalfestival.co.za',
+        'host'       => 'smtpout.secureserver.net',   // the domain's mailboxes are hosted by GoDaddy
         'port'       => 465,          // 465 = SSL, 587 = STARTTLS
         'encryption' => 'ssl',        // 'ssl' | 'tls' | ''
-        'username'   => 'noreply@georgemusicalfestival.co.za',
+        'username'   => 'info@georgemusicalfestival.co.za',
         'password'   => '',
-        'from_email' => 'noreply@georgemusicalfestival.co.za',
+        'from_email' => 'info@georgemusicalfestival.co.za',
         'from_name'  => 'George Musical Festival',
         // Optional: a mailbox that silently receives a copy of every email the site sends (a record that survives a server loss).
         'archive_bcc' => '',
