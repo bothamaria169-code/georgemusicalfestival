@@ -52,7 +52,7 @@ $prize   = (string) setting('prize_headline');
 
 $scripts = [
     'WhatsApp status' => "✈️ I just entered FLY FOR TWO — you could win {$prize} with George Musical Festival × ACSA. Free to enter, takes a minute 👉 {$link}",
-    'Group chat'      => "Guys, GMF and Airports Company SA are giving away {$prize} — return flights, accommodation and transfers. Enter free here before " . fmt_date(setting('comp_close_at'), 'j F') . ": {$link}",
+    'Group chat'      => "Guys, GMF and Airports Company SA are giving away {$prize} — return flights, accommodation and transfers. Enter free here: {$link}",
     'Short & sweet'   => "Win a weekend away for two ✈️ {$link}",
 ];
 

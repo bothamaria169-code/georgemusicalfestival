@@ -19,7 +19,7 @@ require __DIR__ . '/includes/header.php';
       <?php // Rich text edited by GMF administrators in Settings. ?>
       <?= $isPrivacy ? setting('privacy_html') : setting('terms_html') ?>
       <hr class="rule" style="margin:40px 0 20px">
-      <p class="muted">Competition period: <?= e(fmt_date(setting('comp_open_at'), 'j F Y')) ?> – <?= e(fmt_date(setting('comp_close_at'), 'j F Y')) ?>. Questions: <a href="mailto:<?= e(setting('contact_email')) ?>" style="text-decoration:underline"><?= e(setting('contact_email')) ?></a></p>
+      <p class="muted">Competition period: <?= e(fmt_date(setting('comp_open_at'), 'j F Y')) ?> – extended. Questions: <a href="mailto:<?= e(setting('contact_email')) ?>" style="text-decoration:underline"><?= e(setting('contact_email')) ?></a></p>
       <p><a class="btn btn-dark" href="<?= e(url($isPrivacy ? 'terms.php' : 'privacy.php')) ?>"><?= $isPrivacy ? 'Competition terms' : 'Privacy notice' ?></a> <a class="btn btn-outline-dark" href="<?= e(url('flyfortwo/')) ?>">Back to the competition</a></p>
     </article>
   </div>
