@@ -90,7 +90,7 @@ require __DIR__ . '/includes/header.php';
     <div>
       <span class="kicker reveal">Leaderboard</span>
       <h2 class="display big reveal" style="margin-top:18px;">The <span class="serif-i text-orange">leaderboard</span></h2>
-      <p class="muted reveal" style="margin-top:18px;max-width:440px;">Ranked by link opens — the number of different people who opened each entrant's personal link. <strong style="color:var(--text-light)">The leader is kept secret until the winners are revealed on <?= e(fmt_date($final['scheduled_for'] ?? null, 'j F')) ?>.</strong> <?= e(setting('referral_reward_text')) ?></p>
+      <p class="muted reveal" style="margin-top:18px;max-width:440px;">Ranked by link opens — the number of different people who opened each entrant's personal link. <strong style="color:var(--text-light)">We are extending the campaign — the leader stays secret until the winners are revealed.</strong> <?= e(setting('referral_reward_text')) ?></p>
       <?php if ($me): ?><a class="btn btn-orange reveal" style="margin-top:22px" href="<?= e(url('flyfortwo/dashboard')) ?>">Get my link</a><?php endif; ?>
     </div>
     <div class="reveal reveal-d2">

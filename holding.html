@@ -20,7 +20,7 @@
        font-size: clamp(2rem, 7vw, 3.2rem); line-height: 1.05; margin: 26px 0 12px; }
   h1 em { font-family: Fraunces, Georgia, serif; font-style: italic; text-transform: none; color: var(--orange); }
   p { color: var(--muted); font-size: 1.05rem; line-height: 1.6; margin: 0 auto 28px; max-width: 480px; }
-  .cards { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+  .cards { display: grid; gap: 12px; grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; }
   a.card { display: block; padding: 18px 16px; border-radius: 14px; text-decoration: none; color: var(--text);
            background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); transition: .15s; }
   a.card:hover { border-color: var(--orange); background: rgba(247,128,26,.12); }
@@ -29,17 +29,15 @@
   .restore { display: inline-block; margin-top: 22px; color: var(--orange); font-weight: 800; font-size: .92rem; }
   footer { margin-top: 40px; font-size: .8rem; color: var(--muted); }
   footer a { color: var(--muted); }
-  @media (max-width: 520px) { .cards { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <main>
   <img src="/assets/img/brand/gmf-logo-orange.png" alt="George Musical Festival">
   <h1>Our new website is <em>almost here</em></h1>
-  <p>We're putting the finishing touches on the George Musical Festival website. The competitions are open, and every personal link keeps counting — enter or check your entry below.</p>
+  <p>We're putting the finishing touches on the George Musical Festival website. The Fly for Two competition is open, and every personal link keeps counting — enter or check your entry below.</p>
   <div class="cards">
     <a class="card" href="/flyfortwo/"><strong>FLY FOR TWO</strong><span>with Airports Company South Africa</span></a>
-    <a class="card" href="/cellc/win/"><strong>WIN A SAMSUNG</strong><span>with Cell C</span></a>
   </div>
   <a class="restore" href="/flyfortwo/login">Already entered? Open your dashboard →</a>
   <footer>Questions? <a href="mailto:info@georgemusicalfestival.co.za">info@georgemusicalfestival.co.za</a></footer>
