@@ -80,7 +80,7 @@ require __DIR__ . '/includes/header.php';
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
     <?php for ($i = 0; $i < 2; $i++): ?>
-      <span>Win a Samsung Galaxy A56</span><span>Phone + accessories worth <?= e(setting('prize_value')) ?></span><?php if (!empty($artists[0]['title'])): ?><span>Headlining: <?= e($artists[0]['title']) ?> + many more</span><?php endif; ?><span>Enter free</span><span>Most link opens wins</span><span>Winners revealed <?= e(fmt_date($finalDraw['scheduled_for'] ?? null, 'j M')) ?></span><span><?= e($eventName) ?></span>
+      <span>Win a Samsung Galaxy A56</span><span>Phone + accessories worth <?= e(setting('prize_value')) ?></span><?php if (!empty($artists[0]['title'])): ?><span>Headlining: <?= e($artists[0]['title']) ?> + many more</span><?php endif; ?><span>Enter free</span><span>Most link opens wins</span><span>Campaign extended</span><span><?= e($eventName) ?></span>
     <?php endfor; ?>
   </div>
 </div>

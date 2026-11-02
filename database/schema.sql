@@ -77,8 +77,11 @@ CREATE TABLE IF NOT EXISTS referral_clicks (
   visitor_id   CHAR(32)     NULL,
   user_agent   VARCHAR(255) NULL,
   counted      TINYINT(1)   NOT NULL DEFAULT 0,  -- 1 = this click earned the share bonus
+  origin       VARCHAR(10)  NOT NULL DEFAULT 'live', -- live | orphan (captured before a restore) | restored (from evidence)
+  adjustment_id INT UNSIGNED NULL,               -- score_adjustments row for origin 'restored'
   clicked_at   DATETIME     NOT NULL,
   KEY ix_referrer (referrer_id),
+  KEY ix_adjustment (adjustment_id),
   UNIQUE KEY uq_visitor (referrer_id, visitor_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -173,4 +176,108 @@ CREATE TABLE IF NOT EXISTS audit_log (
   ip_hash     CHAR(64)     NULL,
   created_at  DATETIME     NOT NULL,
   KEY ix_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Entry restoration (added 28 Oct 2026, see migrate-2026-10-28-restore.sql).
+-- Opens of share links whose owner has not restored their entry yet.
+CREATE TABLE IF NOT EXISTS orphan_clicks (
+  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  ref_code    VARCHAR(12)  NOT NULL,
+  ip_hash     CHAR(64)     NULL,
+  visitor_id  CHAR(32)     NOT NULL,
+  user_agent  VARCHAR(255) NULL,
+  clicked_at  DATETIME     NOT NULL,
+  UNIQUE KEY uq_visitor (ref_code, visitor_id),
+  KEY ix_code (ref_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Extra share codes that lead to an entrant (restored old codes, temporary codes).
+CREATE TABLE IF NOT EXISTS ref_aliases (
+  ref_code    VARCHAR(12)  NOT NULL PRIMARY KEY,
+  entrant_id  INT UNSIGNED NOT NULL,
+  created_at  DATETIME     NOT NULL,
+  KEY ix_entrant (entrant_id),
+  CONSTRAINT fk_alias_entrant FOREIGN KEY (entrant_id) REFERENCES entrants(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS restore_requests (
+  id             INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  entrant_id     INT UNSIGNED NOT NULL,
+  ref_code       VARCHAR(12)  NOT NULL,
+  new_entrant    TINYINT(1)   NOT NULL DEFAULT 0,
+  device_match   TINYINT(1)   NOT NULL DEFAULT 0,
+  claimed_opens  INT UNSIGNED NULL,
+  evidence       TEXT         NULL,
+  status         ENUM('email','review','approved','rejected') NOT NULL DEFAULT 'email',
+  admin_note     VARCHAR(255) NULL,
+  reviewed_by    INT UNSIGNED NULL,
+  reviewed_at    DATETIME     NULL,
+  ip_hash        CHAR(64)     NULL,
+  created_at     DATETIME     NOT NULL,
+  KEY ix_status (status),
+  KEY ix_code (ref_code),
+  KEY ix_entrant (entrant_id),
+  CONSTRAINT fk_restore_entrant FOREIGN KEY (entrant_id) REFERENCES entrants(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Link opens restored from evidence, each backed by referral_clicks rows with origin 'restored'.
+CREATE TABLE IF NOT EXISTS score_adjustments (
+  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  entrant_id  INT UNSIGNED NOT NULL,
+  opens       INT UNSIGNED NOT NULL,
+  as_at       DATETIME     NOT NULL,
+  reason      VARCHAR(255) NOT NULL,
+  evidence    TEXT         NULL,
+  admin_id    INT UNSIGNED NULL,
+  created_at  DATETIME     NOT NULL,
+  KEY ix_entrant (entrant_id),
+  CONSTRAINT fk_adjust_entrant FOREIGN KEY (entrant_id) REFERENCES entrants(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Bulk email (added 29 Oct 2026, see migrate-2026-10-29-campaigns.sql).
+CREATE TABLE IF NOT EXISTS email_campaigns (
+  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name        VARCHAR(120) NOT NULL,
+  subject     VARCHAR(190) NOT NULL,
+  heading     VARCHAR(190) NOT NULL,
+  body_html   MEDIUMTEXT   NOT NULL,
+  status      ENUM('draft','sending','paused','done') NOT NULL DEFAULT 'draft',
+  created_by  INT UNSIGNED NULL,
+  created_at  DATETIME     NOT NULL,
+  started_at  DATETIME     NULL,
+  finished_at DATETIME     NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS email_queue (
+  id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  campaign_id  INT UNSIGNED NOT NULL,
+  email        VARCHAR(190) NOT NULL,
+  full_name    VARCHAR(120) NULL,
+  ref_code     VARCHAR(12)  NULL,
+  status       ENUM('queued','sent','failed','skipped') NOT NULL DEFAULT 'queued',
+  error        VARCHAR(255) NULL,
+  sent_at      DATETIME     NULL,
+  UNIQUE KEY uq_once (campaign_id, email),
+  KEY ix_status (campaign_id, status),
+  CONSTRAINT fk_queue_campaign FOREIGN KEY (campaign_id) REFERENCES email_campaigns(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS email_suppressions (
+  email       VARCHAR(190) NOT NULL PRIMARY KEY,
+  reason      VARCHAR(40)  NOT NULL DEFAULT 'unsubscribed',
+  created_at  DATETIME     NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- Carried-over leaderboard (added 30 Oct 2026, see migrate-2026-10-30-carryover.sql).
+CREATE TABLE IF NOT EXISTS leaderboard_carryover (
+  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name        VARCHAR(120) NOT NULL,
+  town        VARCHAR(80)  NULL,
+  opens       INT UNSIGNED NULL,
+  is_leader   TINYINT(1)   NOT NULL DEFAULT 0,
+  ref_code    VARCHAR(12)  NULL,
+  as_at       DATETIME     NULL,
+  source      VARCHAR(255) NULL,
+  created_at  DATETIME     NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

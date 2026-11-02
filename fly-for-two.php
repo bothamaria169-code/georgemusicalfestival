@@ -87,7 +87,7 @@ require __DIR__ . '/includes/header.php';
     <div>
       <span class="kicker reveal">Leaderboard</span>
       <h2 class="display big reveal" style="margin-top:18px;">The <span class="serif-i text-orange">leaderboard</span></h2>
-      <p class="muted reveal" style="margin-top:18px;max-width:440px;">Ranked by link opens — the number of different people who opened each entrant's personal link. <strong style="color:var(--text-light)">The leader is kept secret until the winners are revealed on <?= e(fmt_date($final['scheduled_for'] ?? null, 'j F')) ?>.</strong> <?= e(setting('referral_reward_text')) ?></p>
+      <p class="muted reveal" style="margin-top:18px;max-width:440px;">Ranked by link opens — the number of different people who opened each entrant's personal link. <strong style="color:var(--text-light)">We are extending the campaign — the leader stays secret until the winners are revealed.</strong> <?= e(setting('referral_reward_text')) ?></p>
       <?php if ($me): ?><a class="btn btn-orange reveal" style="margin-top:22px" href="<?= e(url('win/dashboard')) ?>">Get my link</a><?php endif; ?>
     </div>
     <div class="reveal reveal-d2">
@@ -122,7 +122,7 @@ require __DIR__ . '/includes/header.php';
       <details open><summary>Who can enter?</summary><p>South African residents aged 18 and over. Entry is free. Full rules are in the <a href="<?= e(url('win/terms')) ?>">competition terms</a>.</p></details>
       <details><summary>How many times can I enter?</summary><p>Once per phone number and email address. After that, your score grows each time a different person opens your personal link.</p></details>
       <details><summary>Why do I need a verification code?</summary><p>The code confirms that your email is real and that the entry is yours. Unconfirmed entries aren't on the leaderboard and can't win.</p></details>
-      <details><summary>When are the winners revealed?</summary><p>Entries and link opens count until <?= e(fmt_date(setting('comp_close_at'), 'j F Y, H:i')) ?>. The winners are revealed on <?= e(fmt_date($final['scheduled_for'] ?? null, 'j F Y')) ?>: 1st place wins <?= e(setting('prize_headline')) ?> and 2nd place wins the Second Prize.</p></details>
+      <details><summary>When are the winners revealed?</summary><p>The campaign has been extended, so entries and link opens keep counting. The winners are revealed when the extended campaign ends: 1st place wins <?= e(setting('prize_headline')) ?> and 2nd place wins the Second Prize.</p></details>
       <details><summary>How is the winner chosen?</summary><p><?= e(setting('draw_reassurance')) ?></p></details>
       <details><summary>What happens to my information?</summary><p>Your details are used to run the competition and are held by Cell C and George Musical Festival. You'll only get marketing messages if you ticked the optional box. See the <a href="<?= e(url('win/privacy')) ?>">privacy notice</a>.</p></details>
     </div>

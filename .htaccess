@@ -9,12 +9,16 @@ DirectoryIndex index.php
   # RewriteCond %{HTTPS} !=on
   # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+  # /cellc and /cellc/ go straight to the competition: the festival pages live on the main site.
+  RewriteRule ^(index\.php|gallery\.php)?$ win/ [R=302,L,QSA]
+
   # Short share links: /r/ABC1234 → r.php?c=ABC1234
   RewriteRule ^r/([A-Za-z0-9]{4,12})/?$ r.php?c=$1 [L,QSA]
+  RewriteRule ^unsubscribe/?$ unsubscribe.php [L,QSA]
 
   # Competition folder: /win/…  (the festival website stays at the root)
   RewriteRule ^win/?$ fly-for-two.php [L,QSA]
-  RewriteRule ^win/(dashboard|login|logout|embed|terms|privacy|verify)/?$ $1.php [L,QSA]
+  RewriteRule ^win/(dashboard|login|logout|embed|terms|privacy|verify|restore)/?$ $1.php [L,QSA]
   RewriteRule ^win/how-to-enter/?$ how-to-enter.php [L,QSA]
 
   # Never serve internals

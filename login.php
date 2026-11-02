@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ? q('SELECT * FROM entrants WHERE phone = ?', [$byPhone])->fetch()
                 : q('SELECT * FROM entrants WHERE email = ?', [$email])->fetch();
             if (!$found && !$byPhone) {
-                $error = "We couldn't find an entry with that email. If you used a different email, try your cellphone number instead — or enter the competition first.";
+                $error = "We couldn't find an entry with that email. Try your cellphone number, or enter the competition first.";
             } elseif (!$found) {
                 $error = "We couldn't find an entry with that cellphone number. Try the email you entered with, or enter the competition first.";
             } elseif ($found['status'] === 'verified' && $found['email_status'] === 'bounced') {

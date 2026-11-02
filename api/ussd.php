@@ -139,4 +139,4 @@ if (isset($result['error'])) {
 verify_entrant((int) $result['entrant']['id'], 'ussd');
 $ref = $result['entrant']['ref_code'];
 
-ussd('END', "You're entered in {$comp}! Draws on " . fmt_date(draw_by_key('event_day')['scheduled_for'] ?? null, 'j M') . ' & ' . fmt_date(draw_by_key('final')['scheduled_for'] ?? null, 'j M') . ". Your share code: {$ref}");
+ussd('END', "You're entered in {$comp}! The campaign has been extended. Your share code: {$ref}");

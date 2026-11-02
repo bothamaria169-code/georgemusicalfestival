@@ -52,7 +52,7 @@ $prize   = (string) setting('prize_headline');
 
 $scripts = [
     'WhatsApp status' => "📱 I just entered WIN A SAMSUNG — you could win a Samsung Galaxy A56 + accessories worth " . setting('prize_value') . " with George Musical Festival × Cell C. Free to enter, takes a minute 👉 {$link}",
-    'Group chat'      => "Guys, George Musical Festival and Cell C are giving away a Samsung Galaxy A56 + accessories worth " . setting('prize_value') . ". Enter free here before " . fmt_date(setting('comp_close_at'), 'j F') . ": {$link}",
+    'Group chat'      => "Guys, George Musical Festival and Cell C are giving away a Samsung Galaxy A56 + accessories worth " . setting('prize_value') . ". Enter free here: {$link}",
     'Short & sweet'   => "Win a Samsung Galaxy A56 + accessory bundle 📱 {$link}",
 ];
 
