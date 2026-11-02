@@ -60,6 +60,9 @@ function admin_head(string $title, string $active = ''): void
         <a href="<?= e(url('admin/logout.php')) ?>" title="Sign out"><i class="fa-solid fa-right-from-bracket"></i></a>
       </div>
     </header>
+    <?php if (config('mail.driver') !== 'smtp' || (string) config('mail.password', '') === ''): ?>
+      <div class="a-flash a-flash-error">Emails are not being sent: set the mail driver to 'smtp' and the mailbox password in config/config.php on the server.</div>
+    <?php endif; ?>
     <?php foreach (flashes() as $f): ?>
       <div class="a-flash a-flash-<?= e($f['type']) ?>"><?= e($f['message']) ?></div>
     <?php endforeach; ?>

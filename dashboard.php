@@ -47,7 +47,6 @@ $rank     = leaderboard_rank($id);
 // The leader never sees "#1" — only admins know who is winning until the reveal.
 $rankLabel = $rank === null ? '—' : ($rank === 1 ? 'Top 10' : ($rank <= 10 ? '#' . $rank : '#' . $rank));
 $friends = q('SELECT full_name, town, status, created_at, verified_at FROM entrants WHERE referred_by = ? ORDER BY created_at DESC LIMIT 50', [$id])->fetchAll();
-$restores = open_restore_requests($id);
 $first   = explode(' ', $me['full_name'])[0];
 $prize   = (string) setting('prize_headline');
 
@@ -86,13 +85,6 @@ require __DIR__ . '/includes/header.php';
 
 <section class="dash-main">
   <div class="wrap">
-    <?php foreach ($restores as $rr): ?>
-      <div class="ff-alert is-ok" style="margin:0 0 18px;font-size:.95rem">
-        <i class="fa-solid fa-rotate-left"></i> <strong>We're linking your original share link /r/<?= e($rr['ref_code']) ?> to your dashboard.</strong>
-        Keep sharing it — every open counts<?= ($n = orphan_open_count($rr['ref_code'])) ? ' (' . $n . ' so far)' : '' ?> and shows on your score as soon as it's linked.
-        Questions? Email <?= e(setting('contact_email')) ?>.
-      </div>
-    <?php endforeach; ?>
     <div class="stat-row" style="margin-bottom:22px;">
       <div class="stat is-accent"><small>Your score</small><strong><?= $stats['clicks'] ?></strong><span>people opened your link</span></div>
       <div class="stat"><small>Leaderboard</small><strong><?= e($rankLabel) ?></strong><span><?= $rank === null ? 'share your link to get on the board' : ($rank === 1 ? 'the leader stays secret until draw day' : 'your current position') ?></span></div>

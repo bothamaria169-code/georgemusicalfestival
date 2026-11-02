@@ -45,9 +45,6 @@ require __DIR__ . '/includes/header.php';
       <?php if ($referrer && (!$me || (int) $me['id'] !== (int) $referrer['id'])): ?>
         <p class="ff-invited"><i class="fa-solid fa-user-plus"></i> <?= e(short_name($referrer['full_name'])) ?> invited you to enter.</p>
       <?php endif; ?>
-      <?php if (!$me && ($lost = unclaimed_device_codes())): ?>
-        <p class="ff-invited"><i class="fa-solid fa-user-check"></i> <span>Welcome back — this phone entered with the link /r/<?= e($lost[0]) ?>. <a href="<?= e(url('flyfortwo/restore?code=' . $lost[0])) ?>" style="color:inherit;text-decoration:underline">Open my dashboard</a></span></p>
-      <?php endif; ?>
     </div>
 
     <!-- ── Entry card ───────────────────────────── -->

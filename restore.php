@@ -7,6 +7,9 @@
  */
 require __DIR__ . '/includes/bootstrap.php';
 
+// The site now runs as a fresh competition: entrants sign in or enter, there is no public reconnect step.
+redirect('flyfortwo/login');
+
 $me     = current_entrant();
 $error  = '';
 $errors = [];
