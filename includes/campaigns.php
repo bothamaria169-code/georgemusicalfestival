@@ -11,21 +11,35 @@ declare(strict_types=1);
 
 const CAMPAIGN_FIELDS = ['{first_name}', '{full_name}', '{share_link}', '{restore_link}', '{entry_link}'];
 
-function campaign_restore_template(): array
+function campaign_default_template(): array
 {
     $comp = (string) setting('comp_name');
     $contact = (string) setting('contact_email');
     return [
-        'name'    => 'Restore your entry',
-        'subject' => "Your {$comp} entry — please restore it (your link still works)",
-        'heading' => 'Hi {first_name}, please restore your entry',
-        'body'    => "<p>Our hosting provider had a serious outage at the end of October and recent {$comp} entries were lost from our system. We're sorry for the trouble.</p>\n"
-            . "<p><strong>Your personal link still works</strong>, and every person who has opened it since the site came back has been saved.</p>\n"
-            . "<p>To get your entry and your score back, it takes about a minute:</p>\n"
-            . "<ol>\n<li>Find the email <strong>\"You're entered — {$comp}\"</strong> we sent you and copy your link.</li>\n<li>Tap the button below and fill in your details with the same email and cellphone number.</li>\n<li>Enter the code we email you. Done.</li>\n</ol>\n"
-            . "<p><a href=\"{restore_link}\" style=\"display:inline-block;background:#f7801a;color:#2a1402;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:10px;\">Restore my entry</a></p>\n"
-            . "<p>Can't find the email? Restore anyway with the same email and cellphone number, and tell us what you remember. Questions: <a href=\"mailto:{$contact}\">{$contact}</a>.</p>",
+        'name'    => 'Competition extended',
+        'subject' => "{$comp} has been extended — there's still time to win",
+        'heading' => "Hi {first_name}, {$comp} has been extended",
+        'body'    => "<p>Good news: we're extending the {$comp} competition, so there's more time to enter and climb the leaderboard.</p>\n"
+            . "<p>Every person who opens your personal link counts towards your score. Share it with friends and family:</p>\n"
+            . "<p><a href=\"{share_link}\" style=\"display:inline-block;background:#f7801a;color:#2a1402;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:10px;\">Open the competition</a></p>\n"
+            . "<p>Questions: <a href=\"mailto:{$contact}\">{$contact}</a>.</p>",
     ];
+}
+
+/** Recipients for a built-in audience: registered entrants and/or the GMF mailing list. */
+function campaign_audience_rows(string $audience): array
+{
+    $entrants = "SELECT email, full_name, ref_code FROM entrants WHERE email IS NOT NULL AND email <> '' AND (email_status IS NULL OR email_status <> 'bounced')";
+    $list = "SELECT email, '' AS full_name, NULL AS ref_code FROM subscribers";
+    $sql = match ($audience) {
+        'all'         => $entrants,
+        'verified'    => $entrants . " AND status = 'verified'",
+        'marketing'   => $entrants . " AND status = 'verified' AND consent_marketing = 1",
+        'subscribers' => $list,
+        'everyone'    => $entrants . ' UNION ALL ' . $list,   // entrants first, so their names and links win the duplicate check
+        default       => null,
+    };
+    return $sql ? q($sql)->fetchAll() : [];
 }
 
 function campaign_unsubscribe_token(string $email): string
@@ -51,7 +65,7 @@ function campaign_render(array $campaign, array $r): array
         e($first !== '' ? $first : 'there'),
         e((string) ($r['full_name'] ?? '')),
         e(!empty($r['ref_code']) ? url('r/' . $r['ref_code']) : url('flyfortwo/')),
-        e(url('flyfortwo/restore') . (!empty($r['ref_code']) ? '?code=' . rawurlencode($r['ref_code']) : '')),
+        e(url('flyfortwo/login')),   // {restore_link}: kept for older drafts, now the sign-in page
         e(url('flyfortwo/')),
     ];
     $body = str_replace(CAMPAIGN_FIELDS, $values, (string) $campaign['body_html']);
@@ -59,7 +73,7 @@ function campaign_render(array $campaign, array $r): array
     $subject = str_replace(CAMPAIGN_FIELDS, array_map('html_entity_decode', $values), (string) $campaign['subject']);
     $unsub = e(campaign_unsubscribe_link((string) $r['email']));
     $body .= "<p style=\"margin:22px 0 0;font-size:12px;color:#55707a;\">You're receiving this because you entered " . e((string) setting('comp_name'))
-        . ". <a href=\"{$unsub}\" style=\"color:#55707a;\">Unsubscribe</a> from further emails like this.</p>";
+        . " or joined the George Musical Festival mailing list. <a href=\"{$unsub}\" style=\"color:#55707a;\">Unsubscribe</a> from further emails like this.</p>";
     return [$subject, mail_template($heading, '<div style="font-size:15px;line-height:1.6;">' . $body . '</div>')];
 }
 

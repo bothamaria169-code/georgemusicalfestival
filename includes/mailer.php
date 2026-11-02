@@ -5,7 +5,8 @@
  */
 declare(strict_types=1);
 
-function send_mail(string $to, string $subject, string $html, string $text = ''): bool
+/** $attachments: list of ['name' => file name, 'data' => raw bytes, 'type' => MIME type]. */
+function send_mail(string $to, string $subject, string $html, string $text = '', array $attachments = []): bool
 {
     $driver = config('mail.driver', 'log');
     if ($text === '') {
@@ -18,10 +19,10 @@ function send_mail(string $to, string $subject, string $html, string $text = '')
 
     try {
         if ($driver === 'smtp') {
-            return smtp_send($to, $subject, $html, $text);
+            return smtp_send($to, $subject, $html, $text, $attachments);
         }
         if ($driver === 'mail') {
-            [$headers, $body] = mail_build_mime($to, $subject, $html, $text, false);
+            [$headers, $body] = mail_build_mime($to, $subject, $html, $text, false, $attachments);
             return mail($to, mail_encode_header($subject), $body, $headers);
         }
     } catch (Throwable $e) {
@@ -29,7 +30,7 @@ function send_mail(string $to, string $subject, string $html, string $text = '')
         return false;
     }
 
-    mail_log("TO: {$to}\nSUBJECT: {$subject}\n{$text}\n");
+    mail_log("TO: {$to}\nSUBJECT: {$subject}\n{$text}\n" . ($attachments ? 'ATTACHED: ' . implode(', ', array_column($attachments, 'name')) . "\n" : ''));
     return true;
 }
 
@@ -48,7 +49,7 @@ function mail_encode_header(string $value): string
 }
 
 /** Returns [headers string, body string]. With $full the To/Subject/Date headers are included (SMTP DATA). */
-function mail_build_mime(string $to, string $subject, string $html, string $text, bool $full): array
+function mail_build_mime(string $to, string $subject, string $html, string $text, bool $full, array $attachments = []): array
 {
     $boundary = 'b' . bin2hex(random_bytes(12));
     $fromEmail = config('mail.from_email');
@@ -65,18 +66,31 @@ function mail_build_mime(string $to, string $subject, string $html, string $text
     $h[] = "Reply-To: {$fromEmail}";
     $h[] = 'Message-ID: <' . bin2hex(random_bytes(10)) . '@' . $domain . '>';
     $h[] = 'MIME-Version: 1.0';
-    $h[] = "Content-Type: multipart/alternative; boundary=\"{$boundary}\"";
 
     $body = "--{$boundary}\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"
         . chunk_split(base64_encode($text))
         . "--{$boundary}\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n"
         . chunk_split(base64_encode($html))
         . "--{$boundary}--\r\n";
+    if (!$attachments) {
+        $h[] = "Content-Type: multipart/alternative; boundary=\"{$boundary}\"";
+        return [implode("\r\n", $h), $body];
+    }
 
-    return [implode("\r\n", $h), $body];
+    // With attachments: multipart/mixed holding the text/HTML alternative, then each file.
+    $mixed = 'm' . bin2hex(random_bytes(12));
+    $h[] = "Content-Type: multipart/mixed; boundary=\"{$mixed}\"";
+    $out = "--{$mixed}\r\nContent-Type: multipart/alternative; boundary=\"{$boundary}\"\r\n\r\n{$body}";
+    foreach ($attachments as $a) {
+        $name = str_replace(['"', "\r", "\n"], '', (string) $a['name']);
+        $out .= "--{$mixed}\r\nContent-Type: " . ($a['type'] ?? 'application/octet-stream') . "; name=\"{$name}\"\r\n"
+            . "Content-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"{$name}\"\r\n\r\n"
+            . chunk_split(base64_encode((string) $a['data']));
+    }
+    return [implode("\r\n", $h), $out . "--{$mixed}--\r\n"];
 }
 
-function smtp_send(string $to, string $subject, string $html, string $text): bool
+function smtp_send(string $to, string $subject, string $html, string $text, array $attachments = []): bool
 {
     $host = (string) config('mail.host');
     $port = (int) config('mail.port', 465);
@@ -133,7 +147,7 @@ function smtp_send(string $to, string $subject, string $html, string $text): boo
     }
     $cmd('DATA', [354]);
 
-    [$headers, $body] = mail_build_mime($to, $subject, $html, $text, true);
+    [$headers, $body] = mail_build_mime($to, $subject, $html, $text, true, $attachments);
     $message = $headers . "\r\n\r\n" . $body;
     $message = preg_replace('/^\./m', '..', $message); // dot-stuffing
     $cmd($message . "\r\n.", [250]);

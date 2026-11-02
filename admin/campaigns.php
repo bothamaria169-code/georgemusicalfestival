@@ -4,6 +4,12 @@ require __DIR__ . '/_layout.php';
 
 $admin = require_admin('admin');
 
+if (isset($_GET['export']) && ($c = q('SELECT * FROM email_campaigns WHERE id = ?', [(int) ($_GET['id'] ?? 0)])->fetch())) {
+    audit('campaign.export', ['id' => (int) $c['id']]);
+    csv_download('campaign-' . (int) $c['id'] . '-recipients-' . date('Ymd-His') . '.csv', ['Email', 'Full name', 'Share code', 'Status', 'Error', 'Sent at'],
+        q('SELECT email, full_name, ref_code, status, error, sent_at FROM email_queue WHERE campaign_id = ? ORDER BY id', [$c['id']]));
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_ok()) {
     $action = $_POST['action'] ?? '';
     $id = (int) ($_POST['id'] ?? 0);
@@ -32,11 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_ok()) {
         if (!empty($_FILES['csv']['tmp_name']) && is_uploaded_file($_FILES['csv']['tmp_name'])) {
             $rows = array_merge($rows, campaign_csv_rows($_FILES['csv']['tmp_name']));
         }
-        $aud = $_POST['audience'] ?? '';
-        if ($aud === 'verified' || $aud === 'marketing') {
-            $rows = array_merge($rows, q("SELECT email, full_name, ref_code FROM entrants WHERE status = 'verified' AND email IS NOT NULL"
-                . ($aud === 'marketing' ? ' AND consent_marketing = 1' : '') . " AND (email_status IS NULL OR email_status <> 'bounced')")->fetchAll());
-        }
+        $rows = array_merge($rows, campaign_audience_rows((string) ($_POST['audience'] ?? '')));
         foreach (lines((string) ($_POST['emails'] ?? '')) as $line) {
             $rows[] = ['email' => trim(explode(',', $line)[0]), 'full_name' => trim(explode(',', $line)[1] ?? ''), 'ref_code' => trim(explode(',', $line)[2] ?? '')];
         }
@@ -85,7 +87,7 @@ admin_head('Email campaigns', 'campaigns');
   Every email includes an unsubscribe link; unsubscribed addresses are skipped automatically.</p>
 </div>
 
-<?php if (isset($_GET['new'])): $t = campaign_restore_template(); ?>
+<?php if (isset($_GET['new'])): $t = campaign_default_template(); ?>
 <div class="card">
   <h2>New campaign</h2>
   <form method="post" class="grid" style="gap:12px">
@@ -108,7 +110,7 @@ admin_head('Email campaigns', 'campaigns');
   </div>
   <div class="grid" style="align-content:start;gap:16px">
     <div class="card">
-      <h2>Progress</h2>
+      <h2>Progress <a class="btn btn-sm" href="?id=<?= (int) $campaign['id'] ?>&amp;export=1"><i class="fa-solid fa-file-csv"></i> Export CSV</a></h2>
       <p style="margin:0">Queued <strong><?= (int) $n['queued'] ?></strong> · Sent <strong><?= (int) $n['sent'] ?></strong> · Failed <strong><?= (int) $n['failed'] ?></strong> · Skipped <strong><?= (int) $n['skipped'] ?></strong></p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
         <form method="post"><?= csrf_field() ?><input type="hidden" name="id" value="<?= (int) $campaign['id'] ?>"><input type="hidden" name="action" value="test"><button class="btn btn-sm" type="submit"><i class="fa-solid fa-flask"></i> Send me a test</button></form>
@@ -129,7 +131,7 @@ admin_head('Email campaigns', 'campaigns');
         <?= csrf_field() ?><input type="hidden" name="id" value="<?= (int) $campaign['id'] ?>"><input type="hidden" name="action" value="recipients">
         <div><label class="f">CSV file (needs an "Email" column; "Full name" and "Share code" are used if present)</label><input class="in" type="file" name="csv" accept=".csv,text/csv"></div>
         <div><label class="f">Or paste — one per line: email, full name, share code</label><textarea class="in" name="emails" rows="4" placeholder="thandi@example.com, Thandiwe Nkosi, QEP6GP9"></textarea></div>
-        <div><label class="f">And/or entrants in this system</label><select class="in" name="audience"><option value="">— none —</option><option value="verified">All verified entrants</option><option value="marketing">Verified entrants who opted in to marketing</option></select></div>
+        <div><label class="f">And/or entrants in this system</label><select class="in" name="audience"><option value="">— none —</option><option value="verified">All verified entrants</option><option value="all">All registered entrants (verified or not)</option><option value="marketing">Verified entrants who opted in to marketing</option><option value="subscribers">Mailing list sign-ups</option><option value="everyone">Everyone: all entrants + mailing list</option></select></div>
         <div><button class="btn btn-primary" type="submit"><i class="fa-solid fa-user-plus"></i> Add</button></div>
       </form>
     </div>
@@ -152,7 +154,7 @@ admin_head('Email campaigns', 'campaigns');
         <td class="num"><?= (int) $n['queued'] ?></td><td class="num"><?= (int) $n['sent'] ?></td><td class="num"><?= (int) $n['failed'] ?></td><td class="num"><?= (int) $n['skipped'] ?></td>
         <td><small class="muted"><?= e(fmt_date($c['created_at'], 'j M H:i')) ?></small></td></tr>
     <?php endforeach; ?>
-    <?php if (!$all): ?><tr><td colspan="7" class="muted">No campaigns yet. Start with "New campaign" — it opens with the "Restore your entry" email ready to edit.</td></tr><?php endif; ?>
+    <?php if (!$all): ?><tr><td colspan="7" class="muted">No campaigns yet. Start with "New campaign" — it opens with a "Competition extended" email ready to edit.</td></tr><?php endif; ?>
     </tbody>
   </table></div>
 </div>
