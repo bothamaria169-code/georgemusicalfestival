@@ -21,11 +21,11 @@ DirectoryIndex index.php
   RewriteCond %{HTTP_HOST} ^cellc\.georgemusicalfestival\.co\.za$ [NC]
   RewriteRule ^ https://georgemusicalfestival.co.za/cellc/win/ [R=302,L,QSA]
 
-  # Holding page: while the festival website isn't launched, its pages on the main domain show
-  # holding.html. The competitions, share links, restore, admin and API keep working.
+  # While the festival website isn't launched, the main domain's home page (and gallery) show the
+  # FLY FOR TWO competition page. The competitions, share links, restore, admin and API keep working.
   # To launch the festival site, delete these two lines.
   RewriteCond %{HTTP_HOST} ^(www\.)?georgemusicalfestival\.co\.za$ [NC]
-  RewriteRule ^(index\.php|gallery\.php)?$ holding.html [L]
+  RewriteRule ^(index\.php|gallery\.php)?$ fly-for-two.php [L,QSA]
 
   # Short share links: /r/ABC1234 → r.php?c=ABC1234
   RewriteRule ^r/([A-Za-z0-9]{4,12})/?$ r.php?c=$1 [L,QSA]
