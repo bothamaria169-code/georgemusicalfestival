@@ -236,6 +236,7 @@ CREATE TABLE IF NOT EXISTS score_adjustments (
 -- Bulk email (added 29 Oct 2026, see migrate-2026-10-29-campaigns.sql).
 CREATE TABLE IF NOT EXISTS email_campaigns (
   id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  brand       VARCHAR(10)  NOT NULL DEFAULT 'acsa',   -- acsa = FLY FOR TWO, cellc = WIN A SAMSUNG
   name        VARCHAR(120) NOT NULL,
   subject     VARCHAR(190) NOT NULL,
   heading     VARCHAR(190) NOT NULL,
@@ -253,12 +254,25 @@ CREATE TABLE IF NOT EXISTS email_queue (
   email        VARCHAR(190) NOT NULL,
   full_name    VARCHAR(120) NULL,
   ref_code     VARCHAR(12)  NULL,
+  source       VARCHAR(120) NULL,                     -- file name, "pasted" or the audience
   status       ENUM('queued','sent','failed','skipped') NOT NULL DEFAULT 'queued',
   error        VARCHAR(255) NULL,
   sent_at      DATETIME     NULL,
   UNIQUE KEY uq_once (campaign_id, email),
   KEY ix_status (campaign_id, status),
   CONSTRAINT fk_queue_campaign FOREIGN KEY (campaign_id) REFERENCES email_campaigns(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Saved email templates per brand (added 3 Nov 2026, see migrate-2026-11-03-campaign-brands.sql).
+CREATE TABLE IF NOT EXISTS email_templates (
+  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  brand       VARCHAR(10)  NOT NULL DEFAULT 'acsa',
+  name        VARCHAR(120) NOT NULL,
+  subject     VARCHAR(190) NOT NULL,
+  heading     VARCHAR(190) NOT NULL,
+  body_html   MEDIUMTEXT   NOT NULL,
+  created_by  INT UNSIGNED NULL,
+  created_at  DATETIME     NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS email_suppressions (
