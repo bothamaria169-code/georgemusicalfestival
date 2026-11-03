@@ -10,7 +10,7 @@ $score = referral_stats((int) $me['id'])['clicks'];
   </div>
   <div class="pass-mid">
     <div><small>From</small><strong><?= e($me['town'] ?: 'Garden Route') ?></strong></div>
-    <div style="text-align:right"><small>To</small><strong>A weekend away</strong></div>
+    <div style="text-align:right"><small>To</small><strong>A getaway for two</strong></div>
   </div>
   <div class="pass-divider"></div>
   <div class="pass-bottom">

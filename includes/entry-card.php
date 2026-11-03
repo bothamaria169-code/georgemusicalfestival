@@ -37,8 +37,8 @@ $winners  = $winners ?? ($state === 'closed' ? q("SELECT d.title, p.full_name, p
 <?php elseif ($state === 'closed'): ?>
   <div class="ff-body ff-center">
     <div class="ff-icon"><i class="fa-solid fa-plane-arrival"></i></div>
-    <h2 class="ff-h">Extended</h2>
-    <p class="ff-sub">We're extending the campaign. Thank you to everyone who has entered — your personal link keeps counting.</p>
+    <h2 class="ff-h">Entries have closed</h2>
+    <p class="ff-sub">Thank you to everyone who entered FLY FOR TWO. The winners are announced here.</p>
     <?php foreach ($winners as $w): ?>
       <div class="ff-winner"><small><?= e($w['title']) ?> winner</small><strong><?= e(short_name($w['full_name'])) ?></strong><?php if ($w['town']): ?><span><?= e($w['town']) ?></span><?php endif; ?></div>
     <?php endforeach; ?>

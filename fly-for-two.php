@@ -22,8 +22,8 @@ $winners  = q("SELECT d.title, d.prize_description, p.full_name, p.town
                WHERE d.status = 'published' ORDER BY d.scheduled_for")->fetchAll();
 
 $page_title       = setting('comp_name') . ' — Win ' . setting('prize_headline') . ' | GMF × ACSA';
-$meta_description = 'Enter FLY FOR TWO free and win ' . setting('prize_headline') . ' — return flights, accommodation and shuttle transfers. George Musical Festival × Airports Company South Africa.';
-$og_image         = url('assets/img/gallery/airport-terminal.jpg');
+$meta_description = 'FLY FOR TWO is back. Entered before? Please enter again. Win a getaway for two + R1,500 cash — return flights, accommodation and ground transfers. Entries close ' . fmt_date(setting('comp_close_at'), 'j F Y') . '.';
+$og_image         = url('assets/img/competition/relaunch/relaunch-share-1080x1080.jpg');
 $nav_active       = 'fly';
 $extra_css        = ['assets/css/comp.css'];
 $extra_js         = ['assets/js/enter.js'];
@@ -32,15 +32,27 @@ $show_logo_ticker = true;
 require __DIR__ . '/includes/header.php';
 ?>
 
+<!-- ═══════════════ RELAUNCH BANNER ═══════════════ -->
+<section class="relaunch-banner">
+  <a href="#entryCard" class="relaunch-banner-link">
+    <picture>
+      <source media="(max-width: 760px)" srcset="<?= e(url('assets/img/competition/relaunch/relaunch-banner-750x900.jpg')) ?>" width="750" height="900">
+      <img src="<?= e(url('assets/img/competition/relaunch/relaunch-banner-1600x500.jpg')) ?>" width="1600" height="500" alt="FLY FOR TWO is back. Entered before? Please enter again. Win a getaway for two plus R1,500 cash: return flights, accommodation and ground transfers. Entries close <?= e(fmt_date(setting('comp_close_at'), 'j F Y')) ?>. Enter now." fetchpriority="high">
+    </picture>
+  </a>
+  <p class="relaunch-banner-small"><a href="<?= e(url('flyfortwo/terms')) ?>">T's &amp; C's apply.</a></p>
+</section>
+
 <section class="ff-hero grain">
   <img class="ff-hero-bg" src="<?= e(url('assets/img/gallery/airport-terminal.jpg')) ?>" alt="" fetchpriority="high">
   <div class="wrap ff-layout">
 
     <div class="ff-intro">
       <div class="ff-badge"><?= e(setting('hero_kicker')) ?></div>
-      <h1 class="display huge">Win a ticket for <span class="serif-i">two.</span></h1>
+      <h1 class="display huge">FLY FOR TWO is <span class="serif-i">back.</span></h1>
+      <p class="relaunch-again">Entered before? Please enter again.</p>
       <p class="lede"><?= e(setting('hero_text')) ?></p>
-      <figure class="ff-intro-photo"><img src="<?= e(url('assets/img/competition/hero-win-a-trip-for-two.jpg')) ?>" width="1536" height="1024" alt="A couple on a plane holding their boarding passes" fetchpriority="high"></figure>
+      <p class="relaunch-close">Entries close <strong><?= e(fmt_date(setting('comp_close_at'), 'j F Y')) ?></strong></p>
       <p style="margin-top:18px;"><a class="text-link" href="<?= e(url('flyfortwo/how-to-enter')) ?>">How to enter, step by step <i class="fa-solid fa-arrow-right"></i></a></p>
       <?php if ($referrer && (!$me || (int) $me['id'] !== (int) $referrer['id'])): ?>
         <p class="ff-invited"><i class="fa-solid fa-user-plus"></i> <?= e(short_name($referrer['full_name'])) ?> invited you to enter.</p>
@@ -87,7 +99,7 @@ require __DIR__ . '/includes/header.php';
     <div>
       <span class="kicker reveal">Leaderboard</span>
       <h2 class="display big reveal" style="margin-top:18px;">The <span class="serif-i text-orange">leaderboard</span></h2>
-      <p class="muted reveal" style="margin-top:18px;max-width:440px;">Ranked by link opens — the number of different people who opened each entrant's personal link. <strong style="color:var(--text-light)">We are extending the campaign — the leader stays secret until the winners are revealed.</strong> <?= e(setting('referral_reward_text')) ?></p>
+      <p class="muted reveal" style="margin-top:18px;max-width:440px;">Ranked by link opens — the number of different people who opened each entrant's personal link. <strong style="color:var(--text-light)">Entries close <?= e(fmt_date(setting('comp_close_at'), 'j F Y')) ?> — the leader stays secret until the winners are revealed.</strong> <?= e(setting('referral_reward_text')) ?></p>
       <?php if ($me): ?><a class="btn btn-orange reveal" style="margin-top:22px" href="<?= e(url('flyfortwo/dashboard')) ?>">Get my link</a><?php endif; ?>
     </div>
     <div class="reveal reveal-d2">
@@ -121,8 +133,9 @@ require __DIR__ . '/includes/header.php';
     <div class="ff-faq reveal">
       <details open><summary>Who can enter?</summary><p>South African residents aged 18 and over. Entry is free. Full rules are in the <a href="<?= e(url('flyfortwo/terms')) ?>">competition terms</a>.</p></details>
       <details><summary>How many times can I enter?</summary><p>Once per phone number and email address. After that, your score grows each time a different person opens your personal link.</p></details>
+      <details><summary>I entered before. Do I need to enter again?</summary><p>Yes, please. FLY FOR TWO is back with a bigger prize, so enter again with your details and share your new personal link.</p></details>
       <details><summary>Why do I need a verification code?</summary><p>The code confirms that your email is real and that the entry is yours. Unconfirmed entries aren't on the leaderboard and can't win.</p></details>
-      <details><summary>When are the winners revealed?</summary><p>The campaign has been extended, so entries and link opens keep counting. The winners are revealed when the extended campaign ends: 1st place wins <?= e(setting('prize_headline')) ?> and 2nd place wins the Second Prize.</p></details>
+      <details><summary>When are the winners revealed?</summary><p>Entries and link opens count until <?= e(fmt_date(setting('comp_close_at'), 'j F Y, H:i')) ?>. The winners are revealed after entries close: 1st place wins <?= e(setting('prize_headline')) ?> and 2nd place wins the Second Prize.</p></details>
       <details><summary>How is the winner chosen?</summary><p><?= e(setting('draw_reassurance')) ?></p></details>
       <details><summary>What happens to my information?</summary><p>Your details are used to run the competition and are owned by Airports Company South Africa. You'll only get marketing messages if you ticked the optional box. See the <a href="<?= e(url('flyfortwo/privacy')) ?>">privacy notice</a>.</p></details>
     </div>

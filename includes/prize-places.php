@@ -2,7 +2,7 @@
 /** The two prizes under the leaderboard rules. Optional $placesClass adds classes to the wrapper. */
 $gp = draw_by_key('final');
 $sp = draw_by_key('event_day');
-$revealDate = 'when the extended campaign ends';
+$revealDate = 'after ' . fmt_date(setting('comp_close_at'), 'j M');
 ?>
 <div class="draw-dates <?= e($placesClass ?? '') ?>">
   <div class="draw-date"><small><i class="fa-solid fa-trophy"></i> Grand Prize · 1st place</small><strong><?= e(setting('prize_headline')) ?></strong><span>Most link opens · revealed <?= e($revealDate) ?></span></div>

@@ -21,9 +21,9 @@ $shareCap   = (int) setting('share_bonus_cap');
 $headWords  = preg_split('/\s+/', trim((string) setting('hero_headline'))) ?: [];
 $headAccent = count($headWords) > 1 ? array_pop($headWords) : '';
 
-$page_title       = 'Win a trip for two — FLY FOR TWO · George Musical Festival × ACSA';
+$page_title       = 'FLY FOR TWO is back — win a getaway for two + R1,500 cash · George Musical Festival × ACSA';
 $meta_description = (string) setting('hero_text');
-$og_image         = url('assets/img/competition/hero-win-a-trip-for-two.jpg');
+$og_image         = url('assets/img/competition/relaunch/relaunch-share-1080x1080.jpg');
 $nav_active       = 'home';
 $extra_css        = ['assets/css/comp.css'];
 $extra_js         = ['assets/js/enter.js'];
@@ -38,20 +38,23 @@ require __DIR__ . '/includes/header.php';
     <div class="win-hero-text">
       <span class="win-kicker"><i class="fa-solid fa-plane-up"></i> <?= e(setting('hero_kicker')) ?></span>
       <h1 class="display huge"><?= e(implode(' ', $headWords)) ?><?php if ($headAccent): ?> <span class="serif-i"><?= e($headAccent) ?>.</span><?php endif; ?></h1>
+      <p class="relaunch-again">Entered before? Please enter again.</p>
       <p class="lede"><?= e(setting('hero_text')) ?></p>
+      <p class="relaunch-close">Entries close <strong><?= e(fmt_date(setting('comp_close_at'), 'j F Y')) ?></strong> · <a href="<?= e(url('flyfortwo/terms')) ?>">T's &amp; C's apply</a></p>
       <div class="cover-actions">
         <a class="btn btn-orange btn-lg" href="#enter"><i class="fa-solid fa-ticket"></i> Enter now — it's free</a>
         <a class="btn btn-ghost btn-lg" href="<?= e(url('flyfortwo/how-to-enter')) ?>">How to enter</a>
       </div>
       <ul class="win-points">
         <li><i class="fa-solid fa-plane"></i> Return flights for two</li>
-        <li><i class="fa-solid fa-hotel"></i> Weekend accommodation</li>
-        <li><i class="fa-solid fa-van-shuttle"></i> Shuttle transfers</li>
+        <li><i class="fa-solid fa-hotel"></i> Accommodation</li>
+        <li><i class="fa-solid fa-van-shuttle"></i> Ground transfers</li>
+        <li><i class="fa-solid fa-money-bill-wave"></i> R1,500 cash</li>
       </ul>
     </div>
     <figure class="win-hero-photo">
       <img src="<?= e(url('assets/img/competition/hero-win-a-trip-for-two.jpg')) ?>" width="1536" height="1024" alt="A smiling couple on a plane holding their boarding passes from Johannesburg to Cape Town" fetchpriority="high">
-      <figcaption><span class="win-stamp">Win a ticket<br>for two</span></figcaption>
+      <figcaption><span class="win-stamp">Plus<br>R1,500<br>cash</span></figcaption>
     </figure>
   </div>
 </section>
@@ -80,7 +83,7 @@ require __DIR__ . '/includes/header.php';
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
     <?php for ($i = 0; $i < 2; $i++): ?>
-      <span>Win a trip for two</span><?php if (!empty($artists[0]['title'])): ?><span>Headlining: <?= e($artists[0]['title']) ?> + many more</span><?php endif; ?><span>Enter free</span><span>Most link opens wins</span><span>Campaign extended</span><span><?= e($eventName) ?></span>
+      <span>FLY FOR TWO is back</span><span>Win a getaway for two</span><?php if (!empty($artists[0]['title'])): ?><span>Headlining: <?= e($artists[0]['title']) ?> + many more</span><?php endif; ?><span>Enter free</span><span>Most link opens wins</span><span>Plus R1,500 cash</span><span>Entries close <?= e(fmt_date(setting('comp_close_at'), 'j F Y')) ?></span><span><?= e($eventName) ?></span>
     <?php endfor; ?>
   </div>
 </div>
@@ -131,7 +134,7 @@ require __DIR__ . '/includes/header.php';
       <img class="acsa-logo reveal" src="<?= e(url('assets/img/brand/acsa-white.png')) ?>" alt="Airports Company South Africa" loading="lazy">
       <span class="kicker reveal" style="margin-top:26px;">ACSA × GMF</span>
       <h2 class="display big reveal" style="margin-top:16px;">Getting the <span class="serif-i text-orange">unflown</span> flying.</h2>
-      <p class="lede reveal" style="margin-top:18px;">For many people on the Garden Route, flying still feels out of reach. Together with Airports Company South Africa, George Musical Festival is changing that — one weekend getaway, one first flight, one new journey at a time.</p>
+      <p class="lede reveal" style="margin-top:18px;">For many people on the Garden Route, flying still feels out of reach. Together with Airports Company South Africa, George Musical Festival is changing that — one getaway, one first flight, one new journey at a time.</p>
       <p class="muted reveal">At <?= e($eventName) ?>, the ACSA Experience brings airports closer: meet Moyeni, the ACSA mascot, talk to the airport team about travel and careers, and find out how to climb the FLY FOR TWO leaderboard.</p>
     </div>
     <div class="acsa-collage acsa-collage--wide reveal reveal-d2">
@@ -278,7 +281,7 @@ $hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, fals
           <?php endif; ?>
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px;">
             <a class="btn btn-orange" href="<?= e($ticketUrl !== '' ? $ticketUrl : '#tickets') ?>" <?= $ticketUrl !== '' ? 'target="_blank" rel="noopener"' : '' ?>><i class="fa-solid fa-ticket"></i> Get tickets</a>
-            <a class="btn btn-ghost" href="#enter"><i class="fa-solid fa-plane-departure"></i> Win a trip for two</a>
+            <a class="btn btn-ghost" href="#enter"><i class="fa-solid fa-plane-departure"></i> Win a getaway for two</a>
           </div>
         </div>
       </div>

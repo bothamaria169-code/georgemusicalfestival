@@ -300,8 +300,8 @@ function setting_defaults(): array
     return [
         // Homepage hero (competition-first)
         'hero_kicker'       => 'ACSA × GMF: Getting the Unflown Flying',
-        'hero_headline'     => 'Win a ticket for two',
-        'hero_text'         => 'In partnership with Airports Company South Africa (ACSA), GMF is making air travel more accessible and inspiring new journeys across South Africa. Enter for your chance to win a Weekend Getaway for Two and experience the journey for yourself.',
+        'hero_headline'     => 'FLY FOR TWO is back',
+        'hero_text'         => 'In partnership with Airports Company South Africa (ACSA), GMF is making air travel more accessible and inspiring new journeys across South Africa. Enter for your chance to win a getaway for two plus R1,500 cash and experience the journey for yourself.',
 
         // Event
         'event_name'        => 'Eden Soul & Jazz Reimagined',
@@ -312,7 +312,7 @@ function setting_defaults(): array
         'ticket_url'        => '',
         'ticket_note'       => 'Tickets on sale soon',
         'hero_video_url'    => '',
-        'announcement'      => 'FLY FOR TWO is live — enter free and win a weekend getaway for two.',
+        'announcement'      => 'FLY FOR TWO is back — win a getaway for two + R1,500 cash. Entries close 30 November 2026.',
         'contact_email'     => 'info@georgemusicalfestival.co.za',
         'contact_phone'     => '',
         'social_facebook'   => '',
@@ -323,8 +323,8 @@ function setting_defaults(): array
         // Competition
         'comp_name'         => 'FLY FOR TWO',
         'comp_open_at'      => '2026-09-24 00:00:00',
-        'comp_close_at'     => '2026-10-31 23:59:59',
-        'prize_headline'    => 'A Weekend Getaway for Two',
+        'comp_close_at'     => '2026-11-30 23:59:59',
+        'prize_headline'    => 'A Getaway for Two + R1,500 Cash',
         'travel_question'   => 'Have you flown before?',
         'travel_options'    => "No, I haven't flown yet\nOccasionally — once or twice a year\nFrequently — three or more times a year",
         'age_groups'        => "Under 18
@@ -371,6 +371,45 @@ function setting(string $key, $default = null)
 function save_setting(string $key, ?string $value): void
 {
     q('INSERT INTO settings (skey, svalue) VALUES (?, ?) ON DUPLICATE KEY UPDATE svalue = VALUES(svalue)', [$key, $value]);
+}
+
+/* ──────────────────────────── FLY FOR TWO relaunch (3 Nov 2026) ──────────────────────────── */
+
+const RELAUNCH_PRIZE_LINES = "Return flights for two\nAccommodation\nGround transfers\nR1,500 cash";
+
+/**
+ * Runs once per database, before any setting is read: writes the relaunch settings
+ * (closes 30 November 2026, prize now includes R1,500 cash) and the Grand Prize lines,
+ * and swaps the "extended" clauses in the live terms. Admin edits made afterwards stick.
+ */
+function apply_relaunch_once(): void
+{
+    try {
+        if (q("SELECT 1 FROM settings WHERE skey = 'relaunch_2026_11'")->fetchColumn()) {
+            return;
+        }
+    } catch (Throwable $e) {
+        return; // not installed yet
+    }
+    $d = setting_defaults();
+    foreach (['hero_headline', 'hero_text', 'announcement', 'comp_close_at', 'prize_headline'] as $k) {
+        save_setting($k, (string) $d[$k]);
+    }
+    $terms = q("SELECT svalue FROM settings WHERE skey = 'terms_html'")->fetchColumn();
+    if (is_string($terms)) {
+        $terms = strtr($terms, [
+            'and the competition period has been extended; the closing date will be announced on this website. Entries and link opens received outside the competition period do not count.'
+                => 'and close on 30 November 2026 at 23:59 (South African time). Entries and link opens received outside this period do not count.',
+            'a weekend getaway for two — return domestic flights, weekend accommodation and shuttle transfers.'
+                => 'a getaway for two — return domestic flights, accommodation and ground transfers — plus R1,500 cash.',
+            'Prizes are not transferable and cannot be exchanged for cash.'
+                => 'Prizes are not transferable and, apart from the R1,500 cash in the Grand Prize, cannot be exchanged for cash.',
+        ]);
+        save_setting('terms_html', $terms);
+    }
+    q("UPDATE draws SET prize_description = ?, scheduled_for = '2026-11-30' WHERE draw_key = 'final'", [RELAUNCH_PRIZE_LINES]);
+    q("UPDATE draws SET scheduled_for = '2026-11-30' WHERE draw_key = 'event_day'");
+    save_setting('relaunch_2026_11', now());
 }
 
 /* ──────────────────────────── Website media ──────────────────────────── */
@@ -471,3 +510,5 @@ function audit(string $action, $detail = null): void
         now(),
     ]);
 }
+
+apply_relaunch_once();

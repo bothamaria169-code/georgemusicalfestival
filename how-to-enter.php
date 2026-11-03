@@ -10,9 +10,9 @@ $cooldown  = (int) setting('otp_cooldown');
 $state     = comp_state();
 $enterUrl  = url('flyfortwo/');
 
-$page_title       = 'How to enter FLY FOR TWO — win a weekend getaway for two';
+$page_title       = 'How to enter FLY FOR TWO — win a getaway for two + R1,500 cash';
 $meta_description = 'Four steps and about a minute: how to enter FLY FOR TWO, confirm your entry by email, climb the leaderboard by sharing your link, and how the winners are decided.';
-$og_image         = url('assets/img/competition/hero-win-a-trip-for-two.jpg');
+$og_image         = url('assets/img/competition/relaunch/relaunch-share-1080x1080.jpg');
 $nav_active       = 'howto';
 $extra_css        = ['assets/css/comp.css'];
 $show_logo_ticker = true;

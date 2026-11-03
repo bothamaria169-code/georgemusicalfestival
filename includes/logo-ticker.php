@@ -9,7 +9,7 @@ $gmfLogo  = url('assets/img/brand/gmf-logo-orange.png');
       <img class="lt-acsa" src="<?= e($acsaLogo) ?>" alt="" width="900" height="439">
       <span class="lt-text">Getting the unflown flying</span>
       <img class="lt-gmf" src="<?= e($gmfLogo) ?>" alt="" width="620" height="424">
-      <span class="lt-text">Win a trip for two</span>
+      <span class="lt-text">FLY FOR TWO is back</span>
     <?php endfor; ?>
   </div>
 </div>

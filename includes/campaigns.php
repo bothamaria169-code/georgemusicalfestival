@@ -15,14 +15,15 @@ function campaign_default_template(): array
 {
     $comp = (string) setting('comp_name');
     $contact = (string) setting('contact_email');
+    $close = fmt_date(setting('comp_close_at'), 'j F Y');
     return [
-        'name'    => 'Competition extended',
-        'subject' => "{$comp} has been extended — there's still time to win",
-        'heading' => "Hi {first_name}, {$comp} has been extended",
-        'body'    => "<p>Good news: we're extending the {$comp} competition, so there's more time to enter and climb the leaderboard.</p>\n"
-            . "<p>Every person who opens your personal link counts towards your score. Share it with friends and family:</p>\n"
-            . "<p><a href=\"{share_link}\" style=\"display:inline-block;background:#f7801a;color:#2a1402;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:10px;\">Open the competition</a></p>\n"
-            . "<p>Questions: <a href=\"mailto:{$contact}\">{$contact}</a>.</p>",
+        'name'    => 'FLY FOR TWO is back',
+        'subject' => "{$comp} is back — entered before? Please enter again",
+        'heading' => "Hi {first_name}, {$comp} is back",
+        'body'    => "<p>{$comp} is back, and the prize is bigger: win a getaway for two (return flights, accommodation and ground transfers) plus R1,500 cash.</p>\n"
+            . "<p><strong>Entered before? Please enter again.</strong> Entries close {$close}.</p>\n"
+            . "<p><a href=\"{entry_link}\" style=\"display:inline-block;background:#f7801a;color:#2a1402;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:10px;\">Enter now</a></p>\n"
+            . "<p>T's &amp; C's apply. Questions: <a href=\"mailto:{$contact}\">{$contact}</a>.</p>",
     ];
 }
 

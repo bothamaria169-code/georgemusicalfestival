@@ -14,7 +14,7 @@ function default_terms_html(): string
 <p>FLY FOR TWO is run by George Musical Festival ("GMF") in partnership with Airports Company South Africa SOC Ltd ("ACSA"), together "the Promoter". Contact: info@georgemusicalfestival.co.za.</p>
 
 <h2>2. Competition period</h2>
-<p>Entries open on 24 September 2026 and the competition period has been extended; the closing date will be announced on this website. Entries and link opens received outside the competition period do not count.</p>
+<p>Entries open on 24 September 2026 and close on 30 November 2026 at 23:59 (South African time). Entries and link opens received outside this period do not count.</p>
 
 <h2>3. Who can enter</h2>
 <ol>
@@ -40,9 +40,9 @@ function default_terms_html(): string
 
 <h2>6. Prizes</h2>
 <ol>
-<li><strong>Grand Prize:</strong> a weekend getaway for two — return domestic flights, weekend accommodation and shuttle transfers. Travel dates, route and suppliers are confirmed with the winner and are subject to availability within the period set by the Promoter.</li>
+<li><strong>Grand Prize:</strong> a getaway for two — return domestic flights, accommodation and ground transfers — plus R1,500 cash. Travel dates, route and suppliers are confirmed with the winner and are subject to availability within the period set by the Promoter.</li>
 <li><strong>Second Prize:</strong> as announced on the competition page.</li>
-<li>Prizes are not transferable and cannot be exchanged for cash. The Promoter may replace a prize with one of similar value if it becomes unavailable. Costs not listed as part of a prize (such as spending money, meals or travel insurance) are the winner's responsibility.</li>
+<li>Prizes are not transferable and, apart from the R1,500 cash in the Grand Prize, cannot be exchanged for cash. The Promoter may replace a prize with one of similar value if it becomes unavailable. Costs not listed as part of a prize (such as spending money, meals or travel insurance) are the winner's responsibility.</li>
 </ol>
 
 <h2>7. Fair play</h2>

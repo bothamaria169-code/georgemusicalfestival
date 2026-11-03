@@ -139,4 +139,4 @@ if (isset($result['error'])) {
 verify_entrant((int) $result['entrant']['id'], 'ussd');
 $ref = $result['entrant']['ref_code'];
 
-ussd('END', "You're entered in {$comp}! The campaign has been extended. Your share code: {$ref}");
+ussd('END', "You're entered in {$comp}! Entries close " . fmt_date(setting('comp_close_at'), 'j M') . ". Your share code: {$ref}");
