@@ -2,6 +2,24 @@
 /** Admin chrome. Call admin_head($title, $activeKey) and admin_foot(). */
 require_once dirname(__DIR__) . '/includes/bootstrap.php';
 
+// A crash shows GMF admins the real error instead of a blank 500; everyone else gets a plain message.
+set_exception_handler(function (Throwable $e): void {
+    error_log('Admin error: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+    if (!headers_sent()) {
+        http_response_code(500);
+    }
+    $admin = null;
+    try {
+        $admin = current_admin();
+    } catch (Throwable $ignored) {
+    }
+    echo '<p style="font:16px/1.5 Arial,sans-serif;margin:32px">This admin page hit an error.</p>';
+    if (($admin['role'] ?? '') === 'admin') {
+        echo '<pre style="font:13px/1.5 monospace;margin:32px;white-space:pre-wrap">' . e($e->getMessage() . "
+" . $e->getFile() . ':' . $e->getLine()) . '</pre>';
+    }
+});
+
 function admin_head(string $title, string $active = ''): void
 {
     $admin = current_admin();
@@ -22,6 +40,7 @@ function admin_head(string $title, string $active = ''): void
         'settings'    => ['settings.php', 'fa-sliders', 'Settings', 'admin'],
         'users'       => ['users.php', 'fa-user-shield', 'Team & access', 'admin'],
         'audit'       => ['audit.php', 'fa-list-check', 'Audit log', 'admin'],
+        'system'      => ['system.php', 'fa-stethoscope', 'System check', 'admin'],
     ];
     ?><!DOCTYPE html>
 <html lang="en">
