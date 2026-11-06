@@ -155,7 +155,7 @@ function campaign_card(string $title, string $partner, string $accent, ?array $s
         <p class="muted">This campaign's numbers can't be read from here right now. Its own admin still works.</p>
       <?php endif; ?>
       <div class="camp-mail">
-        <span><i class="fa-solid fa-paper-plane"></i> Email campaigns: <?= number_format($mail['totals']['campaigns']) ?> · <?= number_format($mail['totals']['sent']) ?> sent</span>
+        <span><i class="fa-solid fa-paper-plane"></i> Emails: <?= number_format($mail['totals']['campaigns']) ?> · <?= number_format($mail['totals']['sent']) ?> sent</span>
         <span class="pill <?= e($verdictClass) ?>"><?= e($verdict) ?></span>
       </div>
       <div class="camp-links">

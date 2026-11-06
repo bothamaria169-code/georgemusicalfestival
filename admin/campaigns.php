@@ -203,7 +203,7 @@ $editor = function (array $t) {
     <?php
 };
 
-admin_head('Email campaigns', 'campaigns');
+admin_head('Sent emails', 'campaigns');
 ?>
 <div class="toolbar" style="align-items:center">
   <?php foreach ($brands as $k => $b): ?>
@@ -211,7 +211,7 @@ admin_head('Email campaigns', 'campaigns');
   <?php endforeach; ?>
   <span class="grow"></span>
   <a class="btn" href="?templates=1&amp;brand=<?= e($brand) ?>"><i class="fa-regular fa-file-lines"></i> Templates</a>
-  <a class="btn btn-primary" href="?new=1&amp;brand=<?= e($brand) ?>"><i class="fa-solid fa-plus"></i> New campaign</a>
+  <a class="btn btn-primary" href="<?= e(url('admin/compose.php?brand=' . $brand)) ?>"><i class="fa-solid fa-pen-to-square"></i> Write an email</a>
 </div>
 
 <?php if (isset($_GET['new'])):
@@ -247,7 +247,7 @@ admin_head('Email campaigns', 'campaigns');
     <?php foreach (campaign_templates($brand) as $k => $tt): ?>
       <tr><td><strong><?= e($tt['name']) ?></strong><br><small class="muted"><?= !empty($tt['saved']) ? 'Saved by GMF' : 'Built in' ?></small></td>
         <td><small><?= e($tt['subject']) ?></small></td>
-        <td style="white-space:nowrap;text-align:right"><a class="btn btn-sm btn-primary" href="?new=1&amp;brand=<?= e($brand) ?>&amp;tpl=<?= e(rawurlencode($k)) ?>">Use</a>
+        <td style="white-space:nowrap;text-align:right"><a class="btn btn-sm btn-primary" href="<?= e(url('admin/compose.php?brand=' . $brand . '&tpl=' . rawurlencode($k))) ?>">Use</a>
           <?php if (!empty($tt['saved'])): ?><form method="post" style="display:inline" onsubmit="return confirm('Delete this template?')"><?= csrf_field() ?><input type="hidden" name="action" value="delete_template"><input type="hidden" name="template_id" value="<?= (int) $tt['saved'] ?>"><button class="btn btn-sm btn-danger" type="submit"><i class="fa-solid fa-trash"></i></button></form><?php endif; ?></td></tr>
     <?php endforeach; ?>
     </tbody>

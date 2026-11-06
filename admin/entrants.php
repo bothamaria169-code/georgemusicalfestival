@@ -113,7 +113,7 @@ admin_head('Entrants · ACSA Fly For Two', 'entrants');
   <div><label class="f">Email</label><select class="in" name="mail"><option value="">Any</option><option value="problem" <?= $mailq === 'problem' ? 'selected' : '' ?>>Bounced / problem</option></select></div>
   <button class="btn btn-primary" type="submit"><i class="fa-solid fa-filter"></i> Filter</button>
   <a class="btn" href="?<?= e(http_build_query(array_merge($_GET, ['export' => 1]))) ?>"><i class="fa-solid fa-file-csv"></i> Export <?= number_format($total) ?></a>
-  <?php if ($isAdmin): ?><a class="btn btn-primary" href="<?= e(url('admin/campaigns.php?new=1&brand=acsa')) ?>"><i class="fa-solid fa-paper-plane"></i> Send an email</a><?php endif; ?>
+  <?php if ($isAdmin): ?><a class="btn btn-primary" href="<?= e(url('admin/compose.php?brand=acsa')) ?>"><i class="fa-solid fa-paper-plane"></i> Write an email</a><?php endif; ?>
 </form>
 
 <div class="card">
@@ -137,6 +137,7 @@ admin_head('Entrants · ACSA Fly For Two', 'entrants');
         </td>
         <?php if ($isAdmin): ?>
         <td>
+          <a class="btn btn-sm" style="margin-bottom:6px" href="<?= e(url('admin/compose.php?brand=acsa&entrant=' . (int) $p['id'])) ?>" title="Email this person"><i class="fa-solid fa-paper-plane"></i></a>
           <form method="post" style="margin-bottom:6px" onsubmit="var n=prompt('Correct email address for this entrant:', this.email.value);if(!n)return false;this.email.value=n;"><?= csrf_field() ?><input type="hidden" name="id" value="<?= (int) $p['id'] ?>"><input type="hidden" name="action" value="email"><input type="hidden" name="email" value="<?= e($p['email']) ?>"><button class="btn btn-sm" type="submit" title="Fix this entrant's email address"><i class="fa-solid fa-at"></i></button></form>
           <?php if ($p['status'] === 'verified'): ?>
             <form method="post" onsubmit="var n=prompt('Reason for disqualification (logged):');if(!n)return false;this.note.value=n;"><?= csrf_field() ?><input type="hidden" name="id" value="<?= (int) $p['id'] ?>"><input type="hidden" name="action" value="disqualify"><input type="hidden" name="note"><button class="btn btn-sm btn-danger" type="submit" title="Disqualify"><i class="fa-solid fa-ban"></i></button></form>

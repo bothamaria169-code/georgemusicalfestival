@@ -11,7 +11,7 @@ admin_head('Cell C · WIN A SAMSUNG', 'cellc');
 campaign_card('WIN A SAMSUNG', 'Cell C campaign', '#e8590c', $s, $mail, [
     ['Competition page', url('cellc/win/'), true],
     ['Open Cell C admin', url('cellc/admin/'), true],
-    ['Email campaigns', url('admin/campaigns.php'), false],
+    ['Write an email', url('admin/compose.php?brand=cellc'), false],
 ]);
 ?>
 
