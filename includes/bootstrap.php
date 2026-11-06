@@ -453,10 +453,26 @@ function apply_december_event_once(): void
         return; // not installed yet
     }
     $d = setting_defaults();
-    foreach (['event_name', 'event_tagline', 'event_date', 'event_time', 'ticket_url', 'ticket_note', 'event_lineup', 'upcoming_events'] as $k) {
+    foreach (['event_name', 'event_tagline', 'event_date', 'event_time', 'ticket_note', 'event_lineup', 'upcoming_events'] as $k) {
         save_setting($k, (string) $d[$k]);
     }
     save_setting('december_event_2026', now());
+}
+
+/** Runs once per database: keeps the Computicket link in place until the December link arrives. */
+function apply_ticket_link_once(): void
+{
+    try {
+        if (q("SELECT 1 FROM settings WHERE skey = 'ticket_link_2026_11'")->fetchColumn()) {
+            return;
+        }
+    } catch (Throwable $e) {
+        return; // not installed yet
+    }
+    if ((string) q("SELECT svalue FROM settings WHERE skey = 'ticket_url'")->fetchColumn() === '') {
+        save_setting('ticket_url', 'https://computicket-boxoffice.com/e/george-musical-festival-eden-soul-jazz-reimagined-bzrmzs');
+    }
+    save_setting('ticket_link_2026_11', now());
 }
 
 /* ──────────────────────────── Website media ──────────────────────────── */
@@ -561,3 +577,4 @@ function audit(string $action, $detail = null): void
 apply_relaunch_once();
 apply_december_event_once();
 apply_fly_december_close_once();
+apply_ticket_link_once();
