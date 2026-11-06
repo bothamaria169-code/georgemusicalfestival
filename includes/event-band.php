@@ -4,7 +4,7 @@ $bandTicketUrl = (string) setting('ticket_url');
 $bandArtists   = lines((string) setting('event_lineup'));
 $phaseOneOpen  = date('Y-m-d') <= '2026-11-30';
 ?>
-<section class="event-band">
+<section class="event-band"<?= !empty($bandAnchors) ? ' id="event"' : '' ?>>
   <div class="wrap event-band-grid">
     <a class="event-band-poster reveal" href="<?= e(url('assets/img/event/fill-up-thembalethu-poster.jpg')) ?>" target="_blank" rel="noopener">
       <img src="<?= e(url('assets/img/event/fill-up-thembalethu-poster.jpg')) ?>" width="1121" height="1401" alt="Poster for the 2nd annual Fill Up Thembalethu Stadium, 12 December 2026, with ticket prices" loading="lazy">
@@ -13,7 +13,7 @@ $phaseOneOpen  = date('Y-m-d') <= '2026-11-30';
       <span class="kicker reveal">George Musical Festival presents · 2nd annual</span>
       <h2 class="display big reveal" style="margin-top:16px;"><?= e(setting('event_name')) ?></h2>
       <p class="event-band-when reveal"><?= e(fmt_date((string) setting('event_date'), 'j F Y')) ?> · <?= e(setting('event_venue')) ?></p>
-      <?php if ($bandArtists): ?><p class="event-band-artists reveal"><?= e(implode(' · ', $bandArtists)) ?> <span>+ more</span></p><?php endif; ?>
+      <?php if ($bandArtists): ?><p class="event-band-artists reveal"<?= !empty($bandAnchors) ? ' id="lineup"' : '' ?>><?= e(implode(' · ', $bandArtists)) ?> <span>+ more</span></p><?php endif; ?>
       <ul class="event-band-prices reveal">
         <?php if ($phaseOneOpen): ?>
           <li><small>General · Phase 1</small><strong>R200</strong><span>Until 30 November</span></li>
