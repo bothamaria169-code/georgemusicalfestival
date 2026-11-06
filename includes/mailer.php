@@ -160,13 +160,13 @@ function smtp_send(string $to, string $subject, string $html, string $text, arra
 function mail_template(string $heading, string $bodyHtml): string
 {
     $logo = url('assets/img/brand/gmf-logo-orange.png');
-    $acsa = url('assets/img/brand/acsa-white.png');
+    $acsa = url('assets/img/brand/acsa-teal.png');
     $year = date('Y');
     return <<<HTML
 <!doctype html><html><body style="margin:0;background:#eef5f7;font-family:Arial,Helvetica,sans-serif;color:#0e2a31;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#eef5f7;padding:28px 12px;"><tr><td align="center">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:14px;overflow:hidden;">
-<tr><td style="background:#006780;padding:20px 28px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+<tr><td style="background:#ffffff;padding:20px 28px;border-bottom:4px solid #006780;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
 <td align="left"><img src="{$logo}" alt="George Musical Festival" height="44" style="display:block;height:44px;"></td>
 <td align="right"><img src="{$acsa}" alt="Airports Company South Africa" height="40" style="display:inline-block;height:40px;"></td></tr></table></td></tr>
 <tr><td style="padding:30px 28px 10px;"><h1 style="margin:0 0 14px;font-size:22px;line-height:1.25;color:#00485a;">{$heading}</h1>{$bodyHtml}</td></tr>
