@@ -113,6 +113,7 @@ admin_head('Entrants · ACSA Fly For Two', 'entrants');
   <div><label class="f">Email</label><select class="in" name="mail"><option value="">Any</option><option value="problem" <?= $mailq === 'problem' ? 'selected' : '' ?>>Bounced / problem</option></select></div>
   <button class="btn btn-primary" type="submit"><i class="fa-solid fa-filter"></i> Filter</button>
   <a class="btn" href="?<?= e(http_build_query(array_merge($_GET, ['export' => 1]))) ?>"><i class="fa-solid fa-file-csv"></i> Export <?= number_format($total) ?></a>
+  <?php if ($isAdmin): ?><a class="btn btn-primary" href="<?= e(url('admin/campaigns.php?new=1&brand=acsa')) ?>"><i class="fa-solid fa-paper-plane"></i> Send an email</a><?php endif; ?>
 </form>
 
 <div class="card">
