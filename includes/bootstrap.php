@@ -304,13 +304,14 @@ function setting_defaults(): array
         'hero_text'         => 'In partnership with Airports Company South Africa (ACSA), GMF is making air travel more accessible and inspiring new journeys across South Africa. Enter for your chance to win a getaway for two plus R1,500 cash and experience the journey for yourself.',
 
         // Event
-        'event_name'        => 'Eden Soul & Jazz Reimagined',
-        'event_tagline'     => 'A day of soul, jazz and Garden Route culture — reimagined for a new generation.',
-        'event_date'        => '2026-10-03',
-        'event_time'        => 'Gates open 12:00',
+        'event_name'        => 'Fill Up Thembalethu Stadium',
+        'event_tagline'     => 'GMF turns 1: the 2nd annual stadium show in Thembalethu.',
+        'event_date'        => '2026-12-12',
+        'event_time'        => 'Times to be announced',
         'event_venue'       => 'Thembalethu Stadium, George',
         'ticket_url'        => '',
-        'ticket_note'       => 'Tickets on sale soon',
+        'ticket_note'       => 'Tickets at Computicket, Checkers and Shoprite',
+        'event_lineup'      => "Oscar Mbo\nToss",
         'hero_video_url'    => '',
         'announcement'      => 'FLY FOR TWO is back — win a getaway for two + R1,500 cash. Entries close 30 November 2026.',
         'contact_email'     => 'info@georgemusicalfestival.co.za',
@@ -318,7 +319,7 @@ function setting_defaults(): array
         'social_facebook'   => '',
         'social_instagram'  => '',
         'social_tiktok'     => '',
-        'upcoming_events'   => "12 Dec 2026|Fill Up Thembalethu Stadium — 2nd Annual|Thembalethu Stadium, George\n1 Jan 2027|Garden Route New Year's Day Picnic|Garden Route",
+        'upcoming_events'   => "1 Jan 2027|Garden Route New Year's Day Picnic|Garden Route",
 
         // Competition
         'comp_name'         => 'FLY FOR TWO',
@@ -410,6 +411,28 @@ function apply_relaunch_once(): void
     q("UPDATE draws SET prize_description = ?, scheduled_for = '2026-11-30' WHERE draw_key = 'final'", [RELAUNCH_PRIZE_LINES]);
     q("UPDATE draws SET scheduled_for = '2026-11-30' WHERE draw_key = 'event_day'");
     save_setting('relaunch_2026_11', now());
+}
+
+/* ──────────────────────────── December event (6 Nov 2026) ──────────────────────────── */
+
+/**
+ * Runs once per database: moves the event settings to Fill Up Thembalethu Stadium, 12 December 2026.
+ * Clears the old Computicket link, which was for the October event. Admin edits made afterwards stick.
+ */
+function apply_december_event_once(): void
+{
+    try {
+        if (q("SELECT 1 FROM settings WHERE skey = 'december_event_2026'")->fetchColumn()) {
+            return;
+        }
+    } catch (Throwable $e) {
+        return; // not installed yet
+    }
+    $d = setting_defaults();
+    foreach (['event_name', 'event_tagline', 'event_date', 'event_time', 'ticket_url', 'ticket_note', 'event_lineup', 'upcoming_events'] as $k) {
+        save_setting($k, (string) $d[$k]);
+    }
+    save_setting('december_event_2026', now());
 }
 
 /* ──────────────────────────── Website media ──────────────────────────── */
@@ -512,3 +535,4 @@ function audit(string $action, $detail = null): void
 }
 
 apply_relaunch_once();
+apply_december_event_once();

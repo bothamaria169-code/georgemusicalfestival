@@ -12,7 +12,7 @@ $finalDraw  = draw_by_key('final');
 $eventDraw  = draw_by_key('event_day');
 $images     = media_items('image', 7);
 $videos     = media_items('video', 5);
-$artists    = media_items('artist');
+$lineup     = lines((string) setting('event_lineup'));
 $state      = comp_state();
 $me         = current_entrant();
 $shareCap   = (int) setting('share_bonus_cap');
@@ -59,6 +59,9 @@ require __DIR__ . '/includes/header.php';
   </div>
 </section>
 
+<!-- ═══════════════ THE DECEMBER EVENT ═══════════════ -->
+<?php include __DIR__ . '/includes/event-band.php'; ?>
+
 <!-- ═══════════════ MEET MOYENI (ACSA) ═══════════════ -->
 <section class="moyeni-band">
   <div class="wrap moyeni-grid">
@@ -69,7 +72,7 @@ require __DIR__ . '/includes/header.php';
       <img class="moyeni-logo reveal" src="<?= e(url('assets/img/brand/acsa-teal-lg.png')) ?>" width="900" height="439" alt="Airports Company South Africa" loading="lazy">
       <span class="kicker reveal" style="color:var(--orange-deep);margin-top:18px;">Meet Moyeni</span>
       <h2 class="display big reveal" style="margin-top:12px;color:var(--navy-2);">ACSA's mascot is flying <span class="serif-i" style="color:var(--orange-deep)">to George.</span></h2>
-      <p class="reveal" style="color:var(--text-muted);margin:14px 0 0;">Find Moyeni and the Airports Company South Africa team at the ACSA Experience at <?= e($eventName) ?> — enter FLY FOR TWO on the spot and get sharing.</p>
+      <p class="reveal" style="color:var(--text-muted);margin:14px 0 0;">Find Moyeni and the Airports Company South Africa team at the ACSA Experience at <?= e($eventName) ?> — and enter FLY FOR TWO now, before entries close.</p>
       <div class="moyeni-photos reveal">
         <img src="<?= e(url('assets/img/acsa/moyeni-with-young-fan.jpg')) ?>" alt="A young fan with Moyeni at an ACSA stand" loading="lazy">
         <img src="<?= e(url('assets/img/acsa/moyeni-dancing.jpg')) ?>" alt="Moyeni dancing at an ACSA event" loading="lazy">
@@ -83,7 +86,7 @@ require __DIR__ . '/includes/header.php';
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
     <?php for ($i = 0; $i < 2; $i++): ?>
-      <span>FLY FOR TWO is back</span><span>Win a getaway for two</span><?php if (!empty($artists[0]['title'])): ?><span>Headlining: <?= e($artists[0]['title']) ?> + many more</span><?php endif; ?><span>Enter free</span><span>Most link opens wins</span><span>Plus R1,500 cash</span><span>Entries close <?= e(fmt_date(setting('comp_close_at'), 'j F Y')) ?></span><span><?= e($eventName) ?></span>
+      <span>FLY FOR TWO is back</span><span>Win a getaway for two</span><?php if ($lineup): ?><span>Live 12 December: <?= e(implode(', ', $lineup)) ?> + more</span><?php endif; ?><span>Enter free</span><span>Most link opens wins</span><span>Plus R1,500 cash</span><span>Entries close <?= e(fmt_date(setting('comp_close_at'), 'j F Y')) ?></span><span><?= e($eventName) ?></span>
     <?php endfor; ?>
   </div>
 </div>
@@ -152,7 +155,7 @@ require __DIR__ . '/includes/header.php';
       <div class="spread-text">
         <span class="kicker reveal"><span class="num">01</span> The Event</span>
         <h2 class="display huge reveal" style="margin:22px 0 34px;">Music is the <span class="serif-i text-orange">reason</span> to travel.</h2>
-        <p class="lede dropcap reveal"><?= e($eventName) ?> brings soul, jazz and the sound of the Garden Route to <?= e($venue) ?> — a full day of live music, food, culture and community under the George sky.</p>
+        <p class="lede dropcap reveal">GMF turns 1, and the 2nd annual <?= e($eventName) ?> takes over <?= e($venue) ?> — live music, culture and community under the George sky.</p>
         <p class="reveal muted">George Musical Festival is a regional platform connecting music, culture, community, lifestyle and tourism. Local talent gives it authenticity; the Garden Route gives it a destination worth flying to. This year, with Airports Company South Africa, we're turning the festival into a journey — from the first flyer on the street to the final note on stage.</p>
 
         <div class="fact-grid reveal">
@@ -197,7 +200,7 @@ require __DIR__ . '/includes/header.php';
     <div class="exp-grid">
       <article class="exp-card reveal">
         <img src="<?= e(url('assets/img/gallery/performer-stage.jpg')) ?>" alt="A performer on the George Musical Festival stage" loading="lazy">
-        <div class="exp-body"><span class="exp-n">01</span><h3>Live soul &amp; jazz</h3><p>A full day of live soul and jazz, from the afternoon until the lights go down.</p></div>
+        <div class="exp-body"><span class="exp-n">01</span><h3>Live on stage</h3><p>Big names and local talent on one stage at <?= e($venue) ?>.</p></div>
       </article>
       <article class="exp-card reveal reveal-d1">
         <img src="<?= e(url('assets/img/gallery/activation-23.jpg')) ?>" alt="The GMF crew with local partners" loading="lazy">
@@ -205,7 +208,7 @@ require __DIR__ . '/includes/header.php';
       </article>
       <article class="exp-card reveal reveal-d2">
         <img src="<?= e(url('assets/img/acsa/moyeni-with-young-fan.jpg')) ?>" alt="A young fan with Moyeni, the ACSA mascot" loading="lazy">
-        <div class="exp-body"><span class="exp-n">03</span><h3>The ACSA Experience</h3><p>Meet Moyeni, discover what flying is really like, enter FLY FOR TWO on the spot and share your link for a place on the leaderboard.</p></div>
+        <div class="exp-body"><span class="exp-n">03</span><h3>The ACSA Experience</h3><p>Meet Moyeni, discover what flying is really like and share your FLY FOR TWO link for a place on the leaderboard.</p></div>
       </article>
       <article class="exp-card reveal reveal-d3">
         <img src="<?= e(url('assets/img/acsa/acsa-team-group.jpg')) ?>" alt="The ACSA airport team in the terminal" loading="lazy">
@@ -250,12 +253,6 @@ require __DIR__ . '/includes/header.php';
 </section>
 
 <!-- ═══════════════ 04 LINE-UP ═══════════════ -->
-<?php
-// Headliner = the first (featured) line-up entry. Its extra photos are gallery photos whose album is the artist's name.
-$headliner = $artists[0] ?? null;
-$others    = array_slice($artists, 1);
-$hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, false), fn ($m) => strcasecmp($m['album'], (string) $headliner['title']) === 0 && $m['src'] !== $headliner['src'])) : [];
-?>
 <section class="section" id="lineup">
   <div class="wrap">
     <div class="section-head">
@@ -264,44 +261,17 @@ $hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, fals
         <h2 class="display big reveal">On the <span class="serif-i text-orange">stage</span></h2>
       </div>
     </div>
-    <?php if ($headliner): ?>
-      <div class="headliner reveal">
-        <figure class="headliner-photo"><img src="<?= e(media_url($headliner['src'])) ?>" alt="<?= e($headliner['title']) ?> performing on stage" loading="lazy"></figure>
-        <div class="headliner-copy">
-          <span class="headliner-tag"><i class="fa-solid fa-star"></i> Headlining <?= e($eventName) ?></span>
-          <p class="display mega headliner-name"><?= e($headliner['title']) ?></p>
-          <?php if ($headliner['caption']): ?><p class="headliner-caption"><?= e($headliner['caption']) ?></p><?php endif; ?>
-          <p class="muted" style="max-width:520px;margin:18px 0 0;">Live at <?= e($venue) ?> on <?= e(fmt_date($eventDate, 'l, j F Y')) ?> — plus many more artists to be announced.</p>
-          <?php if ($hlPhotos): ?>
-            <div class="headliner-strip">
-              <?php foreach (array_slice($hlPhotos, 0, 3) as $ph): ?>
-                <a href="<?= e(media_url($ph['src'])) ?>" data-lightbox="headliner" data-caption="<?= e($ph['caption'] ?: $headliner['title']) ?>"><img src="<?= e(media_url($ph['src'])) ?>" alt="<?= e($ph['title'] ?: $headliner['title']) ?>" loading="lazy"></a>
-              <?php endforeach; ?>
-            </div>
-          <?php endif; ?>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px;">
-            <a class="btn btn-orange" href="<?= e($ticketUrl !== '' ? $ticketUrl : '#tickets') ?>" <?= $ticketUrl !== '' ? 'target="_blank" rel="noopener"' : '' ?>><i class="fa-solid fa-ticket"></i> Get tickets</a>
-            <a class="btn btn-ghost" href="#enter"><i class="fa-solid fa-plane-departure"></i> Win a getaway for two</a>
-          </div>
+    <div class="headliner reveal">
+      <div class="headliner-copy">
+        <span class="headliner-tag"><i class="fa-solid fa-star"></i> Live at <?= e($eventName) ?></span>
+        <?php foreach ($lineup as $artist): ?><p class="display mega headliner-name"><?= e($artist) ?></p><?php endforeach; ?>
+        <p class="muted" style="max-width:520px;margin:18px 0 0;">Live at <?= e($venue) ?> on <?= e(fmt_date($eventDate, 'l, j F Y')) ?> — plus more artists on the bill.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:26px;">
+          <a class="btn btn-orange" href="<?= e($ticketUrl !== '' ? $ticketUrl : '#tickets') ?>" <?= $ticketUrl !== '' ? 'target="_blank" rel="noopener"' : '' ?>><i class="fa-solid fa-ticket"></i> Get tickets</a>
+          <a class="btn btn-ghost" href="#enter"><i class="fa-solid fa-plane-departure"></i> Win a getaway for two</a>
         </div>
       </div>
-      <div class="lineup-grid" style="margin-top:18px;">
-        <?php foreach ($others as $i => $a): ?>
-          <figure class="artist-card reveal <?= 'reveal-d' . ($i % 3 + 1) ?>" style="margin:0">
-            <img src="<?= e(media_url($a['src'])) ?>" alt="<?= e($a['title']) ?>" loading="lazy">
-            <figcaption class="cap"><span><?= e($a['caption'] ?: 'Live') ?></span><strong><?= e($a['title']) ?></strong></figcaption>
-          </figure>
-        <?php endforeach; ?>
-        <div class="artist-card artist-more reveal">
-          <div><span class="kicker">And many more</span><strong>More artists<br><span class="serif-i text-orange">to be announced.</span></strong><p class="muted">Join the GMF list and hear first.</p><a class="btn btn-ghost btn-sm" href="#join">Notify me</a></div>
-        </div>
-      </div>
-    <?php else: ?>
-      <div class="lineup-soon reveal">
-        <p class="display mega"><span class="outline">Line-up</span><span>reveal</span><span class="serif-i text-orange">soon.</span></p>
-        <p class="muted" style="max-width:520px;margin:28px auto 0;">The artists are locked in and the announcement is close. Join the list below and you'll hear first.</p>
-      </div>
-    <?php endif; ?>
+    </div>
   </div>
 </section>
 
@@ -377,7 +347,7 @@ $hlPhotos  = $headliner ? array_values(array_filter(media_items('image', 0, fals
     <div class="section-head">
       <div>
         <span class="kicker reveal" style="color:var(--orange-deep)"><span class="num">07</span> The season</span>
-        <h2 class="display big reveal">Beyond <span class="serif-i" style="color:var(--orange-deep)">October</span></h2>
+        <h2 class="display big reveal">Beyond <span class="serif-i" style="color:var(--orange-deep)">December</span></h2>
       </div>
     </div>
     <div>

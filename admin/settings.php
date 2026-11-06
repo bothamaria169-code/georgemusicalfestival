@@ -42,6 +42,7 @@ $groups = [
         'ticket_note'     => ['Ticket note while there is no link', 'text'],
         'hero_video_url'  => ['Homepage background video (YouTube link or .mp4 URL)', 'text'],
         'announcement'    => ['Announcement bar text', 'text'],
+        'event_lineup'    => ['Event line-up — one artist per line', 'lines'],
         'upcoming_events' => ['Upcoming events — one per line: date|title|venue', 'lines'],
         'contact_email'   => ['Contact email', 'text'],
         'contact_phone'   => ['Contact phone', 'text'],
