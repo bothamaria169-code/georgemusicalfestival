@@ -559,7 +559,7 @@ function leaderboard_scores(?string $cutoff = null, int $limit = 0): array
             FROM entrants r
             JOIN referral_clicks c ON c.referrer_id = r.id AND c.clicked_at BETWEEN ? AND ?
             WHERE r.status = 'verified'
-            GROUP BY r.id
+            GROUP BY r.id, r.full_name, r.town, r.photo, r.ref_code, r.email, r.phone
             ORDER BY clicks DESC, referrals DESC, last_click ASC, r.id ASC";
     if ($limit > 0) {
         $sql .= ' LIMIT ' . $limit;
