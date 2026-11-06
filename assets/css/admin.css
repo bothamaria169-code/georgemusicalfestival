@@ -128,3 +128,22 @@ textarea.in { min-height: 110px; resize: vertical; font-family: ui-monospace, SF
 .code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .76rem; word-break: break-all; color: #cfd6dd; background: #0a0c0e; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
 .winner-box { border: 1px solid rgba(255,154,0,.35); background: linear-gradient(135deg, rgba(255,154,0,.12), transparent); border-radius: 14px; padding: 18px; }
 .winner-box strong { font-family: var(--f-d); font-size: 1.8rem; text-transform: uppercase; display: block; line-height: 1.1; }
+
+/* Two campaigns side by side */
+.a-nav-group { display: block; margin: 16px 12px 4px; padding-left: 8px; border-left: 3px solid var(--line); font-size: .66rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.a-nav-acsa { border-left-color: #1aa6a6; }
+.a-nav-cellc { border-left-color: #e8590c; }
+.camp-grid { margin-bottom: 22px; }
+.camp-card { border-top: 4px solid var(--camp); }
+.camp-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.camp-head small { display: block; font-size: .7rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--camp); }
+.camp-head h2 { margin: 4px 0 0; font-family: var(--f-d); font-size: 1.7rem; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; color: var(--text); }
+.camp-dates { margin: 8px 0 14px; color: var(--muted); font-size: .86rem; }
+.camp-dates strong { color: var(--text); }
+.camp-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px 12px; }
+.camp-kpis strong { display: block; font-family: var(--f-d); font-size: 1.7rem; font-weight: 600; line-height: 1.1; }
+.camp-kpis span { font-size: .74rem; color: var(--muted); }
+.camp-kpis .is-bad strong { color: #ff9c9c; }
+.camp-mail { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); font-size: .84rem; }
+.camp-links { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.camp-section { margin: 0 0 14px; font-size: .78rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }

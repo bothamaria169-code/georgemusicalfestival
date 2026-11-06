@@ -63,7 +63,7 @@ $unclaimed = q('SELECT ref_code, COUNT(*) AS opens, MIN(clicked_at) AS first_ope
 $waitingTotal = (int) q('SELECT COUNT(*) FROM orphan_clicks')->fetchColumn();
 $adjustments = q('SELECT s.*, e.full_name, e.ref_code, a.name AS admin_name FROM score_adjustments s JOIN entrants e ON e.id = s.entrant_id LEFT JOIN admins a ON a.id = s.admin_id ORDER BY s.id DESC')->fetchAll();
 
-admin_head('Entry restoration', 'restores');
+admin_head('ACSA Fly For Two · Entry restoration', 'restores');
 ?>
 <div class="grid g-3" style="margin-bottom:16px">
   <div class="card kpi is-accent"><small>Claims to review</small><strong><?= number_format($counts['review'] ?? 0) ?></strong><span><?= number_format($counts['email'] ?? 0) ?> more waiting for their email code</span></div>

@@ -9,9 +9,13 @@ function admin_head(string $title, string $active = ''): void
     header('X-Robots-Tag: noindex');
     $items = [
         'overview'    => ['index.php', 'fa-chart-line', 'Overview', 'viewer'],
+        '#acsa'       => ['', '', 'ACSA · Fly For Two', 'viewer'],
         'entrants'    => ['entrants.php', 'fa-users', 'Entrants', 'viewer'],
         'restores'    => ['restores.php', 'fa-rotate-left', 'Restoration', 'viewer'],
         'draws'       => ['draws.php', 'fa-trophy', 'Draws', 'viewer'],
+        '#cellc'      => ['', '', 'Cell C · Win a Samsung', 'admin'],
+        'cellc'       => ['cellc.php', 'fa-mobile-screen-button', 'Cell C campaign', 'admin'],
+        '#tools'      => ['', '', 'Email & website', 'admin'],
         'subscribers' => ['subscribers.php', 'fa-envelope-open-text', 'Mailing list', 'admin'],
         'campaigns'   => ['campaigns.php', 'fa-paper-plane', 'Email campaigns', 'admin'],
         'media'       => ['media.php', 'fa-photo-film', 'Website media', 'admin'],
@@ -25,7 +29,7 @@ function admin_head(string $title, string $active = ''): void
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title><?= e($title) ?> — FLY FOR TWO admin</title>
+<title><?= e($title) ?> — GMF admin</title>
 <link rel="icon" type="image/png" href="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
@@ -37,16 +41,20 @@ function admin_head(string $title, string $active = ''): void
   <aside class="a-side" id="aSide">
     <a class="a-brand" href="<?= e(url('admin/index.php')) ?>">
       <img src="<?= e(url('assets/img/brand/gmf-logo-orange.png')) ?>" alt="GMF">
-      <span>Fly For Two<small>Control room</small></span>
+      <span>GMF Campaigns<small>Control room</small></span>
     </a>
     <nav>
       <?php foreach ($items as $key => [$href, $icon, $label, $role]):
-          if ($role === 'admin' && ($admin['role'] ?? '') !== 'admin') continue; ?>
+          if ($role === 'admin' && ($admin['role'] ?? '') !== 'admin') continue;
+          if ($key[0] === '#'): ?>
+            <span class="a-nav-group a-nav-<?= e(substr($key, 1)) ?>"><?= e($label) ?></span>
+          <?php continue; endif; ?>
         <a href="<?= e(url('admin/' . $href)) ?>" class="<?= $active === $key ? 'is-active' : '' ?>"><i class="fa-solid <?= $icon ?>"></i><?= e($label) ?></a>
       <?php endforeach; ?>
     </nav>
     <div class="a-side-foot">
-      <a href="<?= e(url('flyfortwo/')) ?>" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i>Competition page</a>
+      <a href="<?= e(url('flyfortwo/')) ?>" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i>Fly For Two page</a>
+      <?php if (($admin['role'] ?? '') === 'admin'): ?><a href="<?= e(url('cellc/win/')) ?>" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i>Win a Samsung page</a><?php endif; ?>
       <a href="<?= e(url('index.php')) ?>" target="_blank"><i class="fa-solid fa-globe"></i>Website</a>
     </div>
   </aside>

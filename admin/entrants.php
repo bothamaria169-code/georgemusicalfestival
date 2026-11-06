@@ -99,7 +99,7 @@ $pages = max(1, (int) ceil($total / $per));
 $page = min($pages, max(1, (int) ($_GET['page'] ?? 1)));
 $rows = q($select . ' ORDER BY p.id DESC LIMIT ' . $per . ' OFFSET ' . (($page - 1) * $per), $params)->fetchAll();
 
-admin_head('Entrants', 'entrants');
+admin_head('Entrants · ACSA Fly For Two', 'entrants');
 ?>
 <form class="toolbar" method="get">
   <div class="grow"><label class="f">Search</label><input class="in" name="q" value="<?= e($search) ?>" placeholder="Name, email, phone or referral code"></div>

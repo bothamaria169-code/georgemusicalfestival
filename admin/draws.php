@@ -23,7 +23,7 @@ $draws = q("SELECT * FROM draws ORDER BY FIELD(draw_key, 'final', 'event_day'), 
 $board = leaderboard_scores(null, 25);
 $people = (int) q("SELECT COUNT(*) FROM entrants WHERE status = 'verified'")->fetchColumn();
 
-admin_head('Draws', 'draws');
+admin_head('ACSA Fly For Two · Draws', 'draws');
 ?>
 <div class="card" style="margin-bottom:16px;">
   <h2>Live leaderboard — admins only <span class="muted" style="letter-spacing:0;text-transform:none;font-weight:600"><?= number_format($people) ?> verified entrants · the public sees the top 10 with #1 hidden</span></h2>

@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/_layout.php';
 require dirname(__DIR__) . '/includes/reports.php';
+require dirname(__DIR__) . '/includes/campaign-overview.php';
 
 $admin = require_admin();
 $r = report_summary();
@@ -22,8 +23,28 @@ foreach ($r['event_day_by_hour'] as $h) {
     $hours[(int) $h['hour']] += (int) $h['verified'];
 }
 
+$seesCellc = $admin['role'] === 'admin';
 admin_head('Overview', 'overview');
 ?>
+<div class="grid <?= $seesCellc ? 'g-2' : '' ?> camp-grid">
+  <?php
+  campaign_card((string) setting('comp_name'), 'ACSA campaign', '#1aa6a6', campaign_snapshot(db()), campaign_email_stats('acsa'), [
+      ['Competition page', url('flyfortwo/'), true],
+      ['Entrants', url('admin/entrants.php'), false],
+      ['Draws', url('admin/draws.php'), false],
+  ]);
+  if ($seesCellc) {
+      $cellcPdo = cellc_pdo();
+      campaign_card('WIN A SAMSUNG', 'Cell C campaign', '#e8590c', $cellcPdo ? campaign_snapshot($cellcPdo) : null, campaign_email_stats('cellc'), [
+          ['Competition page', url('cellc/win/'), true],
+          ['Cell C details', url('admin/cellc.php'), false],
+          ['Open Cell C admin', url('cellc/admin/'), true],
+      ]);
+  }
+  ?>
+</div>
+
+<h2 class="camp-section">ACSA · FLY FOR TWO details</h2>
 <div class="toolbar">
   <div class="grow">
     <span class="pill <?= $state === 'open' ? 'pill-ok' : ($state === 'upcoming' ? 'pill-warn' : 'pill-muted') ?>">Competition <?= e($state) ?></span>
