@@ -296,3 +296,23 @@ body.embed .ff-card { box-shadow: none; border: 1px solid var(--card-line); max-
 .ff-chip:has(input:focus-visible) { outline: 2px solid var(--orange, #ea5b0c); outline-offset: 2px; }
 .ff-multi.has-error .ff-chip { border-color: #c2412d; }
 @media (max-width: 360px) { .ff-chips { grid-template-columns: 1fr; } }
+.relaunch-again { display: inline-block; margin: 20px 0 0; background: var(--orange); color: #02262f; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; font-size: clamp(.82rem, 1.6vw, 1.02rem); padding: 10px 18px; border-radius: 8px; box-shadow: 0 12px 30px -14px rgba(247,128,26,.8); }
+.relaunch-close { margin: 16px 0 0; font-weight: 700; color: var(--text-light); }
+.relaunch-close strong { color: var(--orange); }
+.relaunch-close a { color: var(--text-light-muted); font-weight: 600; text-decoration: underline; }
+
+/* December event band */
+.event-band { background: #02262f; color: var(--text-light); padding: clamp(44px, 7vw, 84px) 0; }
+.event-band-grid { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
+.event-band-poster { display: block; border-radius: 14px; overflow: hidden; box-shadow: 0 18px 50px rgba(0, 0, 0, .4); }
+.event-band-poster img { display: block; width: 100%; height: auto; }
+.event-band-when { margin: 14px 0 0; font-weight: 700; color: var(--orange); font-size: clamp(1.02rem, 2vw, 1.25rem); }
+.event-band-artists { margin: 14px 0 0; font-family: 'Oswald', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; font-size: clamp(1.5rem, 4vw, 2.3rem); line-height: 1.15; }
+.event-band-artists span { color: var(--orange); }
+.event-band-prices { list-style: none; margin: 24px 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.event-band-prices li { background: rgba(255, 255, 255, .07); border-radius: 10px; padding: 12px 14px; }
+.event-band-prices small { display: block; font-size: .74rem; color: var(--text-light-muted); }
+.event-band-prices strong { display: block; font-size: 1.5rem; }
+.event-band-prices span { display: block; font-size: .74rem; color: var(--text-light-muted); }
+.event-band-note { margin: 16px 0 0; font-weight: 600; color: var(--text-light-muted); }
+@media (max-width: 800px) { .event-band-grid { grid-template-columns: minmax(0, 1fr); } .event-band-poster { max-width: 420px; margin: 0 auto; } }

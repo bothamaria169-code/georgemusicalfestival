@@ -304,26 +304,27 @@ function setting_defaults(): array
         'hero_text'         => 'In partnership with Cell C, George Musical Festival is giving away a Samsung Galaxy A56 + accessories worth R10 000. Enter free in under a minute, share your personal link, and climb the leaderboard to win.',
 
         // Event
-        'event_name'        => 'Eden Soul & Jazz Reimagined',
-        'event_tagline'     => 'A day of soul, jazz and Garden Route culture — reimagined for a new generation.',
-        'event_date'        => '2026-10-03',
-        'event_time'        => 'Gates open 12:00',
+        'event_name'        => 'Fill Up Thembalethu Stadium',
+        'event_tagline'     => 'GMF turns 1: the 2nd annual stadium show in Thembalethu.',
+        'event_date'        => '2026-12-12',
+        'event_time'        => 'Times to be announced',
         'event_venue'       => 'Thembalethu Stadium, George',
         'ticket_url'        => '',
-        'ticket_note'       => 'Tickets on sale soon',
+        'ticket_note'       => 'Tickets at Computicket, Checkers and Shoprite',
+        'event_lineup'      => "Oscar Mbo\nToss",
         'hero_video_url'    => '',
-        'announcement'      => 'WIN A SAMSUNG is live — enter free and win a Samsung Galaxy A56 + accessories worth R10 000.',
+        'announcement'      => 'WIN A SAMSUNG: enter free and win a Samsung Galaxy A56 + accessories worth R10 000. Entries close 31 December 2026.',
         'contact_email'     => 'info@georgemusicalfestival.co.za',
         'contact_phone'     => '',
         'social_facebook'   => '',
         'social_instagram'  => '',
         'social_tiktok'     => '',
-        'upcoming_events'   => "12 Dec 2026|Fill Up Thembalethu Stadium — 2nd Annual|Thembalethu Stadium, George\n1 Jan 2027|Garden Route New Year's Day Picnic|Garden Route",
+        'upcoming_events'   => "1 Jan 2027|Garden Route New Year's Day Picnic|Garden Route",
 
         // Competition
         'comp_name'         => 'WIN A SAMSUNG',
         'comp_open_at'      => '2026-09-24 00:00:00',
-        'comp_close_at'     => '2026-10-31 23:59:59',
+        'comp_close_at'     => '2026-12-31 23:59:59',
         'prize_headline'    => 'Samsung Galaxy A56 + Accessory Bundle',
         'travel_question'   => 'Which network are you on?',
         'travel_options'    => '',   // network question switched off; Cell C product tick-boxes are used instead
@@ -375,6 +376,39 @@ function setting(string $key, $default = null)
 function save_setting(string $key, ?string $value): void
 {
     q('INSERT INTO settings (skey, svalue) VALUES (?, ?) ON DUPLICATE KEY UPDATE svalue = VALUES(svalue)', [$key, $value]);
+}
+
+/* ──────────────────────────── December relaunch (6 Nov 2026) ──────────────────────────── */
+
+/**
+ * Runs once per database: reopens entries until 31 December 2026, moves the event to
+ * Fill Up Thembalethu Stadium (12 December 2026), the reveal date to 31 December and the
+ * closing clause in the live terms. Admin edits made afterwards stick.
+ */
+function apply_december_relaunch_once(): void
+{
+    try {
+        if (q("SELECT 1 FROM settings WHERE skey = 'december_relaunch_2026'")->fetchColumn()) {
+            return;
+        }
+    } catch (Throwable $e) {
+        return; // not installed yet
+    }
+    $d = setting_defaults();
+    foreach (['announcement', 'comp_close_at', 'event_name', 'event_tagline', 'event_date', 'event_time', 'ticket_url', 'ticket_note', 'event_lineup', 'upcoming_events'] as $k) {
+        save_setting($k, (string) $d[$k]);
+    }
+    $terms = q("SELECT svalue FROM settings WHERE skey = 'terms_html'")->fetchColumn();
+    if (is_string($terms)) {
+        $closes = 'and close on 31 December 2026 at 23:59 (South African time). Entries and link opens received outside this period do not count.';
+        $terms = strtr($terms, [
+            'and the competition period has been extended; the closing date will be announced on this website. Entries and link opens received outside the competition period do not count.' => $closes,
+            'and close on 31 October 2026 at 23:59 (South African time). Entries and link opens received outside this period do not count.' => $closes,
+        ]);
+        save_setting('terms_html', $terms);
+    }
+    q("UPDATE draws SET scheduled_for = '2026-12-31' WHERE draw_key IN ('final', 'event_day')");
+    save_setting('december_relaunch_2026', now());
 }
 
 /* ──────────────────────────── Website media ──────────────────────────── */
@@ -475,3 +509,5 @@ function audit(string $action, $detail = null): void
         now(),
     ]);
 }
+
+apply_december_relaunch_once();

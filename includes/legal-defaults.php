@@ -14,7 +14,7 @@ function default_terms_html(): string
 <p>WIN A SAMSUNG is run by George Musical Festival ("GMF") in partnership with Cell C Limited ("Cell C"), together "the Promoter". Contact: info@georgemusicalfestival.co.za.</p>
 
 <h2>2. Competition period</h2>
-<p>Entries open on 24 September 2026 and the competition period has been extended; the closing date will be announced on this website. Entries and link opens received outside the competition period do not count.</p>
+<p>Entries open on 24 September 2026 and close on 31 December 2026 at 23:59 (South African time). Entries and link opens received outside this period do not count.</p>
 
 <h2>3. Who can enter</h2>
 <ol>
