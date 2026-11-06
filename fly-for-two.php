@@ -23,7 +23,7 @@ $winners  = q("SELECT d.title, d.prize_description, p.full_name, p.town
 
 $page_title       = setting('comp_name') . ' — Win ' . setting('prize_headline') . ' | GMF × ACSA';
 $meta_description = 'FLY FOR TWO is back. Entered before? Please enter again. Win a getaway for two + R1,500 cash — return flights, accommodation and ground transfers. Entries close ' . fmt_date(setting('comp_close_at'), 'j F Y') . '.';
-$og_image         = url('assets/img/competition/relaunch/relaunch-share-1080x1080.jpg');
+$og_image         = url('assets/img/competition/relaunch/relaunch-share-1080x1080-dec.jpg');
 $nav_active       = 'fly';
 $extra_css        = ['assets/css/comp.css'];
 $extra_js         = ['assets/js/enter.js'];
@@ -36,8 +36,8 @@ require __DIR__ . '/includes/header.php';
 <section class="relaunch-banner">
   <a href="#entryCard" class="relaunch-banner-link">
     <picture>
-      <source media="(max-width: 760px)" srcset="<?= e(url('assets/img/competition/relaunch/relaunch-banner-750x900.jpg')) ?>" width="750" height="900">
-      <img src="<?= e(url('assets/img/competition/relaunch/relaunch-banner-1600x500.jpg')) ?>" width="1600" height="500" alt="FLY FOR TWO is back. Entered before? Please enter again. Win a getaway for two plus R1,500 cash: return flights, accommodation and ground transfers. Entries close <?= e(fmt_date(setting('comp_close_at'), 'j F Y')) ?>. Enter now." fetchpriority="high">
+      <source media="(max-width: 760px)" srcset="<?= e(url('assets/img/competition/relaunch/relaunch-banner-750x900-dec.jpg')) ?>" width="750" height="900">
+      <img src="<?= e(url('assets/img/competition/relaunch/relaunch-banner-1600x500-dec.jpg')) ?>" width="1600" height="500" alt="FLY FOR TWO is back. Entered before? Please enter again. Win a getaway for two plus R1,500 cash: return flights, accommodation and ground transfers. Entries close <?= e(fmt_date(setting('comp_close_at'), 'j F Y')) ?>. Enter now." fetchpriority="high">
     </picture>
   </a>
   <p class="relaunch-banner-small"><a href="<?= e(url('flyfortwo/terms')) ?>">T's &amp; C's apply.</a></p>

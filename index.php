@@ -23,7 +23,7 @@ $headAccent = count($headWords) > 1 ? array_pop($headWords) : '';
 
 $page_title       = 'FLY FOR TWO is back — win a getaway for two + R1,500 cash · George Musical Festival × ACSA';
 $meta_description = (string) setting('hero_text');
-$og_image         = url('assets/img/competition/relaunch/relaunch-share-1080x1080.jpg');
+$og_image         = url('assets/img/competition/relaunch/relaunch-share-1080x1080-dec.jpg');
 $nav_active       = 'home';
 $extra_css        = ['assets/css/comp.css'];
 $extra_js         = ['assets/js/enter.js'];

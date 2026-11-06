@@ -313,7 +313,7 @@ function setting_defaults(): array
         'ticket_note'       => 'Tickets at Computicket, Checkers and Shoprite',
         'event_lineup'      => "Oscar Mbo\nToss",
         'hero_video_url'    => '',
-        'announcement'      => 'FLY FOR TWO is back — win a getaway for two + R1,500 cash. Entries close 30 November 2026.',
+        'announcement'      => 'FLY FOR TWO is back — win a getaway for two + R1,500 cash. Entries close 31 December 2026.',
         'contact_email'     => 'info@georgemusicalfestival.co.za',
         'contact_phone'     => '',
         'social_facebook'   => '',
@@ -324,7 +324,7 @@ function setting_defaults(): array
         // Competition
         'comp_name'         => 'FLY FOR TWO',
         'comp_open_at'      => '2026-09-24 00:00:00',
-        'comp_close_at'     => '2026-11-30 23:59:59',
+        'comp_close_at'     => '2026-12-31 23:59:59',
         'prize_headline'    => 'A Getaway for Two + R1,500 Cash',
         'travel_question'   => 'Have you flown before?',
         'travel_options'    => "No, I haven't flown yet\nOccasionally — once or twice a year\nFrequently — three or more times a year",
@@ -411,6 +411,30 @@ function apply_relaunch_once(): void
     q("UPDATE draws SET prize_description = ?, scheduled_for = '2026-11-30' WHERE draw_key = 'final'", [RELAUNCH_PRIZE_LINES]);
     q("UPDATE draws SET scheduled_for = '2026-11-30' WHERE draw_key = 'event_day'");
     save_setting('relaunch_2026_11', now());
+}
+
+/* ──────────────────────────── FLY FOR TWO to 31 December (6 Nov 2026) ──────────────────────────── */
+
+/** Runs once per database: moves the close date, announcement, terms clause and reveal dates to 31 December 2026. */
+function apply_fly_december_close_once(): void
+{
+    try {
+        if (q("SELECT 1 FROM settings WHERE skey = 'fly_close_2026_12'")->fetchColumn()) {
+            return;
+        }
+    } catch (Throwable $e) {
+        return; // not installed yet
+    }
+    $d = setting_defaults();
+    foreach (['announcement', 'comp_close_at'] as $k) {
+        save_setting($k, (string) $d[$k]);
+    }
+    $terms = q("SELECT svalue FROM settings WHERE skey = 'terms_html'")->fetchColumn();
+    if (is_string($terms)) {
+        save_setting('terms_html', str_replace('and close on 30 November 2026 at 23:59', 'and close on 31 December 2026 at 23:59', $terms));
+    }
+    q("UPDATE draws SET scheduled_for = '2026-12-31' WHERE draw_key IN ('final', 'event_day')");
+    save_setting('fly_close_2026_12', now());
 }
 
 /* ──────────────────────────── December event (6 Nov 2026) ──────────────────────────── */
@@ -536,3 +560,4 @@ function audit(string $action, $detail = null): void
 
 apply_relaunch_once();
 apply_december_event_once();
+apply_fly_december_close_once();
