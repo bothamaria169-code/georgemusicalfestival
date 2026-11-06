@@ -4,8 +4,7 @@ require __DIR__ . '/_layout.php';
 require dirname(__DIR__) . '/includes/campaign-overview.php';
 
 require_admin('admin');
-$pdo = cellc_pdo();
-$s = $pdo ? campaign_snapshot($pdo) : null;
+$s = campaign_snapshot_safe(cellc_pdo());
 $mail = campaign_email_stats('cellc');
 
 admin_head('Cell C · WIN A SAMSUNG', 'cellc');

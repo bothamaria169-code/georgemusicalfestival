@@ -72,19 +72,39 @@ function campaign_snapshot(PDO $pdo): array
     ];
 }
 
+/** The same as campaign_snapshot(), but a failure shows on the card instead of stopping the admin page. */
+function campaign_snapshot_safe(?PDO $pdo): ?array
+{
+    if (!$pdo) {
+        return null;
+    }
+    try {
+        return campaign_snapshot($pdo);
+    } catch (Throwable $e) {
+        error_log('campaign_snapshot: ' . $e->getMessage());
+        return null;
+    }
+}
+
 /** Email campaigns for one brand, newest first, each with its sent / not sent / failed counts. */
 function campaign_email_stats(string $brand): array
 {
-    campaign_schema();
-    $rows = q("SELECT c.id, c.name, c.status, c.started_at, c.finished_at,
-                      SUM(m.status = 'sent')    AS sent,
-                      SUM(m.status = 'queued')  AS queued,
-                      SUM(m.status = 'failed')  AS failed,
-                      SUM(m.status = 'skipped') AS skipped,
-                      COUNT(m.id)               AS total
-               FROM email_campaigns c LEFT JOIN email_queue m ON m.campaign_id = c.id
-               WHERE c.brand = ? GROUP BY c.id ORDER BY c.id DESC", [$brand])->fetchAll();
-    $totals = ['campaigns' => count($rows), 'sent' => 0, 'queued' => 0, 'failed' => 0, 'skipped' => 0];
+    $totals = ['campaigns' => 0, 'sent' => 0, 'queued' => 0, 'failed' => 0, 'skipped' => 0];
+    try {
+        campaign_schema();
+        $rows = q("SELECT c.id, c.name, c.status, c.started_at, c.finished_at,
+                          COALESCE(m.sent, 0) AS sent, COALESCE(m.queued, 0) AS queued,
+                          COALESCE(m.failed, 0) AS failed, COALESCE(m.skipped, 0) AS skipped, COALESCE(m.total, 0) AS total
+                   FROM email_campaigns c
+                   LEFT JOIN (SELECT campaign_id, SUM(status = 'sent') AS sent, SUM(status = 'queued') AS queued,
+                                     SUM(status = 'failed') AS failed, SUM(status = 'skipped') AS skipped, COUNT(*) AS total
+                              FROM email_queue GROUP BY campaign_id) m ON m.campaign_id = c.id
+                   WHERE c.brand = ? ORDER BY c.id DESC", [$brand])->fetchAll();
+    } catch (Throwable $e) {
+        error_log('campaign_email_stats: ' . $e->getMessage());
+        return ['totals' => $totals, 'campaigns' => [], 'error' => true];
+    }
+    $totals['campaigns'] = count($rows);
     foreach ($rows as $r) {
         foreach (['sent', 'queued', 'failed', 'skipped'] as $k) {
             $totals[$k] += (int) $r[$k];
@@ -111,7 +131,7 @@ function campaign_email_verdict(array $t): array
 /** The campaign card shown on the Overview and at the top of the Cell C page. */
 function campaign_card(string $title, string $partner, string $accent, ?array $s, array $mail, array $links): void
 {
-    [$verdictClass, $verdict] = campaign_email_verdict($mail['totals']);
+    [$verdictClass, $verdict] = empty($mail['error']) ? campaign_email_verdict($mail['totals']) : ['pill-bad', 'Could not read email status'];
     ?>
     <section class="card camp-card" style="--camp:<?= e($accent) ?>">
       <header class="camp-head">
@@ -132,7 +152,7 @@ function campaign_card(string $title, string $partner, string $accent, ?array $s
           <div class="<?= $s['email_problems'] ? 'is-bad' : '' ?>"><strong><?= number_format($s['email_problems']) ?></strong><span>Email problems</span></div>
         </div>
       <?php else: ?>
-        <p class="muted">This campaign's database can't be reached from here. Its own admin still works.</p>
+        <p class="muted">This campaign's numbers can't be read from here right now. Its own admin still works.</p>
       <?php endif; ?>
       <div class="camp-mail">
         <span><i class="fa-solid fa-paper-plane"></i> Email campaigns: <?= number_format($mail['totals']['campaigns']) ?> · <?= number_format($mail['totals']['sent']) ?> sent</span>

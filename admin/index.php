@@ -28,14 +28,13 @@ admin_head('Overview', 'overview');
 ?>
 <div class="grid <?= $seesCellc ? 'g-2' : '' ?> camp-grid">
   <?php
-  campaign_card((string) setting('comp_name'), 'ACSA campaign', '#1aa6a6', campaign_snapshot(db()), campaign_email_stats('acsa'), [
+  campaign_card((string) setting('comp_name'), 'ACSA campaign', '#1aa6a6', campaign_snapshot_safe(db()), campaign_email_stats('acsa'), [
       ['Competition page', url('flyfortwo/'), true],
       ['Entrants', url('admin/entrants.php'), false],
       ['Draws', url('admin/draws.php'), false],
   ]);
   if ($seesCellc) {
-      $cellcPdo = cellc_pdo();
-      campaign_card('WIN A SAMSUNG', 'Cell C campaign', '#e8590c', $cellcPdo ? campaign_snapshot($cellcPdo) : null, campaign_email_stats('cellc'), [
+      campaign_card('WIN A SAMSUNG', 'Cell C campaign', '#e8590c', campaign_snapshot_safe(cellc_pdo()), campaign_email_stats('cellc'), [
           ['Competition page', url('cellc/win/'), true],
           ['Cell C details', url('admin/cellc.php'), false],
           ['Open Cell C admin', url('cellc/admin/'), true],
