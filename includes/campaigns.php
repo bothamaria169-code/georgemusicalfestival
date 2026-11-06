@@ -62,7 +62,7 @@ const CAMPAIGN_AUDIENCES = [
     'everyone'    => 'Everyone: all entrants + mailing list',
 ];
 
-/** Adds the brand column and the saved-templates table to databases from before 3 Nov 2026. Runs once. */
+/** Creates the email tables if this database doesn't have them, and adds the newer columns to older ones. Runs once. */
 function campaign_schema(): void
 {
     static $done = false;
@@ -70,9 +70,41 @@ function campaign_schema(): void
         return;
     }
     $done = true;
-    if (q("SELECT 1 FROM settings WHERE skey = 'campaigns_schema' AND svalue = '2'")->fetchColumn()) {
+    if (q("SELECT 1 FROM settings WHERE skey = 'campaigns_schema' AND svalue = '3'")->fetchColumn()) {
         return;
     }
+    q("CREATE TABLE IF NOT EXISTS email_campaigns (
+        id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        brand       VARCHAR(10)  NOT NULL DEFAULT 'acsa',
+        name        VARCHAR(120) NOT NULL,
+        subject     VARCHAR(190) NOT NULL,
+        heading     VARCHAR(190) NOT NULL,
+        body_html   MEDIUMTEXT   NOT NULL,
+        status      ENUM('draft','sending','paused','done') NOT NULL DEFAULT 'draft',
+        created_by  INT UNSIGNED NULL,
+        created_at  DATETIME     NOT NULL,
+        started_at  DATETIME     NULL,
+        finished_at DATETIME     NULL
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+    q("CREATE TABLE IF NOT EXISTS email_queue (
+        id           INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        campaign_id  INT UNSIGNED NOT NULL,
+        email        VARCHAR(190) NOT NULL,
+        full_name    VARCHAR(120) NULL,
+        ref_code     VARCHAR(12)  NULL,
+        source       VARCHAR(120) NULL,
+        status       ENUM('queued','sent','failed','skipped') NOT NULL DEFAULT 'queued',
+        error        VARCHAR(255) NULL,
+        sent_at      DATETIME     NULL,
+        UNIQUE KEY uq_once (campaign_id, email),
+        KEY ix_status (campaign_id, status),
+        CONSTRAINT fk_queue_campaign FOREIGN KEY (campaign_id) REFERENCES email_campaigns(id) ON DELETE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+    q("CREATE TABLE IF NOT EXISTS email_suppressions (
+        email       VARCHAR(190) NOT NULL PRIMARY KEY,
+        reason      VARCHAR(40)  NOT NULL DEFAULT 'unsubscribed',
+        created_at  DATETIME     NOT NULL
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
     if (!q("SHOW COLUMNS FROM email_campaigns LIKE 'brand'")->fetch()) {
         q("ALTER TABLE email_campaigns ADD COLUMN brand VARCHAR(10) NOT NULL DEFAULT 'acsa' AFTER id");
     }
@@ -89,7 +121,7 @@ function campaign_schema(): void
         created_by  INT UNSIGNED NULL,
         created_at  DATETIME     NOT NULL
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
-    save_setting('campaigns_schema', '2');
+    save_setting('campaigns_schema', '3');
 }
 
 /* ──────────────────────────── Templates ──────────────────────────── */
