@@ -475,6 +475,23 @@ function apply_ticket_link_once(): void
     save_setting('ticket_link_2026_11', now());
 }
 
+/** Runs once per database: terms worded differently on live kept an older closing date, so match any date. */
+function apply_terms_close_date_once(): void
+{
+    try {
+        if (q("SELECT 1 FROM settings WHERE skey = 'terms_close_2026_12'")->fetchColumn()) {
+            return;
+        }
+    } catch (Throwable $e) {
+        return; // not installed yet
+    }
+    $terms = q("SELECT svalue FROM settings WHERE skey = 'terms_html'")->fetchColumn();
+    if (is_string($terms)) {
+        save_setting('terms_html', preg_replace('/and close on \d{1,2} \w+ 2026 at 23:59/u', 'and close on 31 December 2026 at 23:59', $terms));
+    }
+    save_setting('terms_close_2026_12', now());
+}
+
 /* ──────────────────────────── Website media ──────────────────────────── */
 
 function media_items(string $kind, int $limit = 0, bool $featuredFirst = true): array
@@ -578,3 +595,4 @@ apply_relaunch_once();
 apply_december_event_once();
 apply_fly_december_close_once();
 apply_ticket_link_once();
+apply_terms_close_date_once();

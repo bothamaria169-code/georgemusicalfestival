@@ -81,6 +81,8 @@ require __DIR__ . '/includes/header.php';
 </section>
 
 <!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+<?php $bandAnchors = true; include __DIR__ . '/includes/event-band.php'; ?>
+
 <section class="section on-paper">
   <div class="wrap">
     <span class="kicker reveal" style="color:var(--orange-deep)">How it works</span>
