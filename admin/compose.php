@@ -243,8 +243,10 @@ admin_head('Write an email', 'compose');
     document.getElementById('mSheetName').textContent = sheet.files.length ? sheet.files[0].name : 'Upload Excel or CSV';
     showCount();
   });
-  var leadsBox = form.querySelector('input[value="leads_wc"]'), leadsWarn = document.getElementById('mLeadsWarn');
-  form.querySelectorAll('input[name="lists[]"]').forEach(function (c) { c.addEventListener('change', function () { showCount(); if (leadsBox) { leadsWarn.hidden = !leadsBox.checked; } }); });
+  var leadsWarn = document.getElementById('mLeadsWarn');
+  function leadsCheck() { leadsWarn.hidden = !form.querySelector('input[value="leads_wc"]:checked'); }
+  form.querySelectorAll('input[name="lists[]"]').forEach(function (c) { c.addEventListener('change', function () { showCount(); leadsCheck(); }); });
+  form.querySelectorAll('.mail-brand').forEach(function (b) { b.addEventListener('click', leadsCheck); });
   form.addEventListener('submit', function (ev) {
     document.getElementById('mBody').value = editor.innerHTML;
     var n = total();

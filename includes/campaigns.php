@@ -31,7 +31,7 @@ function campaign_brands(): array
             'close'     => fmt_date(setting('comp_close_at'), 'j F Y'),
             'btn_bg'    => '#f7801a',
             'btn_ink'   => '#2a1402',
-            'audiences' => ['verified', 'all', 'marketing', 'subscribers', 'everyone'],
+            'audiences' => ['verified', 'all', 'marketing', 'subscribers', 'everyone', 'leads_wc'],
         ],
         'cellc' => [
             'label'     => 'WIN A SAMSUNG · Cell C',
@@ -244,7 +244,7 @@ function campaign_audience_rows(string $audience, string $brand = 'acsa'): array
         'marketing'   => $entrants . " AND status = 'verified' AND consent_marketing = 1",
         'subscribers' => $list,
         'everyone'    => $entrants . ' UNION ALL ' . $list,   // entrants first, so their names and links win the duplicate check
-        'leads_wc'    => $brand === 'cellc' ? "SELECT email, '' AS full_name, NULL AS ref_code FROM leads WHERE brand = 'cellc' AND region = 'Western Cape'" : null,
+        'leads_wc'    => "SELECT email, '' AS full_name, NULL AS ref_code FROM leads WHERE region = 'Western Cape'",
         default       => null,
     };
     return $sql ? q($sql)->fetchAll() : [];
