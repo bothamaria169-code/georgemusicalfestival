@@ -38,6 +38,7 @@ function admin_head(string $title, string $active = ''): void
         'leads'       => ['leads.php', 'fa-address-book', 'Leads', 'admin'],
         'subscribers' => ['subscribers.php', 'fa-envelope-open-text', 'Mailing list', 'admin'],
         'campaigns'   => ['campaigns.php', 'fa-paper-plane', 'Sent emails', 'admin'],
+        'replies'     => ['replies.php', 'fa-inbox', 'Replies', 'admin'],
         'media'       => ['media.php', 'fa-photo-film', 'Website media', 'admin'],
         'settings'    => ['settings.php', 'fa-sliders', 'Settings', 'admin'],
         'users'       => ['users.php', 'fa-user-shield', 'Team & access', 'admin'],

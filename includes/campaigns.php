@@ -185,6 +185,31 @@ function campaign_builtin_templates(): array
             . "<p>The leaderboard is now checked for fair play and the winners will be announced on the competition page soon.</p>\n"
             . campaign_button('acsa', 'See the competition page') . "\n" . $ask];
 
+    $t['b:acsa-info'] = ['brand' => 'acsa', 'name' => 'Reply — more information',
+        'subject' => "More about {$fly}",
+        'heading' => 'Hi {first_name}, thanks for asking',
+        'body'    => "<p>Thanks for getting in touch. Here is how {$fly} works:</p>
+"
+            . "<ul><li><strong>The prize:</strong> a getaway for two (return flights, accommodation and ground transfers) plus R1,500 cash.</li>"
+            . "<li><strong>How to enter:</strong> fill in the short form, then confirm with the code we email you. It's free and takes about a minute.</li>"
+            . "<li><strong>How to win:</strong> share your personal link. The person whose link is opened by the most different people wins.</li>"
+            . "<li><strong>Closing date:</strong> {close_date} at 23:59.</li></ul>
+"
+            . "<p>[Answer their question here.]</p>
+"
+            . campaign_button('acsa', 'Enter now') . "
+" . $ask];
+    $t['b:acsa-invite'] = ['brand' => 'acsa', 'name' => 'Leads — one-time invitation',
+        'subject' => "Win a getaway for two with {$fly}",
+        'heading' => 'An invitation from George Musical Festival',
+        'body'    => "<p>George Musical Festival and Airports Company South Africa are giving away a getaway for two (return flights, accommodation and ground transfers) plus R1,500 cash.</p>
+"
+            . "<p>Entry is free and takes about a minute. Entries close {close_date}.</p>
+"
+            . campaign_button('acsa', 'Enter now') . "
+"
+            . "<p>This is a one-time invitation. If you would rather not hear from us, reply STOP or use the unsubscribe link below and we will not email you again.</p>"];
+
     $t['b:cellc-enter'] = ['brand' => 'cellc', 'name' => "{$sam} — enter now",
         'subject' => "Win a Samsung Galaxy A56 + accessories worth R10 000",
         'heading' => "Hi {first_name}, win a Samsung with Cell C",
@@ -202,6 +227,30 @@ function campaign_builtin_templates(): array
         'heading' => 'Final call, {first_name}',
         'body'    => "<p>This is the last chance to enter {$sam} and win a Samsung Galaxy A56 plus accessories worth R10 000.</p>\n"
             . campaign_button('cellc', 'Enter now') . "\n" . $ask];
+    $t['b:cellc-info'] = ['brand' => 'cellc', 'name' => 'Reply — more information',
+        'subject' => "More about {$sam}",
+        'heading' => 'Hi {first_name}, thanks for asking',
+        'body'    => "<p>Thanks for getting in touch. Here is how {$sam} works:</p>
+"
+            . "<ul><li><strong>The prize:</strong> a Samsung Galaxy A56 plus accessories, worth R10 000 altogether.</li>"
+            . "<li><strong>How to enter:</strong> fill in the short form, then confirm with the code we email you. It's free and takes about a minute.</li>"
+            . "<li><strong>How to win:</strong> share your personal link. The person whose link is opened by the most different people wins.</li>"
+            . "<li><strong>Collecting the prize:</strong> at a Cell C store, with your ID.</li></ul>
+"
+            . "<p>[Answer their question here.]</p>
+"
+            . campaign_button('cellc', 'Enter now') . "
+" . $ask];
+    $t['b:cellc-invite'] = ['brand' => 'cellc', 'name' => 'Leads — one-time invitation',
+        'subject' => 'Win a Samsung Galaxy A56 + accessories worth R10 000',
+        'heading' => 'An invitation from George Musical Festival and Cell C',
+        'body'    => "<p>George Musical Festival and Cell C are giving away a Samsung Galaxy A56 plus accessories, worth R10 000 altogether.</p>
+"
+            . "<p>Entry is free and takes about a minute.</p>
+"
+            . campaign_button('cellc', 'Enter now') . "
+"
+            . "<p>This is a one-time invitation. If you would rather not hear from us, reply STOP or use the unsubscribe link below and we will not email you again.</p>"];
     $t['b:cellc-thanks'] = ['brand' => 'cellc', 'name' => 'Thank you — entries closed',
         'subject' => "Thank you for entering {$sam}",
         'heading' => 'Thank you, {first_name}',

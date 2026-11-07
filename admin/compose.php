@@ -18,7 +18,13 @@ $body = '';
 $picked = [];
 $error = '';
 
-// "Email this person" on the Entrants page.
+// "Email this person" on the Entrants page, and "Reply" on the Replies page.
+if (filter_var((string) ($_GET['to'] ?? ''), FILTER_VALIDATE_EMAIL)) {
+    $to = mb_strtolower((string) $_GET['to']);
+}
+if (isset($_GET['subject'])) {
+    $subject = mb_substr(trim((string) $_GET['subject']), 0, 190);
+}
 if (!empty($_GET['entrant'])) {
     $to = (string) q('SELECT email FROM entrants WHERE id = ?', [(int) $_GET['entrant']])->fetchColumn();
 }
@@ -257,7 +263,8 @@ admin_head('Write an email', 'compose');
   });
   setBrand(brand.value);
   var start = <?= json_encode((string) ($_GET['tpl'] ?? ''), JSON_HEX_TAG | JSON_HEX_AMP) ?>;
-  if (start && templates[start] && <?= $_SERVER['REQUEST_METHOD'] === 'GET' ? 'true' : 'false' ?>) { tpl.value = start; tpl.dispatchEvent(new Event('change')); }
+  var keepSubject = <?= json_encode($_SERVER['REQUEST_METHOD'] === 'GET' ? $subject : '', JSON_HEX_TAG | JSON_HEX_AMP) ?>;
+  if (start && templates[start] && <?= $_SERVER['REQUEST_METHOD'] === 'GET' ? 'true' : 'false' ?>) { tpl.value = start; tpl.dispatchEvent(new Event('change')); if (keepSubject) { subject.value = keepSubject; } }
 })();
 </script>
 <?php admin_foot();
