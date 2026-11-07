@@ -181,6 +181,7 @@ admin_head('Write an email', 'compose');
     <button class="btn" type="submit" name="action" value="test" formnovalidate><i class="fa-regular fa-envelope"></i> Send a test to me</button>
     <span class="muted" id="mCount"></span>
   </div>
+  <p class="mail-warn" id="mLeadsWarn" hidden><i class="fa-solid fa-triangle-exclamation"></i> These leads have not opted in. Send them one email inviting them to enter or join the list, and keep it small: the mailbox allows only a few hundred emails a day.</p>
   <p class="help">Every email includes an unsubscribe link, and people who have unsubscribed are skipped. Up to 10 go out straight away, then about 40 every 5 minutes. See what went out under Sent emails.</p>
 </form>
 
@@ -242,7 +243,8 @@ admin_head('Write an email', 'compose');
     document.getElementById('mSheetName').textContent = sheet.files.length ? sheet.files[0].name : 'Upload Excel or CSV';
     showCount();
   });
-  form.querySelectorAll('input[name="lists[]"]').forEach(function (c) { c.addEventListener('change', showCount); });
+  var leadsBox = form.querySelector('input[value="leads_wc"]'), leadsWarn = document.getElementById('mLeadsWarn');
+  form.querySelectorAll('input[name="lists[]"]').forEach(function (c) { c.addEventListener('change', function () { showCount(); if (leadsBox) { leadsWarn.hidden = !leadsBox.checked; } }); });
   form.addEventListener('submit', function (ev) {
     document.getElementById('mBody').value = editor.innerHTML;
     var n = total();

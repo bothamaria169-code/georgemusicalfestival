@@ -33,6 +33,7 @@ function admin_head(string $title, string $active = ''): void
         'draws'       => ['draws.php', 'fa-trophy', 'Draws', 'viewer'],
         '#cellc'      => ['', '', 'Cell C · Win a Samsung', 'admin'],
         'cellc'       => ['cellc.php', 'fa-mobile-screen-button', 'Cell C campaign', 'admin'],
+        'leads'       => ['leads.php', 'fa-address-book', 'Cell C leads', 'admin'],
         '#tools'      => ['', '', 'Email & website', 'admin'],
         'compose'     => ['compose.php', 'fa-pen-to-square', 'Write an email', 'admin'],
         'subscribers' => ['subscribers.php', 'fa-envelope-open-text', 'Mailing list', 'admin'],

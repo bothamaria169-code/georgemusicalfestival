@@ -172,3 +172,4 @@ select.mail-input option { color: #111; }
 .mail-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 14px; }
 .btn-send { padding: 12px 26px; font-size: 1rem; }
 .mail-template { color: var(--orange); font-weight: 700; }
+.mail-warn { margin: 14px 0 0; padding: 10px 14px; border-radius: 10px; background: var(--warn-bg); color: #fcc56b; font-size: .86rem; }

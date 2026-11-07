@@ -43,7 +43,7 @@ function campaign_brands(): array
             'close'     => '',
             'btn_bg'    => '#e8590c',
             'btn_ink'   => '#ffffff',
-            'audiences' => ['subscribers'],   // Cell C entrants live in the Cell C app: export them there and import here
+            'audiences' => ['subscribers', 'leads_wc'],   // Cell C entrants live in the Cell C app: export them there and import here
         ],
     ];
 }
@@ -60,6 +60,7 @@ const CAMPAIGN_AUDIENCES = [
     'marketing'   => 'Verified entrants who opted in to marketing',
     'subscribers' => 'GMF mailing list sign-ups',
     'everyone'    => 'Everyone: all entrants + mailing list',
+    'leads_wc'    => 'Western Cape business leads (not opted in)',
 ];
 
 /** Creates the email tables if this database doesn't have them, and adds the newer columns to older ones. Runs once. */
@@ -70,7 +71,7 @@ function campaign_schema(): void
         return;
     }
     $done = true;
-    if (q("SELECT 1 FROM settings WHERE skey = 'campaigns_schema' AND svalue = '3'")->fetchColumn()) {
+    if (q("SELECT 1 FROM settings WHERE skey = 'campaigns_schema' AND svalue = '4'")->fetchColumn()) {
         return;
     }
     q("CREATE TABLE IF NOT EXISTS email_campaigns (
@@ -121,7 +122,16 @@ function campaign_schema(): void
         created_by  INT UNSIGNED NULL,
         created_at  DATETIME     NOT NULL
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
-    save_setting('campaigns_schema', '3');
+    q("CREATE TABLE IF NOT EXISTS leads (
+        email       VARCHAR(190) NOT NULL PRIMARY KEY,
+        company     VARCHAR(120) NULL,
+        region      VARCHAR(40)  NOT NULL,
+        brand       VARCHAR(10)  NOT NULL DEFAULT 'cellc',
+        source      VARCHAR(160) NULL,
+        created_at  DATETIME     NOT NULL,
+        KEY ix_list (brand, region)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+    save_setting('campaigns_schema', '4');
 }
 
 /* ──────────────────────────── Templates ──────────────────────────── */
@@ -234,6 +244,7 @@ function campaign_audience_rows(string $audience, string $brand = 'acsa'): array
         'marketing'   => $entrants . " AND status = 'verified' AND consent_marketing = 1",
         'subscribers' => $list,
         'everyone'    => $entrants . ' UNION ALL ' . $list,   // entrants first, so their names and links win the duplicate check
+        'leads_wc'    => $brand === 'cellc' ? "SELECT email, '' AS full_name, NULL AS ref_code FROM leads WHERE brand = 'cellc' AND region = 'Western Cape'" : null,
         default       => null,
     };
     return $sql ? q($sql)->fetchAll() : [];
