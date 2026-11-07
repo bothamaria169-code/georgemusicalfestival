@@ -31,12 +31,14 @@ admin_head('Overview', 'overview');
   campaign_card((string) setting('comp_name'), 'ACSA campaign', '#1aa6a6', campaign_snapshot_safe(db()), campaign_email_stats('acsa'), [
       ['Competition page', url('flyfortwo/'), true],
       ['Entrants', url('admin/entrants.php'), false],
+      ['Export entrants', url('admin/entrants.php?export=1'), false],
       ['Draws', url('admin/draws.php'), false],
   ]);
   if ($seesCellc) {
       campaign_card('WIN A SAMSUNG', 'Cell C campaign', '#e8590c', campaign_snapshot_safe(cellc_pdo()), campaign_email_stats('cellc'), [
           ['Competition page', url('cellc/win/'), true],
           ['Cell C details', url('admin/cellc.php'), false],
+          ['Export entrants', url('admin/cellc.php?export=entrants&status=verified'), false],
           ['Open Cell C admin', url('cellc/admin/'), true],
       ]);
   }

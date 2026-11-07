@@ -72,6 +72,18 @@ function campaign_snapshot(PDO $pdo): array
     ];
 }
 
+/** Cell C entrants from its own database, with link opens and friends referred. $status: verified, pending or all. */
+function cellc_entrants(PDO $pdo, string $status = 'all'): array
+{
+    $where = in_array($status, ['verified', 'pending', 'disqualified'], true) ? 'WHERE p.status = ?' : '';
+    $st = $pdo->prepare("SELECT p.*, r.full_name AS referrer_name,
+                   (SELECT COUNT(*) FROM referral_clicks c WHERE c.referrer_id = p.id) AS opens,
+                   (SELECT COUNT(*) FROM entrants f WHERE f.referred_by = p.id AND f.status = 'verified') AS friends
+            FROM entrants p LEFT JOIN entrants r ON r.id = p.referred_by {$where} ORDER BY p.id");
+    $st->execute($where ? [$status] : []);
+    return $st->fetchAll();
+}
+
 /**
  * The Cell C leaderboard from its own database: verified entrants ranked by link opens from the
  * start of the competition to now, including opens recorded after an earlier closing date.

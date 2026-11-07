@@ -5,6 +5,21 @@ require dirname(__DIR__) . '/includes/campaign-overview.php';
 
 require_admin('admin');
 
+if (($_GET['export'] ?? '') === 'entrants' && ($ePdo = cellc_pdo())) {
+    $status = (string) ($_GET['status'] ?? 'all');
+    $rows = cellc_entrants($ePdo, $status);
+    audit('cellc.entrants_export', ['status' => $status, 'rows' => count($rows)]);
+    $out = [];
+    foreach ($rows as $p) {
+        $out[] = [$p['id'], $p['full_name'], $p['email'], $p['phone'], $p['town'], $p['age_group'], $p['cellc_products'],
+            $p['consent_terms'] ? 'yes' : 'no', $p['consent_popia'] ? 'yes' : 'no', $p['consent_marketing'] ? 'yes' : 'no', $p['email_status'] ? $p['email_issue'] : '',
+            $p['status'], $p['verified_at'], $p['channel'], $p['activation_point'], $p['source_town'], $p['ref_code'], $p['referrer_name'], (int) $p['opens'], (int) $p['friends'], $p['created_at']];
+    }
+    csv_download('win-a-samsung-entrants-' . ($status === 'verified' ? 'verified-' : '') . date('Ymd-His') . '.csv',
+        ['ID', 'Full name', 'Email', 'Phone', 'Town', 'Age group', 'Cell C products', 'Terms consent', 'POPIA consent', 'Marketing consent', 'Email problem',
+         'Status', 'Verified at', 'Channel', 'Activation point', 'Source town', 'Share code', 'Referred by', 'Link opens', 'Friends entered', 'Entered at'], $out);
+}
+
 if (($_GET['export'] ?? '') === 'leaderboard' && ($lbPdo = cellc_pdo())) {
     $rows = cellc_leaderboard($lbPdo);
     audit('cellc.leaderboard_export', ['rows' => count($rows)]);
@@ -23,6 +38,8 @@ campaign_card('WIN A SAMSUNG', 'Cell C campaign', '#e8590c', $s, $mail, [
     ['Competition page', url('cellc/win/'), true],
     ['Open Cell C admin', url('cellc/admin/'), true],
     ['Write an email', url('admin/compose.php?brand=cellc'), false],
+    ['Export verified entrants (CSV)', url('admin/cellc.php?export=entrants&status=verified'), false],
+    ['Export all entrants (CSV)', url('admin/cellc.php?export=entrants&status=all'), false],
     ['Export leaderboard (CSV)', url('admin/cellc.php?export=leaderboard'), false],
 ]);
 ?>
