@@ -140,7 +140,7 @@ require __DIR__ . '/includes/header.php';
 ?>
 <section class="auth-wrap">
   <div class="auth-media">
-    <img src="<?= e(url('assets/img/gallery/activation-23.jpg')) ?>" alt="GMF street team handing out WIN A SAMSUNG flyers">
+    <img src="<?= e(url('assets/img/cellc/friends-phones.jpg')) ?>" alt="GMF street team handing out WIN A SAMSUNG flyers">
     <div class="cap">
       <span class="kicker">Reconnect my entry</span>
       <p class="display big" style="margin-top:14px;">Your link <span class="serif-i text-orange">still works.</span></p>

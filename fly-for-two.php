@@ -110,8 +110,8 @@ require __DIR__ . '/includes/header.php';
 
 <!-- ═══════════════ PHOTO STRIP ═══════════════ -->
 <section class="ff-strip" aria-hidden="true">
-  <?php foreach (['activation-22', 'activation-02', 'crowd-night', 'activation-24', 'activation-16', 'performer-stage'] as $img): ?>
-    <img src="<?= e(url('assets/img/gallery/' . $img . '.jpg')) ?>" alt="" loading="lazy">
+  <?php foreach (['cellc/concert-phones', 'gallery/activation-02', 'gallery/crowd-night', 'cellc/fans-phones', 'gallery/activation-16', 'gallery/performer-stage'] as $img): ?>
+    <img src="<?= e(url('assets/img/' . $img . '.jpg')) ?>" alt="" loading="lazy">
   <?php endforeach; ?>
 </section>
 

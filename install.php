@@ -90,12 +90,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ['crowd-night', 'Under the lights', 'The GMF crowd after dark', 'Festival', 1],
                 ['performer-stage', 'On stage', 'Live at a George Musical Festival show', 'Festival', 1],
                 ['activation-02', 'Taxi rank activation', 'Meeting commuters across the Garden Route', 'Street activations', 1],
-                ['activation-22', 'Street team, George', 'Flyering with the FLY FOR TWO crew', 'Street activations', 1],
                 ['activation-04', 'Forecourt stop', 'Eden Soul & Jazz on the road', 'Street activations', 1],
                 ['airport-terminal', 'George Airport', 'Where the weekend away begins', 'Travel', 1],
-                ['activation-23', 'Pop-up partners', 'Activation with local partners', 'Street activations', 1],
                 ['activation-21', 'Poster run', 'Eden Soul & Jazz posters around town', 'Street activations', 0],
-                ['activation-24', 'Crew', 'The GMF promoters', 'Street activations', 0],
             ];
             for ($i = 1; $i <= 20; $i++) {
                 $name = sprintf('activation-%02d', $i);

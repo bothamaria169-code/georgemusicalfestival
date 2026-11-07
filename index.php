@@ -174,7 +174,7 @@ require __DIR__ . '/includes/header.php';
       </div>
       <div class="spread-media reveal reveal-d2">
         <div class="img-a"><img src="<?= e(url('assets/img/gallery/crowd-night.jpg')) ?>" alt="The crowd at a George Musical Festival night show" loading="lazy"></div>
-        <div class="img-b"><img src="<?= e(url('assets/img/gallery/activation-22.jpg')) ?>" alt="The George Musical Festival street team in George" loading="lazy"></div>
+        <div class="img-b"><img src="<?= e(url('assets/img/gallery/activation-01.jpg')) ?>" alt="The George Musical Festival street team in George" loading="lazy"></div>
       </div>
     </div>
   </div>
@@ -197,7 +197,7 @@ require __DIR__ . '/includes/header.php';
         <div class="exp-body"><span class="exp-n">01</span><h3>Live soul &amp; jazz</h3><p>A full day of live soul and jazz, from the afternoon until the lights go down.</p></div>
       </article>
       <article class="exp-card reveal reveal-d1">
-        <img src="<?= e(url('assets/img/gallery/activation-23.jpg')) ?>" alt="The George Musical Festival crew with local partners" loading="lazy">
+        <img src="<?= e(url('assets/img/cellc/selfie-friends.jpg')) ?>" alt="The George Musical Festival crew with local partners" loading="lazy">
         <div class="exp-body"><span class="exp-n">02</span><h3>Food, culture &amp; community</h3><p>Garden Route food, fashion and friends. A day out built for the whole community, not just the front row.</p></div>
       </article>
       <article class="exp-card reveal reveal-d2">

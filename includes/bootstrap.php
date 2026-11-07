@@ -427,6 +427,20 @@ function apply_ticket_link_once(): void
     save_setting('ticket_link_2026_11', now());
 }
 
+/** Runs once per database: drops gallery photos that show another network's branding. */
+function apply_remove_other_network_photos_once(): void
+{
+    try {
+        if (q("SELECT 1 FROM settings WHERE skey = 'photos_cleanup_2026_11'")->fetchColumn()) {
+            return;
+        }
+    } catch (Throwable $e) {
+        return; // not installed yet
+    }
+    q("DELETE FROM media WHERE src IN ('assets/img/gallery/activation-20.jpg', 'assets/img/gallery/activation-22.jpg', 'assets/img/gallery/activation-23.jpg', 'assets/img/gallery/activation-24.jpg')");
+    save_setting('photos_cleanup_2026_11', now());
+}
+
 /* ──────────────────────────── Website media ──────────────────────────── */
 
 function media_items(string $kind, int $limit = 0, bool $featuredFirst = true): array
@@ -528,3 +542,4 @@ function audit(string $action, $detail = null): void
 
 apply_december_relaunch_once();
 apply_ticket_link_once();
+apply_remove_other_network_photos_once();
