@@ -4,6 +4,17 @@ require __DIR__ . '/_layout.php';
 require dirname(__DIR__) . '/includes/campaign-overview.php';
 
 require_admin('admin');
+
+if (($_GET['export'] ?? '') === 'leaderboard' && ($lbPdo = cellc_pdo())) {
+    $rows = cellc_leaderboard($lbPdo);
+    audit('cellc.leaderboard_export', ['rows' => count($rows)]);
+    $out = [];
+    foreach ($rows as $i => $r) {
+        $out[] = [$i + 1, $r['full_name'], $r['email'], $r['phone'], $r['town'], $r['ref_code'], (int) $r['opens'], (int) $r['networks'], (int) $r['friends'], $r['last_open'], $r['verified_at']];
+    }
+    csv_download('win-a-samsung-leaderboard-' . date('Ymd-His') . '.csv',
+        ['Rank', 'Full name', 'Email', 'Phone', 'Town', 'Share code', 'Link opens to date', 'Different networks', 'Friends entered', 'Last open', 'Verified at'], $out);
+}
 $s = campaign_snapshot_safe(cellc_pdo());
 $mail = campaign_email_stats('cellc');
 
@@ -12,6 +23,7 @@ campaign_card('WIN A SAMSUNG', 'Cell C campaign', '#e8590c', $s, $mail, [
     ['Competition page', url('cellc/win/'), true],
     ['Open Cell C admin', url('cellc/admin/'), true],
     ['Write an email', url('admin/compose.php?brand=cellc'), false],
+    ['Export leaderboard (CSV)', url('admin/cellc.php?export=leaderboard'), false],
 ]);
 ?>
 

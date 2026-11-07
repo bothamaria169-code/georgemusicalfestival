@@ -72,6 +72,25 @@ function campaign_snapshot(PDO $pdo): array
     ];
 }
 
+/**
+ * The Cell C leaderboard from its own database: verified entrants ranked by link opens from the
+ * start of the competition to now, including opens recorded after an earlier closing date.
+ */
+function cellc_leaderboard(PDO $pdo): array
+{
+    $open = (string) $pdo->query("SELECT svalue FROM settings WHERE skey = 'comp_open_at'")->fetchColumn();
+    $st = $pdo->prepare("SELECT r.id, r.full_name, r.email, r.phone, r.town, r.ref_code, r.verified_at,
+                   COUNT(c.id) AS opens, COUNT(DISTINCT c.ip_hash) AS networks, MAX(c.clicked_at) AS last_open,
+                   (SELECT COUNT(*) FROM entrants f WHERE f.referred_by = r.id AND f.status = 'verified') AS friends
+            FROM entrants r
+            LEFT JOIN referral_clicks c ON c.referrer_id = r.id AND c.clicked_at >= ?
+            WHERE r.status = 'verified'
+            GROUP BY r.id, r.full_name, r.email, r.phone, r.town, r.ref_code, r.verified_at
+            ORDER BY opens DESC, friends DESC, last_open ASC, r.id ASC");
+    $st->execute([$open]);
+    return $st->fetchAll();
+}
+
 /** The same as campaign_snapshot(), but a failure shows on the card instead of stopping the admin page. */
 function campaign_snapshot_safe(?PDO $pdo): ?array
 {
