@@ -1,0 +1,137 @@
+<?php
+require __DIR__ . '/includes/bootstrap.php';
+
+// Attribution: ?src=qr_ground&pt=...&town=...&slot=...  and  ?ref=CODE
+competition_landing_context();
+$src      = source_data();
+$refCode  = $_SESSION['ref_by'] ?? '';
+$referrer = $refCode ? entrant_by_ref($refCode) : null;
+$me       = current_entrant();
+$state    = comp_state();
+$final    = draw_by_key('final');
+$eventDay = draw_by_key('event_day');
+$prizes   = prize_lines($final);
+$towns    = lines((string) setting('towns'));
+$flyOpts  = lines((string) setting('travel_options'));
+$leaders  = public_leaderboard(10);
+$shareCap = (int) setting('share_bonus_cap');
+$winners  = q("SELECT d.title, d.prize_description, p.full_name, p.town
+               FROM draws d
+               JOIN draw_runs r ON r.draw_id = d.id AND r.outcome = 'confirmed'
+               JOIN entrants p ON p.id = r.selected_entrant_id
+               WHERE d.status = 'published' ORDER BY d.scheduled_for")->fetchAll();
+
+$page_title       = setting('comp_name') . ' — Win ' . setting('prize_headline') . ' | George Musical Festival × Cell C';
+$meta_description = 'Enter WIN A SAMSUNG free and win ' . setting('prize_headline') . ' — phone + accessories worth ' . setting('prize_value') . '. George Musical Festival × Cell C.';
+$og_image         = url('assets/img/cellc/hero-galaxy-a56-v4.jpg');
+$nav_active       = 'fly';
+$extra_css        = ['assets/css/comp.css'];
+$extra_js         = ['assets/js/enter.js'];
+$needs_turnstile  = true;
+$show_logo_ticker = true;
+require __DIR__ . '/includes/header.php';
+?>
+
+<section class="ff-hero grain">
+  <img class="ff-hero-bg" src="<?= e(url('assets/img/cellc/concert-phones-blue.jpg')) ?>" alt="" fetchpriority="high">
+  <div class="wrap ff-layout">
+
+    <div class="ff-intro">
+      <div class="ff-badge"><?= e(setting('hero_kicker')) ?></div>
+      <h1 class="display huge">Win a Samsung <span class="serif-i">Galaxy A56.</span></h1>
+      <p class="relaunch-again">Entered before? Please enter again.</p>
+      <p class="lede"><?= e(setting('hero_text')) ?></p>
+      <p class="relaunch-close">Entries close <strong><?= e(fmt_date(setting('comp_close_at'), 'j F Y')) ?></strong> · <a href="<?= e(url('win/terms')) ?>">T's &amp; C's apply</a></p>
+      <figure class="ff-intro-photo"><img src="<?= e(url('assets/img/cellc/hero-galaxy-a56-v4.jpg')) ?>" width="1536" height="1024" alt="A smiling young woman holding up a Samsung phone, with a boxed Galaxy A56 5G and Samsung accessories in front of her at a George Musical Festival and Cell C stand" fetchpriority="high"></figure>
+      <p style="margin-top:18px;"><a class="text-link" href="<?= e(url('win/how-to-enter')) ?>">How to enter, step by step <i class="fa-solid fa-arrow-right"></i></a></p>
+      <?php if ($referrer && (!$me || (int) $me['id'] !== (int) $referrer['id'])): ?>
+        <p class="ff-invited"><i class="fa-solid fa-user-plus"></i> <?= e(short_name($referrer['full_name'])) ?> invited you to enter.</p>
+      <?php endif; ?>
+    </div>
+
+    <!-- ── Entry card ───────────────────────────── -->
+    <div class="ff-card-col">
+      <?php include __DIR__ . '/includes/entry-card.php'; ?>
+    </div>
+
+    <!-- ── Prize ───────────────────────────── -->
+    <div class="ff-details">
+      <div class="ff-prize">
+        <div class="ff-prize-label">What you win</div>
+        <div class="ff-prize-title"><?= e(setting('prize_headline')) ?></div>
+        <ul>
+          <?php foreach ($prizes as $p): ?><li><span class="dot"></span><?= e($p) ?></li><?php endforeach; ?>
+        </ul>
+        <i class="fa-solid fa-mobile-screen-button ff-prize-plane" aria-hidden="true"></i>
+      </div>
+      <?php $placesClass = ''; include __DIR__ . '/includes/prize-places.php'; ?>
+      <figure class="moyeni-render ff-moyeni"><img src="<?= e(url('assets/img/cellc/prize-phone-bundle.jpg')) ?>" width="1800" height="1200" alt="A Samsung smartphone with wireless earbuds" loading="lazy"></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+<?php include __DIR__ . '/includes/event-band.php'; ?>
+
+<section class="section on-paper">
+  <div class="wrap">
+    <span class="kicker reveal" style="color:var(--orange-deep)">How it works</span>
+    <h2 class="display big reveal" style="margin:18px 0 50px;">Three steps to <span class="serif-i" style="color:var(--orange-deep)">win</span></h2>
+    <div class="ff-steps">
+      <div class="ff-step reveal"><span class="n">01</span><h3>Enter</h3><p>Your name, cellphone, email, age group and which Cell C products you use. Scan a George Musical Festival QR code or enter right here.</p></div>
+      <div class="ff-step reveal reveal-d1"><span class="n">02</span><h3>Verify</h3><p>We email you a 6-digit code. Your entry only counts once it's confirmed — one per phone number.</p></div>
+      <div class="ff-step reveal reveal-d2"><span class="n">03</span><h3>Share</h3><p>Send your personal link on WhatsApp and everywhere else. Every different person who opens it adds 1 to your score. The top score wins the Grand Prize, the runner-up the Second Prize.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ LEADERBOARD ═══════════════ -->
+<section class="section" id="leaderboard">
+  <div class="wrap ff-lead-grid">
+    <div>
+      <span class="kicker reveal">Leaderboard</span>
+      <h2 class="display big reveal" style="margin-top:18px;">The <span class="serif-i text-orange">leaderboard</span></h2>
+      <p class="muted reveal" style="margin-top:18px;max-width:440px;">Ranked by link opens — the number of different people who opened each entrant's personal link. <strong style="color:var(--text-light)">Entries close <?= e(fmt_date(setting('comp_close_at'), 'j F Y')) ?> — the leader stays secret until the winners are revealed.</strong> <?= e(setting('referral_reward_text')) ?></p>
+      <?php if ($me): ?><a class="btn btn-orange reveal" style="margin-top:22px" href="<?= e(url('win/dashboard')) ?>">Get my link</a><?php endif; ?>
+    </div>
+    <div class="reveal reveal-d2">
+      <?php if ($leaders): ?>
+        <ol class="ff-leaders">
+          <?php foreach ($leaders as $l): ?>
+            <li class="<?= $l['hidden'] ? 'is-hidden' : '' ?>"><span class="rank"><?= $l['hidden'] ? '<i class="fa-solid fa-lock"></i>' : $l['rank'] ?></span><span class="who"><?= e($l['name']) ?><?php if ($l['town']): ?><small><?= e($l['town']) ?></small><?php endif; ?></span><span class="score"><?= $l['hidden'] ? '?' : (int) $l['clicks'] ?> <small>opens</small></span></li>
+          <?php endforeach; ?>
+        </ol>
+      <?php else: ?>
+        <div class="ff-leaders-empty"><i class="fa-solid fa-trophy"></i><p>The board is empty — be the first name on it. Enter, share your link, and every person who opens it lifts you up the board.</p></div>
+      <?php endif; ?>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PHOTO STRIP ═══════════════ -->
+<section class="ff-strip" aria-hidden="true">
+  <?php foreach (['cellc/concert-phones', 'gallery/activation-02', 'gallery/crowd-night', 'cellc/fans-phones', 'gallery/activation-16', 'gallery/performer-stage'] as $img): ?>
+    <img src="<?= e(url('assets/img/' . $img . '.jpg')) ?>" alt="" loading="lazy">
+  <?php endforeach; ?>
+</section>
+
+<!-- ═══════════════ FAQ ═══════════════ -->
+<section class="section on-paper">
+  <div class="wrap ff-faq-grid">
+    <div>
+      <span class="kicker reveal" style="color:var(--orange-deep)">Questions</span>
+      <h2 class="display big reveal" style="margin-top:18px;">Good to <span class="serif-i" style="color:var(--orange-deep)">know</span></h2>
+    </div>
+    <div class="ff-faq reveal">
+      <details open><summary>Who can enter?</summary><p>South African residents aged 18 and over. Entry is free. Full rules are in the <a href="<?= e(url('win/terms')) ?>">competition terms</a>.</p></details>
+      <details><summary>How many times can I enter?</summary><p>Once per phone number and email address. After that, your score grows each time a different person opens your personal link.</p></details>
+      <details><summary>I entered before. Do I need to enter again?</summary><p>Yes, please. Enter again with your details and share your new personal link.</p></details>
+      <details><summary>Why do I need a verification code?</summary><p>The code confirms that your email is real and that the entry is yours. Unconfirmed entries aren't on the leaderboard and can't win.</p></details>
+      <details><summary>When are the winners revealed?</summary><p>Entries and link opens count until <?= e(fmt_date(setting('comp_close_at'), 'j F Y, H:i')) ?>. The winners are announced on 12 December 2026: 1st place wins <?= e(setting('prize_headline')) ?> and 2nd place wins the Second Prize.</p></details>
+      <details><summary>How is the winner chosen?</summary><p><?= e(setting('draw_reassurance')) ?></p></details>
+      <details><summary>What happens to my information?</summary><p>Your details are used to run the competition and are held by Cell C and George Musical Festival. You'll only get marketing messages if you ticked the optional box. See the <a href="<?= e(url('win/privacy')) ?>">privacy notice</a>.</p></details>
+    </div>
+  </div>
+</section>
+
+<?php require __DIR__ . '/includes/footer.php'; ?>
