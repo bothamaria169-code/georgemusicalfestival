@@ -127,7 +127,7 @@ require __DIR__ . '/includes/header.php';
       <details><summary>How many times can I enter?</summary><p>Once per phone number and email address. After that, your score grows each time a different person opens your personal link.</p></details>
       <details><summary>I entered before. Do I need to enter again?</summary><p>Yes, please. Enter again with your details and share your new personal link.</p></details>
       <details><summary>Why do I need a verification code?</summary><p>The code confirms that your email is real and that the entry is yours. Unconfirmed entries aren't on the leaderboard and can't win.</p></details>
-      <details><summary>When are the winners revealed?</summary><p>Entries and link opens count until <?= e(fmt_date(setting('comp_close_at'), 'j F Y, H:i')) ?>. The winners are revealed after entries close: 1st place wins <?= e(setting('prize_headline')) ?> and 2nd place wins the Second Prize.</p></details>
+      <details><summary>When are the winners revealed?</summary><p>Entries and link opens count until <?= e(fmt_date(setting('comp_close_at'), 'j F Y, H:i')) ?>. The winners are announced on 12 December 2026: 1st place wins <?= e(setting('prize_headline')) ?> and 2nd place wins the Second Prize.</p></details>
       <details><summary>How is the winner chosen?</summary><p><?= e(setting('draw_reassurance')) ?></p></details>
       <details><summary>What happens to my information?</summary><p>Your details are used to run the competition and are held by Cell C and George Musical Festival. You'll only get marketing messages if you ticked the optional box. See the <a href="<?= e(url('win/privacy')) ?>">privacy notice</a>.</p></details>
     </div>

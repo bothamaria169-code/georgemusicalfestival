@@ -313,7 +313,7 @@ function setting_defaults(): array
         'ticket_note'       => 'Tickets at Computicket, Checkers and Shoprite',
         'event_lineup'      => "Oscar Mbo\nToss",
         'hero_video_url'    => '',
-        'announcement'      => 'WIN A SAMSUNG: enter free and win a Samsung Galaxy A56 + accessories worth R10 000. Entries close 31 December 2026.',
+        'announcement'      => 'WIN A SAMSUNG: enter free and win a Samsung Galaxy A56 + accessories worth R10 000. Entries close 11 December 2026; winners announced 12 December 2026.',
         'contact_email'     => 'info@georgemusicalfestival.co.za',
         'contact_phone'     => '',
         'social_facebook'   => '',
@@ -324,7 +324,7 @@ function setting_defaults(): array
         // Competition
         'comp_name'         => 'WIN A SAMSUNG',
         'comp_open_at'      => '2026-09-24 00:00:00',
-        'comp_close_at'     => '2026-12-31 23:59:59',
+        'comp_close_at'     => '2026-12-11 23:59:59',
         'prize_headline'    => 'Samsung Galaxy A56 + Accessory Bundle',
         'travel_question'   => 'Which network are you on?',
         'travel_options'    => '',   // network question switched off; Cell C product tick-boxes are used instead
@@ -441,6 +441,29 @@ function apply_remove_other_network_photos_once(): void
     save_setting('photos_cleanup_2026_11', now());
 }
 
+/** Runs once per database: entries close 11 December 2026, winners announced 12 December 2026. */
+function apply_close_11_december_once(): void
+{
+    try {
+        if (q("SELECT 1 FROM settings WHERE skey = 'close_11_december_2026'")->fetchColumn()) {
+            return;
+        }
+    } catch (Throwable $e) {
+        return; // not installed yet
+    }
+    $d = setting_defaults();
+    save_setting('comp_close_at', (string) $d['comp_close_at']);
+    save_setting('announcement', (string) $d['announcement']);
+    $terms = q("SELECT svalue FROM settings WHERE skey = 'terms_html'")->fetchColumn();
+    if (is_string($terms)) {
+        save_setting('terms_html', strtr($terms, [
+            'and close on 31 December 2026 at 23:59 (South African time). Entries and link opens received outside this period do not count.' => 'and close on 11 December 2026 at 23:59 (South African time). The winners are announced on 12 December 2026. Entries and link opens received outside this period do not count.',
+        ]));
+    }
+    q("UPDATE draws SET scheduled_for = '2026-12-12' WHERE draw_key IN ('final', 'event_day')");
+    save_setting('close_11_december_2026', now());
+}
+
 /* ──────────────────────────── Website media ──────────────────────────── */
 
 function media_items(string $kind, int $limit = 0, bool $featuredFirst = true): array
@@ -543,3 +566,4 @@ function audit(string $action, $detail = null): void
 apply_december_relaunch_once();
 apply_ticket_link_once();
 apply_remove_other_network_photos_once();
+apply_close_11_december_once();
