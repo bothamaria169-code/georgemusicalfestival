@@ -88,7 +88,7 @@ $target = $embed ? ' target="_blank" rel="noopener"' : '';
     <button class="ff-btn ff-btn-primary" type="submit">Confirm code</button>
     <button class="ff-btn ff-btn-ghost" type="button" data-resend>Resend code</button>
     <button class="ff-btn ff-btn-ghost ff-small" type="button" data-back><i class="fa-solid fa-pen"></i> Wrong email? Edit details</button>
-    <p class="ff-fine">Can't find it after a minute? Check your spam, junk or promotions folder, then tap Resend code.</p>
+    <p class="ff-fine">Can't find it after a minute? Check your spam, junk or promotions folder, then tap Resend code. Still nothing? <a href="#help">Chat with us</a>.</p>
   </form>
 
   <!-- STEP 3 · SHARE -->

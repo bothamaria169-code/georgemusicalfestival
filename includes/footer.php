@@ -59,6 +59,7 @@ $socials = array_filter([
   <button class="lb-next" aria-label="Next"><i class="fa-solid fa-arrow-right"></i></button>
 </div>
 
+<?php include __DIR__ . '/support-widget.php'; ?>
 <script src="<?= e(asset('assets/js/site.js')) ?>"></script>
 <?php foreach ($extra_js ?? [] as $js): ?>
 <script src="<?= e(asset($js)) ?>"></script>

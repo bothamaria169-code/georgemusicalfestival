@@ -91,19 +91,26 @@ require __DIR__ . '/includes/header.php';
     <div>
       <span class="kicker reveal">Leaderboard</span>
       <h2 class="display big reveal" style="margin-top:18px;">The <span class="serif-i text-orange">leaderboard</span></h2>
-      <p class="muted reveal" style="margin-top:18px;max-width:440px;">Ranked by link opens — the number of different people who opened each entrant's personal link. <strong style="color:var(--text-light)">Entries close <?= e(fmt_date(setting('comp_close_at'), 'j F Y')) ?> — the leader stays secret until the winners are revealed.</strong> <?= e(setting('referral_reward_text')) ?></p>
+      <p class="muted reveal" style="margin-top:18px;max-width:440px;">Ranked by link opens — the number of different people who opened each entrant's personal link. <strong style="color:var(--text-light)">Entries close <?= e(fmt_date(setting('comp_close_at'), 'j F Y')) ?> — the leader stays secret until the winners are announced on <?= e(fmt_date((string) ($final['scheduled_for'] ?? '2026-12-12'), 'j F Y')) ?>.</strong> <?= e(setting('referral_reward_text')) ?></p>
       <?php if ($me): ?><a class="btn btn-orange reveal" style="margin-top:22px" href="<?= e(url('win/dashboard')) ?>">Get my link</a><?php endif; ?>
     </div>
     <div class="reveal reveal-d2">
-      <?php if ($leaders): ?>
+      <div class="ff-board">
+        <div class="ff-board-head">
+          <span><i class="fa-solid fa-trophy"></i> Top 10</span>
+          <span class="ff-board-live"><i class="fa-solid fa-circle"></i> Live</span>
+        </div>
+        <div class="ff-board-cols" aria-hidden="true"><span>Rank</span><span>Entrant</span><span>Link opens</span></div>
         <ol class="ff-leaders">
           <?php foreach ($leaders as $l): ?>
             <li class="<?= $l['hidden'] ? 'is-hidden' : '' ?>"><span class="rank"><?= $l['hidden'] ? '<i class="fa-solid fa-lock"></i>' : $l['rank'] ?></span><span class="who"><?= e($l['name']) ?><?php if ($l['town']): ?><small><?= e($l['town']) ?></small><?php endif; ?></span><span class="score"><?= $l['hidden'] ? '?' : (int) $l['clicks'] ?> <small>opens</small></span></li>
           <?php endforeach; ?>
+          <?php for ($i = count($leaders) + 1; $i <= 10; $i++): ?>
+            <li class="is-open"><span class="rank"><?= $i ?></span><span class="who">Open spot<small>Up for grabs</small></span><span class="score">0 <small>opens</small></span></li>
+          <?php endfor; ?>
         </ol>
-      <?php else: ?>
-        <div class="ff-leaders-empty"><i class="fa-solid fa-trophy"></i><p>The board is empty — be the first name on it. Enter, share your link, and every person who opens it lifts you up the board.</p></div>
-      <?php endif; ?>
+        <p class="ff-board-foot"><?= $leaders ? 'Updated every time someone opens a link.' : 'No scores yet: the first person to share their link takes 1st place.' ?> <a href="#ffProgress">Enter now</a></p>
+      </div>
     </div>
   </div>
 </section>

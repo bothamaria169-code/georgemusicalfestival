@@ -7,30 +7,96 @@ declare(strict_types=1);
 
 function send_mail(string $to, string $subject, string $html, string $text = ''): bool
 {
-    $driver = config('mail.driver', 'log');
+    $GLOBALS['__mail_error'] = '';
     if ($text === '') {
         // Plain-text part: keep links visible ("Confirm my entry: https://…") and paragraphs on their own lines.
         $plain = preg_replace('#<a\s[^>]*href="([^"]+)"[^>]*>(.*?)</a>#is', '$2: $1', $html);
-        $plain = preg_replace('#<br\s*/?>|</p>|</h1>|</tr>#i', "\n", (string) $plain);
+        $plain = preg_replace('#<br\s*/?>|</p>|</h1>|</tr>#i', "
+", (string) $plain);
         $plain = html_entity_decode(strip_tags((string) $plain), ENT_QUOTES, 'UTF-8');
-        $text = trim(preg_replace("/[ \t]+/", ' ', preg_replace("/\n\s*\n+/", "\n\n", $plain)));
+        $text = trim(preg_replace("/[ 	]+/", ' ', preg_replace("/
+\s*
++/", "
+
+", $plain)));
     }
 
-    try {
-        if ($driver === 'smtp') {
-            return smtp_send($to, $subject, $html, $text);
-        }
-        if ($driver === 'mail') {
-            [$headers, $body] = mail_build_mime($to, $subject, $html, $text, false);
-            return mail($to, mail_encode_header($subject), $body, $headers);
-        }
-    } catch (Throwable $e) {
-        mail_log("FAILED to {$to}: " . $e->getMessage());
-        return false;
+    $candidates = mail_candidates();
+    if (!$candidates) {
+        mail_log("TO: {$to}
+SUBJECT: {$subject}
+{$text}
+");
+        return true;
     }
+    $errors = [];
+    foreach ($candidates as $label => $settings) {
+        $GLOBALS['__mail_active'] = $settings;
+        try {
+            if (($settings['driver'] ?? '') === 'mail') {
+                [$headers, $body] = mail_build_mime($to, $subject, $html, $text, false);
+                if (!mail($to, mail_encode_header($subject), $body, $headers)) {
+                    throw new RuntimeException('PHP mail() refused the message');
+                }
+            } else {
+                smtp_send($to, $subject, $html, $text);
+            }
+            if ($errors) {
+                mail_log("SENT to {$to} using the {$label} mailbox after: " . implode(' | ', $errors));
+            }
+            unset($GLOBALS['__mail_active']);
+            return true;
+        } catch (Throwable $e) {
+            $errors[] = "{$label}: " . $e->getMessage();
+        }
+    }
+    unset($GLOBALS['__mail_active']);
+    $GLOBALS['__mail_error'] = implode(' | ', $errors);
+    mail_log("FAILED to {$to}: " . $GLOBALS['__mail_error']);
+    return false;
+}
 
-    mail_log("TO: {$to}\nSUBJECT: {$subject}\n{$text}\n");
-    return true;
+/** The last send_mail() failure reason, e.g. "SMTP error after AUTH: 535 Authentication failed". */
+function mail_last_error(): string
+{
+    return (string) ($GLOBALS['__mail_error'] ?? '');
+}
+
+/** One mail setting from the mailbox being used right now (falls back to this app's config). */
+function mcfg(string $key, $default = null)
+{
+    $m = $GLOBALS['__mail_active'] ?? config('mail', []);
+    return is_array($m) && array_key_exists($key, $m) && $m[$key] !== '' && $m[$key] !== null ? $m[$key] : $default;
+}
+
+/**
+ * Mailboxes to try, in order: this app's own settings, then the main GMF site's settings
+ * (public_html/config/config.php), so a wrong or missing Cell C mail password never stops codes.
+ * In production a 'log' driver is skipped, so codes are never silently written to a file.
+ * Empty array = log only (local development).
+ */
+function mail_candidates(): array
+{
+    $list = [];
+    $own = config('mail', []);
+    $ownDriver = is_array($own) ? (string) ($own['driver'] ?? 'log') : 'log';
+    if ($ownDriver === 'smtp' || $ownDriver === 'mail') {
+        $list['Cell C'] = $own;
+    }
+    $mainFile = dirname(APP_ROOT) . '/config/config.php';
+    if (config('env') === 'production' && is_file($mainFile)) {
+        try {
+            $main = (static fn (string $f) => require $f)($mainFile);
+            $m = is_array($main) ? ($main['mail'] ?? null) : null;
+            if (is_array($m) && ($m['driver'] ?? '') === 'smtp' && !empty($m['host'])
+                && (!isset($list['Cell C']) || ($m['username'] ?? '') . ($m['password'] ?? '') . ($m['host'] ?? '') !== ($own['username'] ?? '') . ($own['password'] ?? '') . ($own['host'] ?? ''))) {
+                $list['main site'] = $m;
+            }
+        } catch (Throwable $e) {
+            // main site config unreadable: keep to our own settings
+        }
+    }
+    return $list;
 }
 
 function mail_log(string $line): void
@@ -51,8 +117,8 @@ function mail_encode_header(string $value): string
 function mail_build_mime(string $to, string $subject, string $html, string $text, bool $full): array
 {
     $boundary = 'b' . bin2hex(random_bytes(12));
-    $fromEmail = config('mail.from_email');
-    $fromName = mail_encode_header((string) config('mail.from_name', 'George Musical Festival'));
+    $fromEmail = mcfg('from_email');
+    $fromName = mail_encode_header((string) mcfg('from_name', 'George Musical Festival'));
     $domain = substr(strrchr((string) $fromEmail, '@') ?: '@localhost', 1);
 
     $h = [];
@@ -78,9 +144,9 @@ function mail_build_mime(string $to, string $subject, string $html, string $text
 
 function smtp_send(string $to, string $subject, string $html, string $text): bool
 {
-    $host = (string) config('mail.host');
-    $port = (int) config('mail.port', 465);
-    $enc  = (string) config('mail.encryption', 'ssl');
+    $host = (string) mcfg('host');
+    $port = (int) mcfg('port', 465);
+    $enc  = (string) mcfg('encryption', 'ssl');
     $remote = ($enc === 'ssl' ? 'ssl://' : 'tcp://') . $host . ':' . $port;
 
     $ctx = stream_context_create(['ssl' => ['verify_peer' => true, 'verify_peer_name' => true, 'SNI_enabled' => true]]);
@@ -119,15 +185,15 @@ function smtp_send(string $to, string $subject, string $html, string $text): boo
         }
         $cmd('EHLO ' . $ehloHost, [250]);
     }
-    if (config('mail.username')) {
+    if (mcfg('username')) {
         $cmd('AUTH LOGIN', [334]);
-        $cmd(base64_encode((string) config('mail.username')), [334]);
-        $cmd(base64_encode((string) config('mail.password')), [235]);
+        $cmd(base64_encode((string) mcfg('username')), [334]);
+        $cmd(base64_encode((string) mcfg('password')), [235]);
     }
-    $cmd('MAIL FROM:<' . config('mail.from_email') . '>', [250]);
+    $cmd('MAIL FROM:<' . mcfg('from_email') . '>', [250]);
     $cmd('RCPT TO:<' . $to . '>', [250, 251]);
     // Silent archive copy (no Bcc header), so a record of every email sent survives outside this server.
-    $archive = (string) config('mail.archive_bcc', '');
+    $archive = (string) mcfg('archive_bcc', '');
     if ($archive !== '' && strcasecmp($archive, $to) !== 0 && filter_var($archive, FILTER_VALIDATE_EMAIL)) {
         $cmd('RCPT TO:<' . $archive . '>', [250, 251]);
     }
