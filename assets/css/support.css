@@ -1,0 +1,33 @@
+/* Floating "Chat with us" help button and form */
+.sup { position: fixed; right: 18px; bottom: 18px; z-index: 900; font-family: var(--f-body, Arial, sans-serif); }
+.sup-fab { display: inline-flex; align-items: center; gap: 10px; padding: 14px 20px; border: 0; border-radius: 999px; background: var(--orange, #ea5b0c); color: #fff; font: inherit; font-weight: 800; font-size: .95rem; cursor: pointer; box-shadow: 0 10px 28px rgba(0,0,0,.35); }
+.sup-fab i { font-size: 1.15rem; }
+.sup-fab:hover { filter: brightness(1.08); }
+.sup-fab:focus-visible, .sup-send:focus-visible, .sup-x:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.sup.is-open .sup-fab { display: none; }
+.sup-panel { width: min(380px, calc(100vw - 24px)); max-height: calc(100vh - 36px); overflow: auto; background: #fff; color: #1f1a17; border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.45); }
+.sup-head { display: flex; justify-content: space-between; gap: 12px; padding: 18px 18px 14px; background: var(--orange, #ea5b0c); color: #fff; border-radius: 18px 18px 0 0; }
+.sup-head strong { display: block; font-size: 1.02rem; }
+.sup-head span { display: block; font-size: .8rem; opacity: .92; margin-top: 3px; }
+.sup-x { background: none; border: 0; color: #fff; font-size: 1.2rem; cursor: pointer; padding: 0 4px; align-self: flex-start; }
+.sup-form { padding: 16px 18px 18px; display: grid; gap: 12px; }
+.sup-form label { display: grid; gap: 5px; font-size: .8rem; font-weight: 700; color: #4b443e; }
+.sup-form input, .sup-form select, .sup-form textarea { font: inherit; font-size: 16px; font-weight: 400; color: #1f1a17; background: #faf8f6; border: 1px solid #ddd5cd; border-radius: 10px; padding: 10px 12px; width: 100%; box-sizing: border-box; }
+.sup-form textarea { resize: vertical; min-height: 90px; }
+.sup-form input:focus, .sup-form select:focus, .sup-form textarea:focus { outline: 2px solid var(--orange, #ea5b0c); outline-offset: 0; border-color: transparent; }
+.sup-hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.sup-tip { margin: 0; padding: 10px 12px; border-radius: 10px; background: #fff3e6; font-size: .84rem; line-height: 1.5; }
+.sup-err { margin: 0; color: #b42318; font-size: .85rem; font-weight: 600; }
+.sup-send { border: 0; border-radius: 10px; padding: 13px; background: var(--orange, #ea5b0c); color: #fff; font: inherit; font-weight: 800; cursor: pointer; }
+.sup-send[disabled] { opacity: .6; cursor: wait; }
+.sup-note { margin: 0; font-size: .74rem; color: #6b645e; text-align: center; }
+.sup-done { padding: 28px 20px 30px; text-align: center; }
+.sup-done i { font-size: 2.4rem; color: #16a34a; }
+.sup-done strong { display: block; margin-top: 10px; font-size: 1.1rem; }
+.sup-done p { margin: 8px 0 0; font-size: .9rem; color: #4b443e; line-height: 1.5; }
+@media (max-width: 520px) {
+  .sup { right: 12px; bottom: 12px; }
+  .sup-fab { padding: 12px 16px; }
+  .sup-fab span { display: none; }
+  .sup-fab i { font-size: 1.35rem; }
+}

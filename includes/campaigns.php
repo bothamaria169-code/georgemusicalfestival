@@ -208,7 +208,7 @@ function campaign_builtin_templates(): array
 "
             . campaign_button('acsa', 'Enter now') . "
 "
-            . "<p>This is a one-time invitation. If you would rather not hear from us, reply STOP or use the unsubscribe link below and we will not email you again.</p>"];
+            . "<p>This is a one-time invitation. If you would rather not hear from us, use the unsubscribe link below and we will not email you again.</p>"];
 
     $t['b:cellc-enter'] = ['brand' => 'cellc', 'name' => "{$sam} — enter now",
         'subject' => "Win a Samsung Galaxy A56 + accessories worth R10 000",
@@ -250,7 +250,7 @@ function campaign_builtin_templates(): array
 "
             . campaign_button('cellc', 'Enter now') . "
 "
-            . "<p>This is a one-time invitation. If you would rather not hear from us, reply STOP or use the unsubscribe link below and we will not email you again.</p>"];
+            . "<p>This is a one-time invitation. If you would rather not hear from us, use the unsubscribe link below and we will not email you again.</p>"];
     $t['b:cellc-thanks'] = ['brand' => 'cellc', 'name' => 'Thank you — entries closed',
         'subject' => "Thank you for entering {$sam}",
         'heading' => 'Thank you, {first_name}',

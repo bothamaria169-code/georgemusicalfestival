@@ -366,7 +366,7 @@ function otp_issue(array $entrant, string $purpose): array
         . "<p style=\"margin:0 0 8px;font-size:13px;color:#6b645e;\">The code and button expire in {$ttl} minutes. If you didn't request this, you can ignore this email.</p>");
     $sent = send_mail($entrant['email'], "{$code} is your WIN A SAMSUNG code", $html);
     if (!$sent) {
-        mark_email_problem((string) $entrant['email'], 'send_failed', 'The code email could not be sent (' . date('j M H:i') . ')');
+        mark_email_problem((string) $entrant['email'], 'send_failed', 'The code email could not be sent (' . date('j M H:i') . '): ' . mail_last_error());
         return ['ok' => false, 'error' => "We couldn't send the email right now. Please check the address and try again.", 'cooldown' => 0];
     }
 
@@ -592,7 +592,7 @@ function public_leaderboard(int $limit = 10): array
             'rank'   => $i + 1,
             'id'     => (int) $r['id'],
             'name'   => $hidden ? 'Mystery leader' : short_name($r['full_name']),
-            'town'   => $hidden ? 'Revealed on draw day' : ($r['town'] ?: ''),
+            'town'   => $hidden ? 'Revealed ' . fmt_date((string) (q("SELECT scheduled_for FROM draws WHERE draw_key = 'final'")->fetchColumn() ?: '2026-12-12'), 'j F') : ($r['town'] ?: ''),
             'clicks' => $hidden ? null : (int) $r['clicks'],
             'hidden' => $hidden,
         ];

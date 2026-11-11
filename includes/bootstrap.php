@@ -591,8 +591,27 @@ function audit(string $action, $detail = null): void
     ]);
 }
 
+/**
+ * Runs once per database: the Replies inbox is gone (it copied private mailbox emails into the
+ * admin). Drops the stored copies; the originals stay in the mailbox. Unsubscribes are kept.
+ */
+function apply_remove_replies_inbox_once(): void
+{
+    try {
+        if (q("SELECT 1 FROM settings WHERE skey = 'replies_inbox_removed'")->fetchColumn()) {
+            return;
+        }
+        q('DROP TABLE IF EXISTS email_replies');
+        q("DELETE FROM settings WHERE skey = 'replies_checked_at'");
+        save_setting('replies_inbox_removed', now());
+    } catch (Throwable $e) {
+        // not installed yet
+    }
+}
+
 apply_relaunch_once();
 apply_december_event_once();
 apply_fly_december_close_once();
 apply_ticket_link_once();
 apply_terms_close_date_once();
+apply_remove_replies_inbox_once();
